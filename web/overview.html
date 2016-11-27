@@ -1,0 +1,151 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Research Dash Board</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Hammersmith+One|Open+Sans" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
+    <link rel="stylesheet" href="resources/css/style.css">
+
+    <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+    <script src="resources/js/script.js" type="text/javascript"></script>
+
+</head>
+
+<body>
+    <!-- navigation -->
+    <!-- Dropdown Structure -->
+    <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#!">Contact Info</a></li>
+        <li class="divider"></li>
+        <li><a href="#!">Add Patient</a></li>
+        <li class="divider"></li>
+        <li><a href="#!">Notify</a></li>
+    </ul>
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper" id="topNav">
+                <a class="btn-floating btn-large grey lighten-3" id="navBack">
+                    <i class="material-icons" style="color: black;">arrow_back</i></a>
+                <!-- <a href="#!" id="nav-logo" >Mood ToolKit</a> -->
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="#">Study</a></li>
+                    <li><a href="badges.html">About</a></li>
+                    <!-- Dropdown Trigger -->
+                    <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Profile<i class="material-icons right">person_pin</i></a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <!-- end navigation -->
+   <!-- page content -->
+   <div class="parallax-container">
+       <div class="parallax"><img src="resources/images/smartphone-smile.jpg"></div>
+     </div>
+       <div class='row' id = "study-cards">
+
+           <h1 class = 'section-header center-align' id = "study-overview-header">Current Studies</h1>
+
+           <div class="overview-card card medium sticky-action col s12 m3 z-depth-2">
+             <div class="card-image waves-effect waves-block waves-light">
+               <img class="activator" src="resources/images/alcohol.jpg">
+             </div>
+             <div class="card-content">
+               <span class="card-title activator grey-text text-darken-4 "><a href="alcoholCravingStudy.html">Alcohol Craving</a><i class="material-icons right">more_vert</i></span>
+               <p><a href="alcoholCravingStudy.html">View Alcohol Craving data</a></p>
+             </div>
+             <div class="card-reveal">
+               <span class="card-title grey-text text-darken-4"><a href="alcoholCravingStudy.html">Alcohol Craving</a><i class="material-icons right">close</i></span>
+               <p>The Alcohol Craving Study is was funded by X and was conducted to study the relationship between alcohol craving, context, and phisiological data.</p>
+             </div>
+           </div>
+
+            <div class="overview-card card medium sticky-action col s12 m3 z-depth-2">
+             <div class="card-image waves-effect waves-block waves-light">
+               <img class="activator" src="resources/images/nih.png">
+             </div>
+             <div class="card-content">
+               <span class="card-title activator grey-text text-darken-4"><a href="nimhStudy.html">NIMH</a><i class="material-icons right">more_vert</i></span>
+               <p><a href="nimhStudy.html">View NIMH data</a></p>
+             </div>
+             <div class="card-reveal">
+               <span class="card-title grey-text text-darken-4">NIMH Data<i class="material-icons right">close</i></span>
+               <p>Here is some more information about this product that is only revealed once clicked on.</p>
+             </div>
+           </div>
+
+            <div class="overview-card card medium sticky-action col s12 m3 z-depth-2">
+             <div class="card-image waves-effect waves-block waves-light">
+               <img class="activator" src="resources/images/mood.jpg">
+             </div>
+             <div class="card-content">
+               <span class="card-title activator grey-text text-darken-4"><a href="moodDesregulationStudy.html">Mood Dysregulation</a><i class="material-icons right">more_vert</i></span>
+               <p><a href="moodDesregulationStudy.html">View Mood Dysregulation data</a></p>
+             </div>
+             <div class="card-reveal">
+               <span class="card-title grey-text text-darken-4">Mood Dysregulation<i class="material-icons right">close</i></span>
+               <p>Here is some more information about this product that is only revealed once clicked on.</p>
+             </div>
+           </div>
+
+            <div class="overview-card card medium sticky-action col s12 m3 z-depth-2">
+             <div class="card-image waves-effect waves-block waves-light">
+               <img class="activator" src="resources/images/watch.png">
+             </div>
+             <div class="card-content">
+               <span class="card-title activator grey-text text-darken-4"><a href="sluWatchStudy.html">SLU Watch</a><i class="material-icons right">more_vert</i></span>
+               <p><a href="sluWatchStudy.html">View SLU Watch data</a></p>
+             </div>
+             <div class="card-reveal">
+               <span class="card-title grey-text text-darken-4">SLU Watch Data<i class="material-icons right">close</i></span>
+               <p>Here is some more information about this product that is only revealed once clicked on.</p>
+             </div>
+           </div>
+      </div>
+     <div class="parallax-container">
+       <div class="parallax"><img src="resources/images/smartphone-girl.jpg"></div>
+     </div>
+
+
+</body>
+
+
+<!-- Footer start -->
+<footer class="page-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col l6 s12">
+                <h5 class="white-text">Mood ToolKit</h5>
+                <p class="grey-text text-lighten-4">Mood ToolKit is a collaberative effort between the University of Missouri Computer Science and Psychology departments. It can be used to build re-configurable surveys and data processing for mobile-based studies. </p>
+            </div>
+            <div class="col l4 offset-l2 s12">
+                <h5 class="white-text">Links</h5>
+                <ul>
+                    <li><a class="grey-text text-lighten-3" href="#!">University of Missouri</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Related Work</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">Resources</a></li>
+                    <li><a class="grey-text text-lighten-3" href="#!">IP Rights</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="footer-copyright">
+        <div class="container">
+            © 2016 Mood ToolKit
+            <a class="grey-text text-lighten-4 right" href="#!">Read More</a>
+        </div>
+    </div>
+</footer>
+
+</html>
