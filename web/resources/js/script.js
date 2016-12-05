@@ -3,13 +3,13 @@ $(document).ready(function(){
    $(".button-collapse").sideNav();
    $('.parallax').parallax();
    $("#navBack").click(function(){
-      window.location.replace("overview.html");
-
+      history.go(-1);
    });
 
    $("#table tr").click(function() {
       var selected = $(this);
       window.location.href='user.html';
    });
+
 });
 

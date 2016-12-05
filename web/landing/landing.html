@@ -1,0 +1,79 @@
+<? php
+   ob_start();
+   session_start();
+?>
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+   <meta charset="utf-8">
+   <title>Final Project</title>
+   <link rel="stylesheet" href="landing-style.css">
+   <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
+   <script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
+   <script type="text/javascript" src="landingController.js"></script>
+
+</head>
+<html ng-app="researchApp">
+<div ng-controller="loginController as vm">
+   <div class="overlay"></div>
+   <div class = "hi z-depth-2">
+      <h2>Welcome</h2>
+         <p>to</p>
+         <h2>Mood ToolKit</h2>
+         <h5> A University of Missouri <br>Research Project</h5>
+         <span id="btn-transparent"><a class="waves-effect waves-light btn-large btn-left z-depth-3" ng-click="vm.directToOverview()">Enter Site</a></span>
+         <a class="waves-effect waves-light btn-large btn-right modal-trigger z-depth-3" ng-click="vm.openModal()">Login</a>
+   </div>
+   <!-- Modal Structure -->
+   <div id="modal1" class="modal" ng-show="vm.showModal">
+    <div class="modal-content">
+      <h4 class="center">Login into your account, please</h4>
+      <div class="section"></div>
+
+      <div class="container center">
+        <div class="z-depth-1 grey lighten-4 row login-container">
+
+          <form id = "loginform" class="col s12" method="post" action = "<?php echo htmlspecialchars($_SERVER['PHP_SELF']);?>">
+            <div class='row'>
+              <div class='col s12'>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class='input-field col s12 left-align'>
+                <input class='validate' type='text' name='user' id='email' />
+                <label for='username'>Enter your username:</label>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class='input-field col s12 left-align'>
+                <input class='validate' type='password' name='password' id='password' />
+                <label for='password'>Enter your password:</label>
+              </div>
+            </div>
+
+            <br />
+            <center>
+              <div class='row'>
+                <button id = "btn_login" type='submit' name='btn_login' class='col s12 btn btn-large waves-effect btn-left' >Login</button>
+              </div>
+            </center>
+          </form>
+        </div>
+      </div>
+    </div>
+    <div class = "container form-signin">
+
+   </div> <!-- /container -->
+    <div class="modal-footer">
+      <a href="#!" class=" modal-action modal-close waves-effect waves-red btn-flat">Dismiss</a>
+    </div>
+   </div>
+</div>
+</html>
+</html>

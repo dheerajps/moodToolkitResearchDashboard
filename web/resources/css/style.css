@@ -14,18 +14,27 @@ th{
 td{
    text-align: center;
 }
-h1{
+h1, h2, h3, p, a{
    color:#454545;
 }
 
 h3{
    font-size: 18px;
-   font-weight: 10pt;
+   font-weight: 18pt;
    color: #454545;
 }
 
 hr{
    line-height: 1px;
+}
+
+.contact{
+   border-radius: 1px;
+   border-style: solid;
+   border-color: #454545;
+   border-radius: 15px;
+   background-color: #F9F8F8;
+   height: 90%;
 }
 
 .section-header{
@@ -41,7 +50,6 @@ hr{
    font-weight: 20px
 }
 #navBack{
-   margin-right: 10px;
    color: #454545 !important;
 }
 
@@ -84,10 +92,13 @@ hr{
    padding-bottom: 30px;
 }
 
+.nimh-study-card{
+   padding: 0px;
+}
+
 #study-overview-header{
    padding-bottom: 20px;
 }
-
 
 .row{
    padding: 10px 10px;
@@ -100,12 +111,12 @@ hr{
     margin: 10 auto;
 }
 .study-stats{
-   background-color: #f9f8f8;
+   background-color: white!important;
    border-style: solid;
    border-width: 1px;
-   border-color: #b3aee5;
-   margin-top: 7%;
-   margin-bottom: 20px;
+   border-color: #b3aee5!important;
+   margin-top: 4%;
+   margin-bottom: 10px;
    border-radius: 20px;
 }
 .pie-charts{
@@ -124,6 +135,18 @@ footer.page-footer{
    border-radius: 10px;
    border-radius: 25px;
 }
+#mood-changes-header{
+   padding-top: 18px;
+}
+
+#mood-breakdown{
+   padding-top: 12px;
+}
+
+.mood-stats{
+   margin-left: 30px!important;
+}
+
 
 .study-page-card{
    margin: 0 2% 0 2%;
@@ -140,17 +163,11 @@ footer.page-footer{
 }
 
 #card1{
-   background-color: #E5B34E;
+   background-color: #FF9655;
 }
 
 #card2{
-   background-color: #73B0D6;
-}
-#card3{
-   background-color: #C0E098;
-}
-#card4{
-   background-color: #E5582D;
+   background-color: #93BEDF;
 }
 
 #surveys{
