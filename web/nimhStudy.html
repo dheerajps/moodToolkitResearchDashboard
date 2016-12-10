@@ -21,8 +21,8 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
     <script src="https://code.highcharts.com/highcharts.js"></script>
     <script src="resources/js/script.js" type="text/javascript"></script>
-    <script src="resources/js/study-graphs.js" type="text/javascript"></script>
-</head>
+<!--     <script src="resources/js/study-graphs.js" type="text/javascript"></script>
+ --></head>
 
 <body>
      <!-- navigation -->
@@ -71,8 +71,8 @@
     <a href="#" data-activates="slide-out" class="button-collapse"></a>
     <!-- end sidebar -->
     <!-- page content -->
-
-   <div class="row">
+  <div ng-app="researchApp" ng-controller ="nimhController as vm">
+   <div class="row" >
       <div class="col s3">
          <div class="row">
          <h1 class = 'section-header center'>NIMH Overview</h1>
@@ -82,8 +82,9 @@
                     <hr>
                 </div>
                 <div class="card-content">
-                  <div><p class="days"><strong>Total days complete: </strong></p><br></div>
-                  <div><p class="surveys"><strong>Total surveys complete: </strong></p></div>
+                  <div><p class="days"><strong>Total Participants: {{vm.nimhData.users.length}}</strong></p><br></div>
+                  <div><p class="days"><strong>Total days complete: {{vm.findTotal('day-count')}}</strong></p><br></div>
+                  <div><p class="surveys"><strong>Total surveys complete: {{vm.findTotal('survey-count')}}</strong></p></div>
                 </div>
                 <div class="card-action">
                 </div>
@@ -97,9 +98,9 @@
 
                 </div>
                 <div class="card-content">
-                <div ><p class="missed"><strong>Total missed surveys: </strong></p></div>
+                <div ><p class="missed"><strong>Total missed surveys: {{vm.nimhData.missed_surveys}}</strong></p></div>
                  <br> 
-                 <div><p class="compliance"><strong>Avg participant compliance: </strong></p></div>
+                 <div><p class="compliance"><strong>Avg participant compliance: {{vm.findAvgCompliance()}}</strong></p></div>
                 </div>
                 <div class="card-action">
                 </div>
@@ -138,131 +139,28 @@
                    <th>End Date</th>
                    <th>Days Elapsed</th>
                    <th>Actions</th>
-                   <th>Status</th>
+                   <th>Compliance</th>
                  </tr>
                </thead>
                <tbody>
-                 <tr>
-                   <td data-title="ID">1</td>
-                   <td data-title="Name">John Apple</td>
+                 <tr ng-repeat="user in vm.nimhData.users">
+                   <td data-title="ID">{{$index+1}}</td>
+                   <td data-title="Name">{{user.user}}</td>
                    <td data-title="Start Date"> October 2, 2016</td>
                    <td data-title="End Date"> November 7, 2016</td>
-                   <td data-title="Days Elapsed">15</td>
+                   <td data-title="Days Elapsed">{{user["day-count"]}}</td>
                    <td data-title="Actions">
                      <i class="material-icons t-icon">alarm_on</i>
                      <i class="material-icons t-icon">get_app</i>
                      <i class="material-icons t-icon">settings</i>
                    </td>
-                   <td data-title="Status">In Progress</td>
-                 </tr>
-                 <tr>
-                   <td data-title="ID">2</td>
-                   <td data-title="Name">John Orange</td>
-                   <td data-title="Start Date"> October 3, 2016</td>
-                   <td data-title="End Date"> November 1, 2016</td>
-                   <td data-title="Days Elapsed">12</td>
-                   <td data-title="Actions">
-                     <i class="material-icons t-icon">alarm_on</i>
-                     <i class="material-icons t-icon">get_app</i>
-                     <i class="material-icons t-icon">settings</i>
-                   </td>
-                   <td data-title="Status">In Progress</td>
-                 </tr>
-                 <tr>
-                   <td data-title="ID">3</td>
-                   <td data-title="Name">Joan Mellon</td>
-                   <td data-title="Start Date"> September 2, 2016</td>
-                   <td data-title="End Date"> October 3, 2016</td>
-                   <td data-title="Days Elapsed">32</td>
-                   <td data-title="Actions">
-                     <i class="material-icons t-icon">alarm_on</i>
-                     <i class="material-icons t-icon">get_app</i>
-                     <i class="material-icons t-icon">settings</i>
-                   </td>
-                   <td data-title="Status">Complete</td>
-                 </tr>
-                 <tr>
-                   <td data-title="ID">4</td>
-                   <td data-title="Name">Joan Tangerine</td>
-                   <td data-title="Start Date"> September 15, 2016</td>
-                   <td data-title="End Date"> October 10, 2016</td>
-                   <td data-title="Days Elapsed">17</td>
-                   <td data-title="Actions">
-                     <i class="material-icons t-icon">alarm_on</i>
-                     <i class="material-icons t-icon">get_app</i>
-                     <i class="material-icons t-icon">settings</i>
-                   </td>
-                   <td data-title="Status">Complete</td>
-                 </tr>
-                 <tr>
-                   <td data-title="ID">5</td>
-                   <td data-title="Name">Jeff Appleson</td>
-                   <td data-title="Start Date"> October 3, 2016</td>
-                   <td data-title="End Date"> October 18, 2016</td>
-                   <td data-title="Days Elapsed">10</td>
-                   <td data-title="Actions">
-                     <i class="material-icons t-icon">alarm_on</i>
-                     <i class="material-icons t-icon">get_app</i>
-                     <i class="material-icons t-icon">settings</i>
-                   </td>
-                   <td data-title="Status">Complete</td>
-                 </tr>
-                 <tr>
-                   <td data-title="ID">6</td>
-                   <td data-title="Name">Jamey Mango</td>
-                   <td data-title="Start Date"> August 5, 2016</td>
-                   <td data-title="End Date"> September 5, 2016</td>
-                   <td data-title="Days Elapsed">30</td>
-                   <td data-title="Actions">
-                     <i class="material-icons t-icon">alarm_on</i>
-                     <i class="material-icons t-icon">get_app</i>
-                     <i class="material-icons t-icon">settings</i>
-                   </td>
-                   <td data-title="Status">Complete</td>
-                 </tr>
-                 <tr>
-                   <td data-title="ID">7</td>
-                   <td data-title="Name">Jeremiah Wooton</td>
-                   <td data-title="Start Date"> October 9, 2016</td>
-                   <td data-title="End Date"> November 1, 2016</td>
-                   <td data-title="Days Elapsed">4</td>
-                   <td data-title="Actions">
-                     <i class="material-icons t-icon">alarm_on</i>
-                     <i class="material-icons t-icon">get_app</i>
-                     <i class="material-icons t-icon">settings</i>
-                   </td>
-                   <td data-title="Status">In Progress</td>
-                 </tr>
-                 <tr>
-                   <td data-title="ID">8</td>
-                   <td data-title="Name">James Appleseed</td>
-                   <td data-title="Start Date"> October 2, 2016</td>
-                   <td data-title="End Date"> November 7, 2016</td>
-                   <td data-title="Days Elapsed">15</td>
-                   <td data-title="Actions">
-                     <i class="material-icons t-icon">alarm_on</i>
-                     <i class="material-icons t-icon">get_app</i>
-                     <i class="material-icons t-icon">settings</i>
-                   </td>
-                   <td data-title="Status">Complete</td>
-                 </tr>
-                 <tr>
-                   <td data-title="ID">1</td>
-                   <td data-title="Name">Johnney Depth</td>
-                   <td data-title="Start Date"> September 22, 2016</td>
-                   <td data-title="End Date"> October 10, 2016</td>
-                   <td data-title="Days Elapsed">20</td>
-                   <td data-title="Actions">
-                     <i class="material-icons t-icon">alarm_on</i>
-                     <i class="material-icons t-icon">get_app</i>
-                     <i class="material-icons t-icon">settings</i>
-                   </td>
-                   <td data-title="Status">Complete</td>
+                   <td data-title="Status">{{user.compliance}}</td>
                  </tr>
                </tbody>
              </table>
          </div>
       </div>
+   </div>
    </div>
 </body>
 

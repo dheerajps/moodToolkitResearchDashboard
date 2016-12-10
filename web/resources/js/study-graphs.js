@@ -9,51 +9,7 @@ var sum_positive_changes = []
 var sum_negative_changes = []
 var study_data;
 
-function getTotalSurveyCount(){
-   survey_count = 0;
-   for (i in surveys_complete){
-      survey_count += surveys_complete[i];
-   }
-   return survey_count;
-}
-
-function getNIMHData() {
-   var local_url = "http://127.0.0.1:8080/";
-
-   var survey_data = $.ajax({
-      type: 'GET',
-      url: local_url + 'app/studies/nimhStudy.php',
-      data: "",
-      async: false,
-      dataType: 'json',
-      success: function(data) {
-         console.log(data);
-         sum_total_changes.push(parseInt(data["total_mood_changes"]));
-         sum_positive_changes.push(parseInt(data["positive_changes"]));
-         sum_negative_changes.push(parseInt(data["negative_changes"]));
-         for (i in data["participants"]) {
-            users.push("User " + data["participants"][i]["user"]);
-            surveys_complete.push(data["participants"][i]["survey-count"]);
-            days_in_study.push(data["participants"][i]["day-count"]);
-            total_mood_changes.push(parseInt(data["participants"][i]["total_mood_changes"]));
-            neg_mood_changes.push(parseInt(data["participants"][i]["negative_changes"]));
-            pos_mood_changes.push(parseInt(data["participants"][i]["positive_changes"]));
-         }
-         study_data = data;
-      },
-      error: function(xhr, ajaxOptions, thrownError) {
-         console.dir(thrownError);
-         console.dir(xhr);
-         console.dir(ajaxOptions);
-      }
-   });
-}
-
-getNIMHData();
 $(document).ready(function(){
-
-var missed_surveys_val = study_data["missed_surveys"];
-$('.missed').append(missed_surveys_val);
 
 function averageCompliance(){
  avg=0;
@@ -63,15 +19,6 @@ function averageCompliance(){
   return avg/i;
 }
 
-var avg_compliance=averageCompliance();
-$('.compliance').append(avg_compliance.toFixed(2));
-
-var total_surveys_complete = getTotalSurveyCount();
-$('.surveys').append(total_surveys_complete);
-
-var total_days = study_data["active_days"];
-$('.days').append(total_days);
-});
 $(function() {
    Highcharts.setOptions({
       colors: ['#FF9655', '#adfc71', '#dd616e', '#454545', '#b3aee5', '#64E572', '#FFF263', '#66FFCC', '#51b93e']
