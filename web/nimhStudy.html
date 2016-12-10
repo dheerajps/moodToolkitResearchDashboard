@@ -19,8 +19,9 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="resources/js/script.js" type="text/javascript"></script>
+    <script src="https://rawgithub.com/pablojim/highcharts-ng/master/src/highcharts-ng.js"></script>
+    <script src="https://code.highcharts.com/highcharts.src.js"></script>
+    <script src="resources/js/nimhController.js" type="text/javascript"></script>
 <!--     <script src="resources/js/study-graphs.js" type="text/javascript"></script>
  --></head>
 
@@ -72,8 +73,8 @@
     <!-- end sidebar -->
     <!-- page content -->
   <div ng-app="researchApp" ng-controller ="nimhController as vm">
-   <div class="row" >
-      <div class="col s3">
+   <div class="row">
+      <div class="col s3" >
          <div class="row">
          <h1 class = 'section-header center'>NIMH Overview</h1>
             <div class="card col s12 z-depth-1" id="card1">
@@ -109,20 +110,30 @@
       </div>
       <div class= "col s9">
          <h1 class = 'section-header center' id="mood-changes-header">Survey & Participation</h1>
-         <div class='col s12 study-module study-stats z-depth-2' id='days-surveys'></div>
+         <div class='col s12 study-module study-stats z-depth-2'>
+            <highchart config="vm.daysSurveysGraph"></highchart>
+         </div>
       </div>
    </div>
 
 
    <div class='row'>
       <h1 class = 'section-header center'>Mood Changes</h1>
-      <div class='col s12 highcharts-background study-module study-stats z-depth-2' id='mood-changes'></div>
+      <div class='col s12 highcharts-background study-module study-stats z-depth-2' id=''>
+        <highchart config="vm.moodChangesGraph"></highchart>
+      </div>
    </div>
     <div class='row'>
       <h1 class = 'section-header center'>Response Summary</h1>
-      <div class='col s3 highcharts-background study-module study-stats mood-stats z-depth-1' id='total-mood'></div>
-      <div class="col s4  highcharts-background study-module study-stats mood-stats z-depth-1" id = "neg-mood-breakdown"></div>
-      <div class="col s4 highcharts-background study-module study-stats mood-stats z-depth-1" id = "pos-mood-breakdown"></div>
+      <div class='col s3 highcharts-background study-module study-stats mood-stats z-depth-1'>
+        <highchart config="vm.totalMoodBreakdownGraph"></highchart>
+      </div>
+      <div class="col s4  highcharts-background study-module study-stats mood-stats z-depth-1">
+        <highchart config="vm.negativeMoodBreakdownGraph"></highchart>
+      </div>
+      <div class="col s4 highcharts-background study-module study-stats mood-stats z-depth-1">
+        <highchart config="vm.positiveMoodBreakdownGraph"></highchart>
+      </div>
     </div>
    <div class = 'row'>
       <h1 class = 'section-header left'>Participants</h1>
@@ -161,7 +172,7 @@
          </div>
       </div>
    </div>
-   </div>
+  </div>
 </body>
 
 
