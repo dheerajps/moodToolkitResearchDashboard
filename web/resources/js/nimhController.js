@@ -22,12 +22,16 @@
 
    /** Controller for the whole NIMH page **/
    app.controller('nimhController',nimhController);
-   nimhController.$inject = ['$scope','$rootScope','$http','nimhAPI'];
+   nimhController.$inject = ['$scope','$rootScope','$http','nimhAPI','$window'];
 
-   function nimhController(ngScope,ngRootScope,$http,nimhAPI){
+   function nimhController(ngScope,ngRootScope,$http,nimhAPI,window){
 
       var vm = this;
       initNIMHController();
+      vm.takeBack = takeBack;
+      function takeBack(){
+        window.history.back()
+      }
       function initNIMHController(){
          
 

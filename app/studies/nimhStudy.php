@@ -6,7 +6,7 @@ include_once('../config/database.php');
 $db = new Database();
 
 //query for surveys complete
-$study_surveys_sql = 'select patient, COUNT(*) from nimhTest where patient IN (select Distinct patient from nimhTest ) and afraid!="" group by patient;';
+$study_surveys_sql = 'select patient, COUNT(*) from nimhTest where patient IN (select Distinct patient from nimhTest ) and surveylabel !="Suspension" group by patient;';
 $study_surveys_result = $db->executeQuery($study_surveys_sql);
 $study_stats = array();
 
@@ -19,9 +19,10 @@ if ($study_surveys_result->num_rows > 0) {
       $participant_survey["survey-count"] = intval($row["COUNT(*)"]);
       array_push($study_stats, $participant_survey);
     }
+    //echo json_encode($study_stats);
 }
 //query for days in study
-$study_days_sql = "SELECT patient,COUNT(DISTINCT DATE_FORMAT(STR_TO_DATE(SurveyStart, '%c/%e/%Y %H:%i'), '%Y-%m-%d ')) AS dates from nimhTest where patient IN (select DISTINCT patient from nimhTest) and afraid!='' GROUP BY patient;";
+$study_days_sql = 'SELECT patient,COUNT(DISTINCT DATE_FORMAT(STR_TO_DATE(SurveyStart, "%c/%e/%Y %H:%i"), "%Y-%m-%d")) AS dates from nimhTest where patient IN (select DISTINCT patient from nimhTest) and surveylabel != "Suspension" GROUP BY patient;';
 $study_days_result = $db->executeQuery($study_days_sql);
 
 if ($study_days_result->num_rows > 0) {
@@ -58,7 +59,7 @@ if ($all_user_meta_data_result->num_rows > 0) {
 }
 
 //query to get missed surveys and compliance
-$total_completed_surveys_sql = "select COUNT(*) from nimhTest where patient IN (select Distinct patient from nimhTest ) and afraid!='';";
+$total_completed_surveys_sql = 'select COUNT(*) from nimhTest where patient IN (select Distinct patient from nimhTest ) and surveylabel !="Suspension";';
 $total_surveys_sql= "select COUNT(*) from nimhTest where patient IN (select Distinct patient from nimhTest );";
 
 $total_completed_surveys_result = $db->executeQuery($total_completed_surveys_sql);
@@ -73,7 +74,7 @@ json_encode($all_completed_surveys);
 $all_user_study_stats["missed_surveys"]=$all_surveys['COUNT(*)']-$all_completed_surveys['COUNT(*)'];
 
 //query for compliance for each user 
-$all_surveys_view_sql ="CREATE OR REPLACE VIEW allcompletedsurveys AS select patient, COUNT(*) as surveys from nimhTest where patient IN (select Distinct patient from nimhTest ) and afraid!='' group by patient;";
+$all_surveys_view_sql ='CREATE OR REPLACE VIEW allcompletedsurveys AS select patient, COUNT(*) as surveys from nimhTest where patient IN (select Distinct patient from nimhTest ) and surveylabel !="Suspension" group by patient;';
 $view_result = $db->executeQuery($all_surveys_view_sql);
 $all_completed_surveys_view_sql = "CREATE OR REPLACE VIEW allsurveys AS select patient, COUNT(*) as surveys from nimhTest where patient IN (select Distinct patient from nimhTest ) group by patient;";
 $view_result_1 = $db->executeQuery($all_completed_surveys_view_sql);
