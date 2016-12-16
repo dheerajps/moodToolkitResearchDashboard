@@ -1,36 +1,16 @@
 (function(){
-   /**** Instantiate the module ****/
-   "use strict";
-   var app= angular.module('researchApp',["highcharts-ng"]);
    
-   /** Custom Service which does the get request for NIMH Data **/
-   app.service('nimhAPI',['$http', function nimhAPI($http){
-
-
-      return{
-         
-         getNIMHData: getNIMHData
-          
-      };
-      function getNIMHData(){
-       
-          var localURL ="http://127.0.0.1:8080/";
-          var requestURL = localURL+'app/studies/nimhStudy.php';
-          return $http.get(requestURL);         
-      }
-   }]);
-
    /** Controller for the whole NIMH page **/
-   app.controller('nimhController',nimhController);
-   nimhController.$inject = ['$scope','$rootScope','$http','nimhAPI','$window'];
+   angular.module('researchApp').controller('nimhController',nimhController);
+   nimhController.$inject = ['$scope','$rootScope','$http','nimhAPI','$window','$location'];
 
-   function nimhController(ngScope,ngRootScope,$http,nimhAPI,window){
+   function nimhController(ngScope,ngRootScope,$http,nimhAPI,window,location){
 
       var vm = this;
       initNIMHController();
       vm.takeBack = takeBack;
       function takeBack(){
-        window.history.back()
+        window.history.back();
       }
       function initNIMHController(){
          
@@ -77,7 +57,11 @@
                   vm.users.positiveMoodChanges.push(value['positive_changes']);
                   vm.users.negativeMoodChanges.push(value['negative_changes']);
              });
-
+             vm.navigateToUserPage = function(userId){
+              console.log(userId);
+              nimhAPI.setUser(userId);
+              window.location.href="user.html";
+             }
              //All the graphs on this page
              vm.daysSurveysGraph = {
                options: {
