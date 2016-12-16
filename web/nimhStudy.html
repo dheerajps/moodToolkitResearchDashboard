@@ -157,8 +157,8 @@
                  <tr ng-repeat="user in vm.nimhData.users">
                    <td data-title="ID">{{$index+1}}</td>
                    <td data-title="Name">{{user.user}}</td>
-                   <td data-title="Start Date"> October 2, 2016</td>
-                   <td data-title="End Date"> November 7, 2016</td>
+                   <td data-title="Start Date">{{user.startDate}}</td>
+                   <td data-title="End Date">{{user.endDate}}</td>
                    <td data-title="Days Elapsed">{{user["day-count"]}}</td>
                    <td data-title="Status">{{user.compliance}}</td>
                    <td data-title="Actions">
