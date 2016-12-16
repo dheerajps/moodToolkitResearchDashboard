@@ -90,6 +90,31 @@ if ($user_compliance_result->num_rows > 0) {
       $i++;
     }
 }
+
+$user_get_dates_sql = 'SELECT distinct patient, MIN(DATE_FORMAT(STR_TO_DATE(SurveyStart, "%c/%e/%Y %H:%i"), "%Y-%m-%d")) as startDate,MAX(DATE_FORMAT(STR_TO_DATE(SurveyStart, "%c/%e/%Y %H:%i"), "%Y-%m-%d")) as endDate
+FROM nimhTest
+WHERE
+  patient IN ( SELECT patient FROM (
+     SELECT DISTINCT patient
+          FROM nimhTest 
+    ) l
+  ) and surveystart!="" GROUP BY patient;';
+
+$user_get_dates_result = $db->executeQuery($user_get_dates_sql);
+
+if ($user_get_dates_result->num_rows > 0) {
+   $i = 0;
+    while($row = $user_get_dates_result->fetch_assoc()) {
+      date_default_timezone_set('America/Chicago');
+      $startDate = date('F d Y', strtotime($row["startDate"]));
+      $endDate = date('F d Y', strtotime($row["endDate"]));
+      $study_stats[$i]["startDate"] = $startDate;
+      $study_stats[$i]["endDate"] = $endDate;  
+      $i++;
+    }
+}
+
+
 $all_user_study_stats["participants"] = $study_stats;
 //Close Connection
 $db->closeConnection();

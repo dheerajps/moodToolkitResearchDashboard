@@ -11,7 +11,7 @@ class Database{
 	private $serverName = "127.0.0.1";
 	private $dbName = "test";
 	private $userName = "root";
-	private $password = "Faggot35";
+	private $password = "";
 
 	private $connection = null;
 
