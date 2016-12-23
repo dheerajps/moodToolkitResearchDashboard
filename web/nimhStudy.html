@@ -185,7 +185,7 @@
             </div>
         </div>
         <div class="col s2 left">
-            <h4>{{vm.currentUser.user}}</h4>
+            <h4>User {{vm.currentUser.user}}</h4>
             <small><i>Columbia, MO</i></small>
             <p>
                 email@study.com
@@ -233,7 +233,7 @@
                 <tr>
                     <th data-field="id">Surveys Completed</th>
                     <th data-field="name">Hours of Data</th>
-                    <th data-field="price">Hours/Day</th>
+                    <th data-field="price">Compliance(%)</th>
                 </tr>
               </thead>
 
@@ -241,7 +241,7 @@
                 <tr>
                   <td>{{vm.currentUser["survey-count"]}}</td>
                   <td>185</td>
-                  <td>15.41</td>
+                  <td>{{vm.currentUser.compliance * 100}}</td>
                 </tr>
               </tbody>
             </table>

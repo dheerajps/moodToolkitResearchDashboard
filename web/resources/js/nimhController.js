@@ -10,7 +10,13 @@
       initNIMHController();
       vm.takeBack = takeBack;
       function takeBack(){
-        window.history.back();
+        if(!vm.showUserPageFlag){
+           window.history.back();
+          }
+        else{
+          vm.showUserPageFlag=false;
+          vm.showOverviewPageFlag=true;
+        }
       }
       function initNIMHController(){
          
