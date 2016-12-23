@@ -21,7 +21,9 @@
              vm.nimhData = d.data;
              //console.log(vm.nimhData);
              vm.nimhData.users = vm.nimhData.participants;
-             
+             vm.showUserPageFlag =false;
+             vm.showOverviewPageFlag =true;
+             vm.userSelected = null;
              console.log(vm.nimhData.users);
 
              vm.findAvgCompliance = function(){
@@ -58,9 +60,15 @@
                   vm.users.negativeMoodChanges.push(value['negative_changes']);
              });
              vm.navigateToUserPage = function(userId){
-              console.log(userId);
-              nimhAPI.setUser(userId);
-              window.location.href="user.html";
+              // console.log(userId);
+              // nimhAPI.setUser(userId);
+              vm.showOverviewPageFlag = false;
+              vm.showUserPageFlag=true;
+              // vm.userSelected=nimhAPI.getUser();
+              window.scrollTo(0,0);
+              vm.currentUser=userId;
+              console.log(vm.currentUser);
+
              }
              //All the graphs on this page
              vm.daysSurveysGraph = {
