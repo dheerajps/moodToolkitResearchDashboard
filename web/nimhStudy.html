@@ -165,7 +165,7 @@
                    <td data-title="Status">{{user.compliance}}</td>
                    <td data-title="Actions">
                      <i class="material-icons t-icon">alarm_on</i>
-                     <a href="../app/data/NIMH_data/{{user.user}}.csv" download><i class="material-icons t-icon">archive</i></a>
+                     <a href="../app/data/NIMH_data/formatted2/{{user.user}}_formatted.csv" download><i class="material-icons t-icon">archive</i></a>
                      <a ng-click="vm.navigateToUserPage(user)"><i class="material-icons t-icon">open_in_new</i></a>
                    </td>
                  </tr>
@@ -180,7 +180,7 @@
         <div class="col s8">
             <div id = "profile-actions">
                <a class="btn-floating  btn-large waves-effect waves-light teal"><i class="material-icons">alarm_on</i></a>
-               <a class="btn-floating  btn-large waves-effect waves-light red"><i class="material-icons">get_app</i></a>
+               <a class="btn-floating  btn-large waves-effect waves-light red" href="../app/data/NIMH_data/formatted2/{{user.user}}_formatted.csv" download><i class="material-icons">get_app</i></a>
                <a class="btn-floating  btn-large waves-effect waves-light orange"><i class="material-icons">settings</i></a>
             </div>
         </div>
@@ -194,7 +194,7 @@
             <!-- Split button -->
             <div class="btn-group">
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="#">Twitter</a></li>
+                    
                     <li><a href="https://plus.google.com/+Jquery2dotnet/posts">Google +</a></li>
                     <li><a href="https://www.facebook.com/jquery2dotnet">Facebook</a></li>
                     <li class="divider"></li>
@@ -232,7 +232,7 @@
               <thead >
                 <tr>
                     <th data-field="id">Surveys Completed</th>
-                    <th data-field="name">Hours of Data</th>
+                    <th data-field="name">Total Surveys Taken</th>
                     <th data-field="price">Compliance(%)</th>
                 </tr>
               </thead>
@@ -240,8 +240,8 @@
               <tbody>
                 <tr>
                   <td>{{vm.currentUser["survey-count"]}}</td>
-                  <td>185</td>
-                  <td>{{vm.currentUser.compliance * 100}}</td>
+                  <td>{{vm.currentUser.totalSurveyCount}}</td>
+                  <td>{{vm.currentUser.compliance * 100 | number :2}}</td>
                 </tr>
               </tbody>
             </table>
@@ -253,8 +253,8 @@
 
     <div class="row">
         <div class="col s5 " >
-           <div id="activity-pie-chart" class = "pie-charts study-module">
-               <!-- Survey response breakdown goes here -->
+           <div id="activity-pie-chart" class = "study-module">
+               <highchart config="vm.totalUserMoodBreakdownGraph"></highchart>
            </div>
            <div id="compliance-pie-chart" class = "pie-charts study-module">
                <!-- Survey response breakdown goes here -->

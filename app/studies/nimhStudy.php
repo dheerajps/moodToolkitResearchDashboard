@@ -21,6 +21,16 @@ if ($study_surveys_result->num_rows > 0) {
     }
     //echo json_encode($study_stats);
 }
+//query for all surveys taken by a patient
+$num_of_surveys_sql = "select patient, COUNT(*) as totalSurvey from nimhTest where patient IN (select Distinct patient from nimhTest ) group by patient;";
+$num_of_surveys_result = $db->executeQuery($num_of_surveys_sql);
+if ($num_of_surveys_result->num_rows > 0) {
+   $i = 0;
+    while($row = $num_of_surveys_result->fetch_assoc()) {
+      $study_stats[$i]["totalSurveyCount"] = intval($row["totalSurvey"]);
+      $i++;
+    }
+}
 //query for days in study
 $study_days_sql = 'SELECT patient,COUNT(DISTINCT DATE_FORMAT(STR_TO_DATE(SurveyStart, "%c/%e/%Y %H:%i"), "%Y-%m-%d")) AS dates from nimhTest where patient IN (select DISTINCT patient from nimhTest) and surveylabel != "Suspension" GROUP BY patient;';
 $study_days_result = $db->executeQuery($study_days_sql);

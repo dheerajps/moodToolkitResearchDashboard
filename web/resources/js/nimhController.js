@@ -73,8 +73,65 @@
               // vm.userSelected=nimhAPI.getUser();
               window.scrollTo(0,0);
               vm.currentUser=userId;
+              vm.drawUserPageGraphs(vm.currentUser);
               console.log(vm.currentUser);
 
+             }
+             vm.drawUserPageGraphs = function(currentUser){
+
+                vm.totalUserMoodBreakdownGraph = {
+                   options:{
+
+                      chart: {
+                         type: 'column'
+                     },
+                     title: {
+                         text: 'Overall User Moodchange Data'
+                     },
+
+                     xAxis: {
+                         categories: ["USER "+ currentUser.user ],
+                         crosshair: true
+                     },
+                     yAxis: {
+                         min: 0,
+                         title: {
+                             text: 'Changes'
+                         }
+                     },
+                     tooltip: {
+                         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                             '<td style="padding:0"><b>{point.y: .1f} </b></td></tr>',
+                         footerFormat: '</table>',
+                         shared: true,
+                         useHTML: true
+                     },
+                     plotOptions: {
+                         column: {
+                             pointPadding: 0.2,
+                             borderWidth: 0
+                         }
+                     }
+                   },
+                   series: [{
+                      name: 'Total Changes',
+                      color: vm.colors[3],
+                      data: [currentUser['total_mood_changes']]
+                   }, {
+                      name: 'Positive Changes',
+                      color: vm.colors[7],
+                      data: [currentUser['positive_changes']]
+                   }, {
+                      name: 'Negative Changes',
+                      color: vm.colors[2],
+                      data: [currentUser['negative_changes']]
+                   }],
+                   credits: {
+                      enabled: false
+                   }
+
+                } //end of mood-changes breakdown graph
              }
              //All the graphs on this page
              vm.daysSurveysGraph = {
@@ -440,6 +497,8 @@
                }]
 
             } //end of pos-mood breakdown graph
+
+
 
          }); // end of .then call for the service
 
