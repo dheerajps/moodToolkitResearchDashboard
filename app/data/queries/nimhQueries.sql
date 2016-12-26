@@ -23,6 +23,8 @@ SELECT DATE_FORMAT(STR_TO_DATE(SurveyStart, '%c/%e/%Y %H:%i'), '%Y-%m-%d ') as e
 select * from nimhTestStats where participant=1111;
 /* Query 11: Get total mood changes for an individual patient along with positive and negative changes, this is for the mood changes graph*/
 select participant,total_mood_changes,positive_changes,negative_changes from nimhTestStats order by participant;
+/*query for all surveys taken by a patient*/
+select patient, COUNT(*) as totalSurvey from nimhTest where patient IN (select Distinct patient from nimhTest ) group by patient;
 
 
 
