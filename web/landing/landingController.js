@@ -2,9 +2,9 @@
 
    "use strict";
    angular.module('researchApp',[]).controller('loginController', loginController);
-   loginController.$inject = ['$scope','$rootScope','$http','$httpParamSerializer'];
+   loginController.$inject = ['$scope','$rootScope','$http'];
 
-   function loginController(ngScope,ngRootScope,http,$httpParamSerializer){
+   function loginController(ngScope,ngRootScope,http){
 
       
       var vm = this;
@@ -48,13 +48,9 @@
       function postLoginInfo(){
          var localURL ="http://127.0.0.1:8080/";
          var requestURL = localURL+'app/helpers/loginHelper.php';
-         // var config = {
-         //        headers : {
-         //            'Content-Type': 'application/x-www-form-urlencoded'
-         //        }
-         // }
+         
          var data = { username: ngScope.temp.username , password: ngScope.temp.password};
-         // data = $httpParamSerializer(data);
+         
          http({
              method: 'POST',
              url: requestURL,
@@ -63,10 +59,18 @@
              
              
          }).then(function (response) {
-            vm.message = response.data;
+            console.log(response.data);
             
-         }, function(error){
-            vm.message = error.data;
+            if(response.data.status == true){
+               vm.message = response.data.msg;
+               window.location.href = '../overview/overview.html';
+               console.log("login yes");
+            }
+            else{
+               vm.message = response.data.msg;
+               console.log("login no");
+               cancelClicked();
+            }
          });
       }
 

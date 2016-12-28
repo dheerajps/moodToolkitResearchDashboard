@@ -4,7 +4,7 @@ header('Access-Control-Allow-Origin: *');
 include_once('../config/database.php');
 
 $db = new Database();
-
+$loginInfo = array();
 function generateSalt($max = 64) {
 	$characterList = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*?";
 	$i = 0;
@@ -30,23 +30,35 @@ function generateSalt($max = 64) {
 $data = file_get_contents("php://input");
 parse_str($data,$formData);
 
+$user = $formData['username'];
+$pass = $formData['password'];
 
-$msg = " From php: " .$formData['username']. "and pass: ". $formData['password'];
-//echo "$user" + "$pass";
-// $select_user_sql = 'SELECT * from userInfo where USERNAME ="'.$user.'"';
-// $select_user_result = $db-> executeQuery($select_user_sql);
-// $row= $select_user_result->fetch_assoc();
-// $stored_salt = $row['salt'];
-// $stored_hash = $row['password'];
-// $check_pass = $stored_salt . $pass;
-// $check_hash = hash('sha512',$check_pass);
-// if($check_hash == $stored_hash){
-//         echo "User authenticated";
-// }
-// else{
-//         echo "Not authenticated";
-// }
-// // echo $user + " " + $pass;
-echo $msg;
+$select_user_sql = "SELECT * from userInfo where USERNAME = '$user'";
+
+$select_user_result = $db-> executeQuery($select_user_sql);
+if($select_user_result->num_rows > 0){
+
+	$row= $select_user_result->fetch_assoc();
+	json_encode($row);
+	$stored_salt = $row['SALT'];
+	$stored_hash = $row['PASSWORD'];
+	$check_pass = $stored_salt . $pass;
+	$check_hash = hash('sha512',$check_pass);
+	if($check_hash == $stored_hash){
+	        $msg= "User authenticated";
+	        $login = true;
+	}
+	else{
+	        $msg= "Not authenticated: Please Enter the right Username and Password";
+	        $login =false;
+	}
+}
+else{
+	$msg= "Not authenticated: Please Enter the right Username and Password";
+	$login = false;
+} 
+$loginInfo['msg']= $msg;
+$loginInfo['status'] = $login;
+echo json_encode($loginInfo);
 $db->closeConnection();
 ?>
