@@ -2,9 +2,9 @@
 
    "use strict";
    angular.module('researchApp',[]).controller('loginController', loginController);
-   loginController.$inject = ['$scope','$rootScope','$http'];
+   loginController.$inject = ['$scope','$rootScope','$http','$httpParamSerializer'];
 
-   function loginController(ngScope,ngRootScope,http){
+   function loginController(ngScope,ngRootScope,http,$httpParamSerializer){
 
       
       var vm = this;
@@ -34,6 +34,7 @@
       
       function openModal(){
          console.log("hi");
+         vm.message ="";
          vm.showModal=true;
          $('#modal1').modal('open');
          
@@ -47,16 +48,25 @@
       function postLoginInfo(){
          var localURL ="http://127.0.0.1:8080/";
          var requestURL = localURL+'app/helpers/loginHelper.php';
-         var config = {
-                headers : {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-                }
-         }
+         // var config = {
+         //        headers : {
+         //            'Content-Type': 'application/x-www-form-urlencoded'
+         //        }
+         // }
          var data = { username: ngScope.temp.username , password: ngScope.temp.password};
-         console.log(data);
-         http.post(requestURL,data,config).then(function (message) {
+         // data = $httpParamSerializer(data);
+         http({
+             method: 'POST',
+             url: requestURL,
+             data: $.param(data),
+             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+             
+             
+         }).then(function (response) {
+            vm.message = response.data;
             
-            console.log("logged in with these credentials : " + data.username);
+         }, function(error){
+            vm.message = error.data;
          });
       }
 
