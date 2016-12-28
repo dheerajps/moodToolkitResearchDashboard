@@ -20,9 +20,7 @@
       }
       function initNIMHController(){
          
-
-         console.log("hello");
-         nimhAPI.getNIMHData().then(function (d){
+          nimhAPI.getNIMHData().then(function (d){
 
              vm.nimhData = d.data;
              //console.log(vm.nimhData);
@@ -66,11 +64,9 @@
                   vm.users.negativeMoodChanges.push(value['negative_changes']);
              });
              vm.navigateToUserPage = function(userId){
-              // console.log(userId);
-              // nimhAPI.setUser(userId);
+            
               vm.showOverviewPageFlag = false;
               vm.showUserPageFlag=true;
-              // vm.userSelected=nimhAPI.getUser();
               window.scrollTo(0,0);
               vm.currentUser=userId;
               vm.drawUserPageGraphs(vm.currentUser);
@@ -131,7 +127,7 @@
                       enabled: false
                    }
 
-                } //end of mood-changes breakdown graph
+                } //end of user-mood-changes breakdown graph
              }
              //All the graphs on this page
              vm.daysSurveysGraph = {
@@ -497,8 +493,6 @@
                }]
 
             } //end of pos-mood breakdown graph
-
-
 
          }); // end of .then call for the service
 
