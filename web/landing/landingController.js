@@ -34,6 +34,7 @@
       
       function openModal(){
          console.log("hi");
+         vm.message ="";
          vm.showModal=true;
          $('#modal1').modal('open');
          
@@ -47,16 +48,29 @@
       function postLoginInfo(){
          var localURL ="http://127.0.0.1:8080/";
          var requestURL = localURL+'app/helpers/loginHelper.php';
-         var config = {
-                headers : {
-                    'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
-                }
-         }
+         
          var data = { username: ngScope.temp.username , password: ngScope.temp.password};
-         console.log(data);
-         http.post(requestURL,data,config).then(function (message) {
+         
+         http({
+             method: 'POST',
+             url: requestURL,
+             data: $.param(data),
+             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+             
+             
+         }).then(function (response) {
+            console.log(response.data);
             
-            console.log("logged in with these credentials : " + data.username);
+            if(response.data.status == true){
+               vm.message = response.data.msg;
+               window.location.href = '../overview/overview.html';
+               console.log("login yes");
+            }
+            else{
+               vm.message = response.data.msg;
+               console.log("login no");
+               cancelClicked();
+            }
          });
       }
 
