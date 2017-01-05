@@ -1,10 +1,12 @@
 (function(){
 
    "use strict";
-   angular.module('researchApp',[]).controller('loginController', loginController);
-   loginController.$inject = ['$scope','$rootScope','$http'];
+   angular
+      .module('researchApp')
+      .controller('LandingController', LandingController);
+   LandingController.$inject = ['$scope','$rootScope','$http','$location'];
 
-   function loginController(ngScope,ngRootScope,http){
+   function LandingController(ngScope,ngRootScope,http,location){
 
       
       var vm = this;
@@ -46,7 +48,7 @@
       }
 
       function postLoginInfo(){
-         var localURL ="http://127.0.0.1:8080/";
+         var localURL ="http://127.0.0.1:8088/";
          var requestURL = localURL+'app/helpers/loginHelper.php';
          
          var data = { username: ngScope.temp.username , password: ngScope.temp.password};
@@ -63,7 +65,7 @@
             
             if(response.data.status == true){
                vm.message = response.data.msg;
-               window.location.href = '../overview/overview.html';
+               location.path('/overview');
                console.log("login yes");
             }
             else{

@@ -1,30 +1,4 @@
-<!doctype html>
-<html class="no-js" lang="">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Research Dash Board</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Hammersmith+One|Open+Sans" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
-    <link rel="stylesheet" href="../resources/css/style.css">
-
-    <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-    <script src="https://code.highcharts.com/highcharts.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
-    <script src="overviewController.js" type="text/javascript"></script>
-
-</head>
-<body >
-<div ng-app="researchApp" ng-controller="overviewController as vm">
+<div>
     <!-- navigation -->
     <!-- Dropdown Structure -->
     <ul id="dropdown1" class="dropdown-content">
@@ -52,9 +26,10 @@
     <!-- end navigation -->
    <!-- page content -->
    <div class="parallax-container">
-       <div class="parallax"><img src="../resources/images/smartphone-smile.jpg"></div>
-     </div>
-       <div class='row' id = "study-cards">
+       <div class="parallax"><img src="resources/images/smartphone-smile.jpg"></div>
+   </div>
+
+   <div class='row' id = "study-cards">
 
            <h1 class = 'section-header center-align' id = "study-overview-header">Current Studies</h1>
            
@@ -64,23 +39,22 @@
                    <img class="activator" ng-src="{{study.imageLink}}">
                  </div>
                  <div class="card-content">
-                   <span class="card-title activator grey-text text-darken-4 "><a ng-href="../{{study.link}}">{{study.nameOfStudy}}</a><i class="material-icons right">more_vert</i></span>
-                   <p><a ng-href="../{{study.link}}">View {{study.nameOfStudy}} Data</a></p>
+                   <span class="card-title activator grey-text text-darken-4 "><a ng-click="vm.directToNIMHView()">{{study.nameOfStudy}}</a><i class="material-icons right">more_vert</i></span>
+                   <p><a ng-click="vm.directToNIMHView()">View {{study.nameOfStudy}} Data</a></p>
                  </div>
                  <div class="card-reveal">
-                   <span class="card-title grey-text text-darken-4"><a href="../{{study.link}}">{{study.nameOfStudy}}</a><i class="material-icons right">close</i></span>
+                   <span class="card-title grey-text text-darken-4"><a ng-click="vm.directToNIMHView()">{{study.nameOfStudy}}</a><i class="material-icons right">close</i></span>
                    <p>{{study.description}}</p>
                  </div>
                </div>
            </div>
             
-      </div>
-     <div class="parallax-container">
-       <div class="parallax"><img src="../resources/images/smartphone-girl.jpg"></div>
-     </div>
+    </div>
+    <div class="parallax-container">
+       <div class="parallax"><img src="resources/images/smartphone-girl.jpg"></div>
+    </div>
 
 </div>
-</body>
 
 <!-- Footer start -->
 <footer class="page-footer">
@@ -109,4 +83,3 @@
     </div>
 </footer>
 
-</html>

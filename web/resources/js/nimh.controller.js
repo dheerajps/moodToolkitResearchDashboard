@@ -1,10 +1,10 @@
 (function(){
    
    /** Controller for the whole NIMH page **/
-   angular.module('researchApp').controller('nimhController',nimhController);
-   nimhController.$inject = ['$scope','$rootScope','$http','nimhAPI','$window','$location'];
+   angular.module('researchApp').controller('NimhController',NimhController);
+   NimhController.$inject = ['$scope','$rootScope','$http','nimhAPI','$window','$location'];
 
-   function nimhController(ngScope,ngRootScope,$http,nimhAPI,window,location){
+   function NimhController(ngScope,ngRootScope,$http,nimhAPI,window,location){
 
       var vm = this;
       initNIMHController();

@@ -1,34 +1,4 @@
-<!doctype html>
-<html class="no-js" lang="">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Research Dash Board</title>
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Hammersmith+One|Open+Sans" rel="stylesheet">
-
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css">
-    <link rel="stylesheet" href="resources/css/style.css">
-
-    <script src="http://code.jquery.com/jquery-1.12.4.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.3/modernizr.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.7/angular.min.js"></script>
-<!--     <script src="https://rawgithub.com/pablojim/highcharts-ng/master/src/highcharts-ng.js"></script>
- --><script src="resources/js/highcharts-ng.js"></script>
-    <script src="https://code.highcharts.com/highcharts.src.js"></script>
-    <script src="resources/js/app.js" type="text/javascript"></script>
-    <script src="resources/js/services.js" type="text/javascript"></script>
-    <script src="resources/js/nimhController.js" type="text/javascript"></script>
-    <script src="resources/js/graphs.js" type="text/javascript"></script>
-</head>
-
-<body ng-app="researchApp" ng-controller ="nimhController as vm">
+<div>
      <!-- navigation -->
     <!-- Dropdown Structure -->
     <ul id="dropdo. wn1" class="dropdown-content">
@@ -176,6 +146,7 @@
       </div>
     </div>
    </div>
+
    <div ng-if="vm.showUserPageFlag"> <!-- The view to handle user data the flag will determine the -->
      <div class="row profile">
         <div class="col s8">
@@ -248,27 +219,27 @@
             </table>
          </div>
       </div>
-      <div class ="col s9 study-module" id = "study-progress"></div>
+      <div class ="col s5" class = "study-module">
+        <highchart config="vm.totalUserMoodBreakdownGraph"></highchart>
+      </div>
       </div>
    </div>
 
     <div class="row">
         <div class="col s5 " >
-           <div id="activity-pie-chart" class = "study-module">
+           <!-- <div id="activity-pie-chart" class = "study-module">
                <highchart config="vm.totalUserMoodBreakdownGraph"></highchart>
-           </div>
-           <div id="compliance-pie-chart" class = "pie-charts study-module">
-               <!-- Survey response breakdown goes here -->
+           </div> -->
+           <!-- <div id="compliance-pie-chart" class = "pie-charts study-module">
            </div>
 
-         </div>
-        <div class="col s7 study-module" id="phisdata">
+         </div> -->
+        <!-- <div class="col s7 study-module" id="phisdata"> -->
             <!-- Body sensor displays go here  -->
         </div>
     </div>
   </div>
-</body>
-
+</div>
 
 <!-- Footer start -->
 <footer class="page-footer">
@@ -297,7 +268,6 @@
     </div>
 </footer>
 
-</html>
 
 
 
