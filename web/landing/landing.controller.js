@@ -10,10 +10,11 @@
 
       
       var vm = this;
-      vm.openModal=openModal;
+      vm.directToLogin=directToLogin;
       vm.initModal = initModal;
-      vm.directToOverview=directToOverview;
-      vm.showModal=false; 
+      vm.directToRegister=directToRegister;
+      vm.showLoginModal=false; 
+      vm.showRegisterModal =false;
       vm.postLoginInfo =postLoginInfo;
       vm.cancelClicked =cancelClicked;
    
@@ -21,7 +22,8 @@
 
       function initModal(){
             $('#modal1').modal();
-            $('#modal1').modal({
+            $('#modal2').modal();
+            $('#modal1,#modal2').modal({
             dismissible: true,
             opacity: .5,
             in_duration: 300,
@@ -31,20 +33,21 @@
             ready: function(modal, trigger) {
             }
           });
-            vm.showModal=false;
+            vm.showLoginModal=false;
+            vm.showRegisterModal =false;
       }
       
-      function openModal(){
+      function directToLogin(){
          console.log("hi");
          vm.message ="";
-         vm.showModal=true;
+         vm.showLoginModal=true;
          $('#modal1').modal('open');
          
       }
 
-      function directToOverview(){
-         window.location.href = '../overview/overview.html';
-
+      function directToRegister(){
+         vm.showRegisterModal = true;
+         $('#modal2').modal('open');
       }
 
       function postLoginInfo(){
@@ -75,11 +78,44 @@
             }
          });
       }
+      function postRegisterInfo(){
+         var localURL ="http://127.0.0.1:8089/";
+         var requestURL = localURL+'app/helpers/registerHelper.php';
 
+         var data = { username: ngScope.temp.registerUsername , password: ngScope.temp.registerPassword};
+         
+         http({
+             method: 'POST',
+             url: requestURL,
+             data: $.param(data),
+             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+             
+             
+         }).then(function (response) {
+            console.log(response.data);
+            
+            if(response.data.status == true){
+               vm.message = response.data.msg;
+               alert("Registration Complete. Please click Login to login to the app");
+               location.path('/login');
+               console.log("login yes");
+            }
+            else{
+               vm.message = response.data.msg;
+               console.log("login no");
+               cancelClicked();
+            }
+         });
+      }
       function cancelClicked(){
          var master = { username: '' , password:''};
          ngScope.temp = angular.copy(master);
          ngScope.loginForm.$setPristine();
+      }
+      function registerCancelClicked(){
+         var master = { registerUsername: '' , registerPassword:'', confirmPassword};
+         ngScope.temp = angular.copy(master);
+         ngScope.registerForm.$setPristine();
       }
    }
 })();
