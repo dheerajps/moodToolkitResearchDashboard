@@ -16,6 +16,7 @@
       vm.showLoginModal=false; 
       vm.showRegisterModal =false;
       vm.postLoginInfo =postLoginInfo;
+      vm.postRegisterInfo = postRegisterInfo;
       vm.cancelClicked =cancelClicked;
    
       initModal();
@@ -78,12 +79,13 @@
             }
          });
       }
+
       function postRegisterInfo(){
          var localURL ="http://127.0.0.1:8089/";
          var requestURL = localURL+'app/helpers/registerHelper.php';
 
          var data = { username: ngScope.temp.registerUsername , password: ngScope.temp.registerPassword};
-         
+         console.log(data);
          http({
              method: 'POST',
              url: requestURL,
@@ -92,29 +94,29 @@
              
              
          }).then(function (response) {
-            console.log(response.data);
-            
-            if(response.data.status == true){
-               vm.message = response.data.msg;
-               alert("Registration Complete. Please click Login to login to the app");
-               location.path('/login');
-               console.log("login yes");
+            console.log(response);
+            vm.message = response.data.msg;
+            if(response.data.status === 2 || response.data.status == 0){
+               Materialize.toast(vm.message, 7000, 'rounded');
+               registerCancelClicked();
             }
             else{
-               vm.message = response.data.msg;
-               console.log("login no");
-               cancelClicked();
+               Materialize.toast(vm.message, 7000, 'rounded');
+               registerCancelClicked();
+               $('#modal2').modal('close');
             }
          });
       }
       function cancelClicked(){
          var master = { username: '' , password:''};
          ngScope.temp = angular.copy(master);
+         vm.message = "";
          ngScope.loginForm.$setPristine();
       }
       function registerCancelClicked(){
-         var master = { registerUsername: '' , registerPassword:'', confirmPassword};
+         var master = { registerUsername: '' , registerPassword:'', confirmPassword: ''};
          ngScope.temp = angular.copy(master);
+         vm.message = "";
          ngScope.registerForm.$setPristine();
       }
    }

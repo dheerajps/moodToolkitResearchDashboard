@@ -44,7 +44,6 @@ html{
    padding: 30px 30px;
    background-color:rgba(80,81,79,0.7);
 }
-
 .btn-left {
    background-color: #b3aee5!important;
    margin: 20px;
@@ -78,4 +77,8 @@ textarea:focus {
   -webkit-box-shadow: 0 1px 0 0 orange;
   -moz-box-shadow: 0 1px 0 0 orange;
   box-shadow: 0 1px 0 0 orange;
+}
+#toast-container {
+  right: 25% !important;
+  top: 18% !important;
 }

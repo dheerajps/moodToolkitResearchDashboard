@@ -1,7 +1,7 @@
 <?php
 header('Access-Control-Allow-Origin: *');
 
-include_once('../config/database.php');
+require_once('../config/database.php');
 
 $db = new Database();
 $loginInfo = array();
@@ -16,17 +16,6 @@ function generateSalt($max = 64) {
 	return $salt;
 }
 
-// $username = "admin";
-// $password = "abc123$";
-
-// $user_salt = generateSalt(); // Generates a salt from the function above
-// $combo = $user_salt . $password; // Appending user password to the salt 
-// $hashed_pwd = hash('sha512',$combo); // Using SHA512 to hash the salt+password combo string
-
-
-// $insert_sql = "INSERT INTO userInfo(USERNAME,PASSWORD,SALT) VALUES ('$username','$hashed_pwd','$user_salt')";
-// $insert_result = $db -> executeQuery($insert_sql);
-// echo "$insert_result";
 $data = file_get_contents("php://input");
 parse_str($data,$formData);
 
