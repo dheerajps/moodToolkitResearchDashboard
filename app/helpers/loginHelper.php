@@ -19,13 +19,15 @@ function generateSalt($max = 64) {
 $data = file_get_contents("php://input");
 parse_str($data,$formData);
 
-$user = $formData['username'];
-$pass = $formData['password'];
+$user = trim($formData['username']);
+$user = strip_tags($user);
+$pass = trim($formData['password']);
+$pass = strip_tags($pass);
 
 $select_user_sql = "SELECT * from userInfo where USERNAME = '$user'";
 
 $select_user_result = $db-> executeQuery($select_user_sql);
-if($select_user_result->num_rows > 0){
+if($select_user_result-> num_rows > 0){
 
 	$row= $select_user_result->fetch_assoc();
 	json_encode($row);
@@ -46,6 +48,8 @@ else{
 	$msg= "Not authenticated: Please Enter the right Username and Password";
 	$login = false;
 } 
+/* Load the login info status to send back response */
+
 $loginInfo['msg']= $msg;
 $loginInfo['status'] = $login;
 echo json_encode($loginInfo);

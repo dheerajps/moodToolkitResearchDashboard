@@ -24,7 +24,9 @@
             var val2 = attrs.equals;
 
             // set validity
-            ngModel.$setValidity('equals', ! val1 || ! val2 || val1 === val2);
+            if(val1 && val2){
+              ngModel.$setValidity('equals', ! val1 || ! val2 || val1 === val2);
+            }
           };
         }
       }

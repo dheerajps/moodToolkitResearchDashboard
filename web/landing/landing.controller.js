@@ -66,15 +66,16 @@
              
          }).then(function (response) {
             console.log(response.data);
-            
+            vm.message = response.data.msg;
             if(response.data.status == true){
-               vm.message = response.data.msg;
+               
+               Materialize.toast(vm.message, 3000, 'rounded');
                location.path('/overview');
                console.log("login yes");
             }
             else{
-               vm.message = response.data.msg;
-               console.log("login no");
+               
+               Materialize.toast(vm.message, 3000, 'rounded');
                cancelClicked();
             }
          });
@@ -110,7 +111,7 @@
       function cancelClicked(){
          var master = { username: '' , password:''};
          ngScope.temp = angular.copy(master);
-         vm.message = "";
+         
          ngScope.loginForm.$setPristine();
       }
       function registerCancelClicked(){
