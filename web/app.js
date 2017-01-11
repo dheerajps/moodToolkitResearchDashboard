@@ -1,8 +1,9 @@
 (function(){
    /**** Instantiate the module ****/
    "use strict";
-   angular.module('researchApp',['ngRoute','angularCSS','highcharts-ng'])
-   		  .config(config);
+   angular.module('researchApp',['ngRoute','angularCSS','highcharts-ng','ngCookies'])
+   		  .config(config)
+          .run(run);
 
    config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
@@ -32,4 +33,18 @@
 
             .otherwise({ redirectTo: '/login' });
     }
+
+    run.$inject = ['$rootScope', '$location', '$http','$cookies'];
+    function run($rootScope, $location, $http,$cookies) {
+
+        $rootScope.globals = $cookies.getObject('globals') || {};
+        $rootScope.$on('$locationChangeStart', function (event, next, current) {
+            // redirect to login page if not logged in and trying to access a restricted page
+                var restrictedPage = $.inArray($location.path(), ['/login']) === -1;
+                var loggedIn = $rootScope.globals.currentUser;
+                if (restrictedPage && !loggedIn) {
+                    $location.path('/login');
+                }
+            });
+        }
 }) ();

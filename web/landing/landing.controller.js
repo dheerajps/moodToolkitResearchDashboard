@@ -4,9 +4,9 @@
    angular
       .module('researchApp')
       .controller('LandingController', LandingController);
-   LandingController.$inject = ['$scope','$rootScope','$http','$location'];
+   LandingController.$inject = ['$scope','$rootScope','$http','$location', 'LoginService'];
 
-   function LandingController(ngScope,ngRootScope,http,location){
+   function LandingController(ngScope,ngRootScope,http,location,LoginService){
 
       
       var vm = this;
@@ -18,7 +18,8 @@
       vm.postLoginInfo =postLoginInfo;
       vm.postRegisterInfo = postRegisterInfo;
       vm.cancelClicked =cancelClicked;
-   
+      LoginService.clearCredentials();
+      
       initModal();
 
       function initModal(){
@@ -68,7 +69,7 @@
             console.log(response.data);
             vm.message = response.data.msg;
             if(response.data.status == true){
-               
+               LoginService.setCredentials(ngScope.temp.username);
                Materialize.toast(vm.message, 3000, 'rounded');
                location.path('/overview');
                console.log("login yes");

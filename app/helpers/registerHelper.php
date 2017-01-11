@@ -31,6 +31,8 @@ $user_salt = generateSalt(); // Generates a salt from the function above
 $combo = $user_salt . $password; // Appending user password to the salt 
 $hashed_pwd = hash('sha512',$combo); // Using SHA512 to hash the salt+password combo string
 
+/* check if user is present */
+
 $check_user_sql = "SELECT * FROM userInfo WHERE USERNAME = '$username'";
 $check_result = $db -> executeQuery($check_user_sql);
 if($check_result -> num_rows >0 ){
@@ -49,6 +51,7 @@ else{
 		$registerStatus = 1;
 	}
 }
+/*Load the register info to send back response */
 $registerInfo['msg'] = $msg;
 $registerInfo['status'] = $registerStatus;
 

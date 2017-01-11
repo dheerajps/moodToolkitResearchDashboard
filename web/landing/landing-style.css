@@ -81,4 +81,5 @@ textarea:focus {
 #toast-container {
   right: 31% !important;
   top: 18% !important;
+  width: 38% !important;
 }
