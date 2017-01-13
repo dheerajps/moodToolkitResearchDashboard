@@ -25,6 +25,7 @@
             })
 
             .when('/nimh', {
+                title: 'Mood Toolkit',
                 controller: 'NimhController',
                 templateUrl: 'nimhStudy.html',
                 css: 'resources/css/style.css',

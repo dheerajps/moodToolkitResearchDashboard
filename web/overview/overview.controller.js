@@ -3,12 +3,12 @@
    "use strict";
    angular.module('researchApp')
    .controller('OverviewController', OverviewController);
-   OverviewController.$inject = ['$scope','$rootScope','$http','OverviewConstants','$timeout','$location'];
+   OverviewController.$inject = ['$scope','$rootScope','$http','OverviewConstants','$timeout','$location','LoginService'];
 
-   function OverviewController(ngScope,ngRootScope,http,OverviewConstants,timeout,location){
+   function OverviewController(ngScope,ngRootScope,http,OverviewConstants,timeout,location,LoginService){
 
 
-        var vm=this;
+            var vm=this;
         
         
             vm.initOverviewController=initOverviewController;
@@ -29,6 +29,13 @@
             vm.directToNIMHView = function(){
                 location.path('/nimh');
             }  
+
+            vm.initiateLogOut = function(){
+                vm.message = "You have Logged out successfully!"
+                LoginService.clearCredentials();
+                location.path('/logout');
+                Materialize.toast(vm.message, 7000, 'rounded');
+            }
     }
 
 })();

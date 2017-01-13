@@ -2,13 +2,22 @@
    
    /** Controller for the whole NIMH page **/
    angular.module('researchApp').controller('NimhController',NimhController);
-   NimhController.$inject = ['$scope','$rootScope','$http','nimhAPI','$window','$location'];
+   NimhController.$inject = ['$scope','$rootScope','$http','nimhAPI','$window','$location','LoginService'];
 
-   function NimhController(ngScope,ngRootScope,$http,nimhAPI,window,location){
+   function NimhController(ngScope,ngRootScope,$http,nimhAPI,window,location,LoginService){
 
       var vm = this;
       initNIMHController();
       vm.takeBack = takeBack;
+
+
+      vm.initiateLogOut =function(){
+
+        vm.message = "You have logged out Successfully!";
+        LoginService.clearCredentials();
+        Materialize.toast(vm.message, 7000, 'rounded');
+        location.path('/login');
+      }
       function takeBack(){
         if(!vm.showUserPageFlag){
            window.history.back();
