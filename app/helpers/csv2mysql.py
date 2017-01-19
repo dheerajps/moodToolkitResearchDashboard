@@ -126,7 +126,7 @@ def format_header(row):
     return header
 
 
-def main(input_file, user, password, host, table, database, max_inserts=10000):
+def main(input_file, user, password, host, table, database, max_inserts=100000):
     print "Importing `%s' into MySQL database `%s.%s'" % (input_file, database, table)
     db = MySQLdb.connect(host=host, user=user, passwd=password, charset='utf8')
     cursor = db.cursor()

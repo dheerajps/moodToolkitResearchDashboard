@@ -9,6 +9,8 @@ NIMH Data:
 `python csv2mysql.py  --table nimhTest --database test --user root --password  --host localhost ..helpers/NIMH_data/formatted2/NIMH_formatted_dbschema.csv`
 NIMH Summary stats:
 `python csv2mysql.py  --table nimhTest --database test --user root --password  --host localhost ..helpers/NIMH_data/stats.csv`
+SLU WATCH Data:
+'python csv2mysql.py --table sluWatch --database test --user root --password "" --host localhost ../allpatients.csv'
 
 # Server start instructions
 - To run php server: `sudo php -S 127.0.0.1:8080 filename.php`
