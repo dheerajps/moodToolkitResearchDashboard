@@ -8,19 +8,21 @@
    config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
         $routeProvider
-            .when('/overview', {
-                title: 'Mood Toolkit Overview',
-                controller: 'OverviewController',
-                templateUrl: 'overview/overview.html',
-                css: 'resources/css/style.css',
-                controllerAs: 'vm'
-            })
+            
 
             .when('/login', {
-                title: 'Mood Toolkit Login',
+                title: 'Login',
                 controller: 'LandingController',
                 templateUrl: 'landing/landing.html',
                 css: 'landing/landing-style.css',
+                controllerAs: 'vm'
+            })
+
+            .when('/overview', {
+                title: 'Mood Toolkit',
+                controller: 'OverviewController',
+                templateUrl: 'overview/overview.html',
+                css: 'resources/css/style.css',
                 controllerAs: 'vm'
             })
 
@@ -28,6 +30,14 @@
                 title: 'Mood Toolkit',
                 controller: 'NimhController',
                 templateUrl: 'nimhStudy.html',
+                css: 'resources/css/style.css',
+                controllerAs: 'vm'
+            })
+
+            .when('/sluWatch', {
+                title: 'Mood Toolkit',
+                controller: 'SluController',
+                templateUrl: 'sluWatchStudy.html',
                 css: 'resources/css/style.css',
                 controllerAs: 'vm'
             })

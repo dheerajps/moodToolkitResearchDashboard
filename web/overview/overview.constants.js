@@ -12,7 +12,7 @@
         },
         nimhStudy:{
             nameOfStudy: "NIMH",
-            link: "nimhStudy.html",
+            link: "nimh",
             imageLink:"resources/images/nih.png",
             description: "Here is some more information about this product that is only revealed once clicked on."
 
@@ -26,7 +26,7 @@
         },
         sluWatchStudy:{
             nameOfStudy: "SLU WATCH",
-            link: "sluWatchStudy.html",
+            link: "sluWatch",
             imageLink:"resources/images/watch.png",
             description: "Here is some more information about this product that is only revealed once clicked on."
         }

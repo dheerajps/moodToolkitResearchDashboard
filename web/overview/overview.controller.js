@@ -26,10 +26,9 @@
                 vm.studyConstants=OverviewConstants;
 
             }
-            vm.directToNIMHView = function(){
-                location.path('/nimh');
-            }  
-
+            vm.directToStudy = function(link) {
+                location.path('/'+link);
+            }
             vm.initiateLogOut = function(){
                 vm.message = "You have Logged out successfully!"
                 LoginService.clearCredentials();
