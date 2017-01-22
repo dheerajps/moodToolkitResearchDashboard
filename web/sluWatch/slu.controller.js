@@ -1,10 +1,10 @@
 (function(){
-   
+   'use strict';
    /** Controller for the whole SLU WATCH page **/
    angular.module('researchApp').controller('SluController',SluController);
-   SluController.$inject = ['$scope','$rootScope','$http','$window','$location','LoginService'];
+   SluController.$inject = ['$scope','$rootScope','$http','$window','$location','LoginService','sluWatchAPI'];
 
-   function SluController(ngScope,ngRootScope,$http,window,location,LoginService){
+   function SluController(ngScope,ngRootScope,$http,window,location,LoginService,sluWatchAPI){
 
       var vm = this;
       initSluController();
@@ -30,9 +30,12 @@
       }
 
       function initSluController(){
+
+        console.log("in slu");
+        sluWatchAPI.getsluWatchData().then(function (d){
+          console.log(d.data);
+          });
+        }
       }
-    
 
-    }
-
-  })();
+})();

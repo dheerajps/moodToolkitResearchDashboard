@@ -5,6 +5,7 @@
    		  .config(config)
           .run(run);
 
+    //Any new route(Page) added needs to be configured here by providiing it's details
    config.$inject = ['$routeProvider', '$locationProvider'];
     function config($routeProvider, $locationProvider) {
         $routeProvider
@@ -26,25 +27,28 @@
                 controllerAs: 'vm'
             })
 
+            .when('/sluWatch', {
+                title: 'Mood Toolkit',
+                controller: 'SluController',
+                templateUrl: 'sluWatch/sluWatchStudy.html',
+                css: 'resources/css/style.css',
+                controllerAs: 'vm'
+            })
+            
             .when('/nimh', {
                 title: 'Mood Toolkit',
                 controller: 'NimhController',
-                templateUrl: 'nimhStudy.html',
+                templateUrl: 'nimh/nimhStudy.html',
                 css: 'resources/css/style.css',
                 controllerAs: 'vm'
             })
 
-            .when('/sluWatch', {
-                title: 'Mood Toolkit',
-                controller: 'SluController',
-                templateUrl: 'sluWatchStudy.html',
-                css: 'resources/css/style.css',
-                controllerAs: 'vm'
-            })
+            
 
             .otherwise({ redirectTo: '/login' });
     }
 
+    //This takes care of enforcing the login while accessing the routes
     run.$inject = ['$rootScope', '$location', '$http','$cookies'];
     function run($rootScope, $location, $http,$cookies) {
 
