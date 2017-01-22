@@ -1,5 +1,7 @@
 (function(){
 
+    /***** Constants Singleton object for all the studies *****/
+    
    "use strict";
    angular.module('researchApp')
    .constant('OverviewConstants',

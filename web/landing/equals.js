@@ -1,5 +1,5 @@
 (function(){
-
+  /****** This directive is used to compare passwords while registering *****/
    "use strict";
     angular.module('researchApp').directive('equals', function() {
       return {

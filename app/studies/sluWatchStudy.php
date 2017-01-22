@@ -4,8 +4,14 @@ include_once('../config/database.php');
 
 //Get a new DB object and use it for this study
 $db = new Database();
+
+/**** Create the Return Array and keep populating it along the way *****/
 $returnArray = array();
+
+/**** Study Stats array to be populated for each user *****/
+
 $study_stats = array();
+
 //Query to get all the patients in this study
 $patients_sql = 'select distinct patient from sluWatch';
 $patients_result = $db -> executeQuery($patients_sql);
@@ -19,7 +25,9 @@ if($patients_result -> num_rows > 0){
 }
 //Query to get all the patients skin temperature in the order of week,day,hour 
 $skin_temp_sql = 'select patient, WEEK(datetime) as weekInfo, DATE(datetime) as dateInfo, HOUR(datetime) as hourInfo, avg(skin_temp) as avg from sluWatch where patient IN (select DISTINCT patient from sluWatch) and skin_temp >0 Group by HOUR(datetime),DATE(datetime),WEEK(datetime),patient order by patient,WEEK(datetime),DATE(datetime), HOUR(datetime)';
+
 $skin_temp_result = $db -> executeQuery($skin_temp_sql);
+
 if($skin_temp_result -> num_rows > 0){
 	$i=0;
 	$results = array();
@@ -28,8 +36,11 @@ if($skin_temp_result -> num_rows > 0){
 		$i++;
 	}
 }
+/***** The whole result is stored iteratively in this array to be indexed in the Return Array *****/
+
 $skinTempResult = array();
 foreach ($results as $result) {
+    //Get individual fields of each query row
 	$id = intval($result["patient"]);
 	$weekInfo = intval($result["weekInfo"]);
 	date_default_timezone_set('America/Chicago');
@@ -37,6 +48,7 @@ foreach ($results as $result) {
 	$hourInfo = intval($result["hourInfo"]);
 	$avg = floatval($result["avg"]);
 
+    //Contruct the array in the order of ID->WEEKS->DAYS->HOURS
 	if(!isset($skinTempResult[$id]['weeks'])) {
         $skinTempResult[$id]['weeks'] = array();
     }
@@ -64,7 +76,13 @@ foreach ($results as $result) {
     }
 }
 
+
+/***** Close current db connection *****/
+
 $db->closeConnection();
+
+/***** Add the arrays at right indices *****/
+
 $returnArray["skinTemp"] = $skinTempResult;
 $returnArray["studyStats"] = $study_stats;
 echo json_encode($returnArray);

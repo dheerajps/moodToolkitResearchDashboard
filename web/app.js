@@ -1,6 +1,8 @@
 (function(){
-   /**** Instantiate the module ****/
+   /***** Instantiate the module *****/
    "use strict";
+   /***** Inject the modules which are dependencies *****/
+   
    angular.module('researchApp',['ngRoute','angularCSS','highcharts-ng','ngCookies'])
    		  .config(config)
           .run(run);

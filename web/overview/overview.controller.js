@@ -1,5 +1,7 @@
 (function(){
 
+  /***** Controller for Overview page *****/
+  
    "use strict";
    angular.module('researchApp')
    .controller('OverviewController', OverviewController);

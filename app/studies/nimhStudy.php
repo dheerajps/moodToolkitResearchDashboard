@@ -101,6 +101,7 @@ if ($user_compliance_result->num_rows > 0) {
     }
 }
 
+//Query for getting startdate and enddate for each patient
 $user_get_dates_sql = 'SELECT distinct patient, MIN(DATE_FORMAT(STR_TO_DATE(SurveyStart, "%c/%e/%Y %H:%i"), "%Y-%m-%d")) as startDate,MAX(DATE_FORMAT(STR_TO_DATE(SurveyStart, "%c/%e/%Y %H:%i"), "%Y-%m-%d")) as endDate
 FROM nimhTest
 WHERE
@@ -124,11 +125,11 @@ if ($user_get_dates_result->num_rows > 0) {
     }
 }
 
-
-$all_user_study_stats["participants"] = $study_stats;
 //Close Connection
 $db->closeConnection();
+//Add study stats array as an object at "participants"
 
+$all_user_study_stats["participants"] = $study_stats;
 echo json_encode($all_user_study_stats);
 
 ?>

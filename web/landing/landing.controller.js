@@ -1,5 +1,6 @@
 (function(){
-
+   /***** Landing Page Controller 
+   - Handles both login and register modal *****/
    "use strict";
    angular
       .module('researchApp')
@@ -22,6 +23,7 @@
       
       initModal();
 
+      //Initialize the modal
       function initModal(){
             $('#modal1').modal();
             $('#modal2').modal();
@@ -52,6 +54,7 @@
          $('#modal2').modal('open');
       }
 
+      //Check login by posting to DB
       function postLoginInfo(){
          var localURL ="http://127.0.0.1:8088/";
          var requestURL = localURL+'app/helpers/loginHelper.php';
@@ -82,6 +85,7 @@
          });
       }
 
+      //Save userInfo to DB
       function postRegisterInfo(){
          var localURL ="http://127.0.0.1:8089/";
          var requestURL = localURL+'app/helpers/registerHelper.php';
@@ -109,6 +113,8 @@
             }
          });
       }
+
+      //Clear form and set pristine
       function cancelClicked(){
          var master = { username: '' , password:''};
          ngScope.temp = angular.copy(master);
