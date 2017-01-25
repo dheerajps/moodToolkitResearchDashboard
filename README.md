@@ -9,25 +9,27 @@
 
 
 ########## Data Ingestion:
-1) Run python script to convert csv to database located in `app/helpers/`:
+1) Run python script to convert csv to database:
 Be sure to add your password and user cradentials
+ ` cd app/helpers/`:
+
+Import each study into mySQL using the following commands:
 
 NIMH Data:
 
-`python csv2mysql.py  --table nimhTest --database test --user root --password  --host localhost ..helpers/NIMH_data/formatted2/NIMH_formatted_dbschema.csv`
+`python csv2mysql.py  --table nimhTest --database test --user root --password  --host localhost ../data/NIMH_data/formatted2/NIMH_formatted_dbschema.csv`
 
 NIMH Summary stats:
 
-`python csv2mysql.py  --table nimhTest --database test --user root --password  --host localhost ..helpers/NIMH_data/stats.csv`
+`python csv2mysql.py  --table nimhTest --database test --user root --password  --host localhost ../data/NIMH_data/stats.csv`
 
 SLU WATCH Data:
-
-'python csv2mysql.py --table sluWatch --database test --user root --password "" --host localhost ../allpatients.csv'
+`python csv2mysql.py --table sluWatch --database test --user root --password "" --host localhost ../data/SLU_data/allpatients.csv`
 
 ########## Server start instructions
 - To run php server: `sudo php -S 127.0.0.1:8080 filename.php`
-- 
-- 
+-
+-
 
 - 8080: nimhStudy.php
 - 8088: loginHelper.php
