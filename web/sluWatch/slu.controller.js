@@ -7,9 +7,9 @@
    function SluController(ngScope,ngRootScope,$http,window,location,LoginService,sluWatchAPI){
 
       var vm = this;
-      initSluController();
+      
       vm.takeBack = takeBack;
-
+      vm.initSluController = initSluController;
 
       vm.initiateLogOut =function(){
 
@@ -34,8 +34,11 @@
         console.log("in slu");
         sluWatchAPI.getsluWatchData().then(function (d){
           console.log(d.data);
-          });
-        }
+
+        });
       }
+
+      initSluController();
+    }
 
 })();
