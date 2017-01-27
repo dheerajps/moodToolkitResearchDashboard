@@ -44,8 +44,8 @@
     </ul>
     <a href="#" data-activates="slide-out" class="button-collapse"></a>
     <!-- end sidebar -->
-    <!-- page content for NIMH overview status determined by this flag-->
-  <div> 
+    <!-- page content for SLU overview status determined by this flag-->
+  <div ng-if="vm.showOverviewPageFlag"> 
    <div class="row">
       <div class="col s3" >
          <div class="row">
@@ -121,22 +121,22 @@
                    <th>Name</th>
                    <th>Start Date</th>
                    <th>End Date</th>
-                   <th>Days Elapsed</th>
+                   <th>Days in Study</th>
                    <th>Compliance</th>
                    <th>Actions</th>
                  </tr>
                </thead>
                <tbody>
-                 <tr ng-repeat="user in vm.nimhData.users">
+                 <tr ng-repeat="user in vm.sluUsers">
                    <td data-title="ID">{{$index+1}}</td>
                    <td data-title="Name">{{user.user}}</td>
                    <td data-title="Start Date">{{user.startDate}}</td>
                    <td data-title="End Date">{{user.endDate}}</td>
-                   <td data-title="Days Elapsed">{{user["day-count"]}}</td>
-                   <td data-title="Status">{{user.compliance}}</td>
+                   <td data-title="Days Elapsed">{{user.totalDays}}</td>
+                   <td data-title="Status">{{}}</td>
                    <td data-title="Actions">
                      <i class="material-icons t-icon">alarm_on</i>
-                     <a href="../app/data/NIMH_data/formatted2/{{user.user}}_formatted.csv" download><i class="material-icons t-icon">archive</i></a>
+                     <a href="" download><i class="material-icons t-icon">archive</i></a>
                      <a ng-click="vm.navigateToUserPage(user)"><i class="material-icons t-icon">open_in_new</i></a>
                    </td>
                  </tr>
@@ -146,6 +146,100 @@
       </div>
     </div>
    </div>
+  <!-- The view to handle user data the flag will determine whether to show user data or not-->
+   <div ng-if="vm.showUserPageFlag"> 
+     <div class="row profile">
+        <div class="col s8">
+            <div id = "profile-actions">
+               <a class="btn-floating  btn-large waves-effect waves-light teal"><i class="material-icons">alarm_on</i></a>
+               <a class="btn-floating  btn-large waves-effect waves-light red" href="" download><i class="material-icons">get_app</i></a>
+               <a class="btn-floating  btn-large waves-effect waves-light orange"><i class="material-icons">settings</i></a>
+            </div>
+        </div>
+        <div class="col s2 left">
+            <h4>User {{vm.currentUser.user}}</h4>
+            <small><i>Columbia, MO</i></small>
+            <p>
+                email@study.com
+                <br />
+                <br /> June 02, 1988</p>
+            <!-- Split button -->
+            <div class="btn-group">
+                <ul class="dropdown-menu" role="menu">
+                    
+                    <li><a href="https://plus.google.com/+Jquery2dotnet/posts">Google +</a></li>
+                    <li><a href="https://www.facebook.com/jquery2dotnet">Facebook</a></li>
+                    <li class="divider"></li>
+                </ul>
+            </div>
+        </div>
+        <div class=" col s2 ">
+            <img src="" alt="" class="img-circle" />
+        </div>
+    </div>
+   <div class="row ">
+      <div class="col s12">
+      <div class="col s3">
+         <div class = "study-module">
+            <table class="highlight bordered">
+              <thead >
+                <tr>
+                    <th data-field="id">Start Date</th>
+                    <th data-field="name">Finish Date</th>
+                    <th data-field="price">Days Complete</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>{{vm.currentUser.startDate}}</td>
+                  <td>{{vm.currentUser.endDate}}</td>
+                  <td>{{vm.currentUser.totalDays}}</td>
+                </tr>
+              </tbody>
+            </table>
+         </div>
+         <div class = "study-module">
+            <table class="highlight bordered">
+              <thead >
+                <tr>
+                    <th data-field="id">Surveys Completed</th>
+                    <th data-field="name">Total Surveys Taken</th>
+                    <th data-field="price">Compliance(%)</th>
+                </tr>
+              </thead>
+
+              <tbody>
+                <tr>
+                  <td>{{}}</td>
+                  <td>{{}}</td>
+                  <td>{{}}</td>
+                </tr>
+              </tbody>
+            </table>
+         </div>
+      </div>
+      <div class ="col s5" class = "study-module">
+        <highchart config=""></highchart>
+      </div>
+      </div>
+   </div>
+
+    <div class="row">
+        <div class="col s5 " >
+           <div id="activity-pie-chart" class = "study-module">
+               <highchart config=""></highchart>
+           </div>
+           <div id="compliance-pie-chart" class = "pie-charts study-module">
+           </div>
+
+         </div>
+        <div class="col s7 study-module" id="phisdata">
+            <!-- Body sensor displays go here  -->
+        </div>
+    </div>
+  </div>
+</div>
 
 </div>
 

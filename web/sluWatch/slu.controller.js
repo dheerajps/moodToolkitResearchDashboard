@@ -10,7 +10,10 @@
       
       vm.takeBack = takeBack;
       vm.initSluController = initSluController;
+      vm.showOverviewPageFlag = true;
+      vm.showUserPageFlag = false;
 
+      /** Initiate LogOut **/
       vm.initiateLogOut =function(){
 
         vm.message = "You have logged out Successfully!";
@@ -18,7 +21,7 @@
         Materialize.toast(vm.message, 7000, 'rounded');
         location.path('/login');
       }
-
+      /** Take back -1 history **/
       function takeBack(){
         if(!vm.showUserPageFlag){
            window.history.back();
@@ -29,11 +32,27 @@
         }
       }
 
+      /** Sets flags and initiates route to SLU user view **/
+
+      vm.navigateToUserPage = function(userId){
+          vm.showOverviewPageFlag = false;
+          vm.showUserPageFlag=true;
+          window.scrollTo(0,0);
+          vm.currentUser=userId;
+          //vm.drawUserPageGraphs(vm.currentUser);
+          console.log(vm.currentUser);
+      }
+
+
       function initSluController(){
 
         console.log("in slu");
-        sluWatchAPI.getsluWatchData().then(function (d){
-          console.log(d.data);
+        sluWatchAPI.getsluWatchData().then(function (response){
+          console.log(response.data);
+
+          vm.sluData = response.data;
+
+          vm.sluUsers = vm.sluData["studyStats"];
 
         });
       }

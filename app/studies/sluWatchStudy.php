@@ -9,152 +9,127 @@ $db = new Database();
 $returnArray = array();
 
 /**** Study Stats array to be populated for each user *****/
-
 $study_stats = array();
+
+
 
 //Query to get average skin temperature of each patient in the order of date,hour 
 $skin_temp_hourly_sql = 'select patient, DATE(datetime) as dateInfo,HOUR(datetime) as hourInfo, avg(skin_temp) as avg from sluWatch where patient IN (select DISTINCT patient from sluWatch) and skin_temp >0 Group by HOUR(datetime),DATE(datetime),patient order by patient,DATE(datetime),HOUR(datetime)';
 
 $skin_temp_hourly_result = $db -> executeQuery($skin_temp_hourly_sql);
-$results = getQueryResults($skin_temp_hourly_result);
 
-/***** The whole result is stored iteratively in this array to be indexed in the Return Array *****/
-$skinTempResult = array();
-foreach ($results as $result) {
-    //Get individual fields of each query row
-	$id = intval($result["patient"]);
-	date_default_timezone_set('America/Chicago');
-	$dateInfo = date('m-d-Y', strtotime($result["dateInfo"]));
-	$hourInfo = intval($result["hourInfo"]);
-	$avg = floatval($result["avg"]);
+$hourlySkinTempResults = getQueryResults($skin_temp_hourly_result);
 
-    //Contruct the array in the order of ID->DAYS->HOURS
-	if(!isset($skinTempResult[$id]['dates'])) {
-        $skinTempResult[$id]['dates'] = array();
-    }
-    if($dateInfo && !isset($skinTempResult[$id]['dates'][$dateInfo])){
-        date_default_timezone_set('America/Chicago');
-    	$date = array(
-    		'dateValue' => date('m-d-Y', strtotime($result["dateInfo"])),
-    		'hours' => array()
-    		);
-        
-    	$skinTempResult[$id]['dates'][$dateInfo] = $date;
-    }
-    if($hourInfo && isset($skinTempResult[$id]['dates'][$dateInfo]) && !isset($skinTempResult[$id]['dates'][$dateInfo]['hours'][$hourInfo])){
-    	$hour = array(
-    		'hourValue' => intval($result["hourInfo"]),
-    		'avg' => floatval($result["avg"])
-    		);
-        
-    	$skinTempResult[$id]['dates'][$dateInfo]['hours'][$hourInfo] = $hour;
-    }
-}
+$skinTempHourlyResult = loadHourlyMetrics($hourlySkinTempResults);
 
 //Query to get avg skin temp for each patient per date
 $skin_temp_daily_sql = 'select patient, DATE(datetime) as dateInfo,avg(skin_temp) as avg from sluWatch where patient IN (select DISTINCT patient from sluWatch) and skin_temp >0 Group by DATE(datetime),patient order by patient,DATE(datetime)';
 $skin_temp_daily_result = $db -> executeQuery($skin_temp_daily_sql);
 
-$dailyResults = getQueryResults($skin_temp_daily_result);
+$dailySkinTempResults = getQueryResults($skin_temp_daily_result);
 
-$skinTempDailyResult = array();
+$skinTempDailyResult = loadDailyMetrics($dailySkinTempResults);
 
-foreach ($dailyResults as $result) {
-    
-    $dateInfo = date('m-d-Y', strtotime($result["dateInfo"]));
-    $id = intval($result["patient"]);
-    $avg = floatval($result["avg"]);
+//Query to get average heart rate for each patient in the order of date, hour
+$heart_rate_hourly_sql = 'select patient, DATE(datetime) as dateInfo,HOUR(datetime) as hourInfo, avg(heartrate) as avg from sluWatch where patient IN (select DISTINCT patient from sluWatch) and heartrate >0 Group by HOUR(datetime),DATE(datetime),patient order by patient,DATE(datetime),HOUR(datetime)';
+$heart_rate_hourly_result = $db -> executeQuery($heart_rate_hourly_sql);
 
-    if(!isset($skinTempDailyResult[$id]['dates'])){
-        $skinTempDailyResult[$id]['dates'] = array();
-    }
-    if($dateInfo && !isset($skinTempDailyResult[$id]["dates"][$dateInfo])){
-        $date = array(
-            'date' => $dateInfo,
-            'avg' => $avg);
-        $skinTempDailyResult[$id]["dates"][$dateInfo] = $date;
-    }
-}
+$hourlyHeartResults = getQueryResults($heart_rate_hourly_result);
+
+$heartRateHourlyResult = loadHourlyMetrics($hourlyHeartResults);
+
+//Query to get avg heart rate for each patient by date
+$heart_rate_daily_sql ='select patient, DATE(datetime) as dateInfo,avg(heartrate) as avg from sluWatch where patient IN (select DISTINCT patient from sluWatch) and heartrate >0 Group by DATE(datetime),patient order by patient,DATE(datetime)';
+$heart_rate_daily_result = $db -> executeQuery($heart_rate_daily_sql);
+
+$dailyHeartRateResults = getQueryResults($heart_rate_daily_result);
+
+$heartRateDailyResult = loadDailyMetrics($dailyHeartRateResults);
 
 //Query to get start date and end date for all the patients
 $get_date_sql = "select patient, MAX(DATE(datetime)) as endDate, MIN(DATE(datetime)) as startDate, DATEDIFF(MAX(DATE(datetime)), MIN(DATE(datetime))) as totalDays from sluWatch where patient in (select Distinct Patient from sluWatch) group by patient";
 $get_date_result = $db -> executeQuery($get_date_sql);
 
 $dateResults = getQueryResults($get_date_result);
-$i=0;
+
 foreach ($dateResults as $result) {
     date_default_timezone_set('America/Chicago');
     $startDate = date('F d Y', strtotime($result["startDate"]));
     $endDate = date('F d Y', strtotime($result["endDate"]));
-    $study_stats[$i]["user"] = intval($result["patient"]);
-    $study_stats[$i]["startDate"] = $startDate;
-    $study_stats[$i]["endDate"] = $endDate;
-    $study_stats[$i]["totalDays"] = intval($result["totalDays"]);
-    $i++;
+    $userInfo = intval($result["patient"]);
+    $study_stats[$userInfo]["user"] = intval($result["patient"]);
+    $study_stats[$userInfo]["startDate"] = $startDate;
+    $study_stats[$userInfo]["endDate"] = $endDate;
+    $study_stats[$userInfo]["totalDays"] = intval($result["totalDays"]);
+    $study_stats[$userInfo]["heartRateDaily"] = $heartRateDailyResult[$userInfo];
+    $study_stats[$userInfo]["heartRateHourly"] = $heartRateHourlyResult[$userInfo];
+    $study_stats[$userInfo]["skinTempDaily"] = $skinTempDailyResult[$userInfo];
+    $study_stats[$userInfo]["skinTempHourly"] = $skinTempHourlyResult[$userInfo];
 }
 
-//Query to get average heart rate for each patient in the order of date, hour
-$heart_rate_hourly_sql = 'select patient, DATE(datetime) as dateInfo,HOUR(datetime) as hourInfo, avg(heartrate) as avg from sluWatch where patient IN (select DISTINCT patient from sluWatch) and heartrate >0 Group by HOUR(datetime),DATE(datetime),patient order by patient,DATE(datetime),HOUR(datetime)';
-$heart_rate_hourly_result = $db -> executeQuery($heart_rate_hourly_sql);
-$hourlyHeartResults = getQueryResults($heart_rate_hourly_result);
+/*** Function to load hourly results for each day for each patient for a given metric Patient -> dates[]->date->hours[]-> hour->avg ***/
+function loadHourlyMetrics($hourlyResults){
 
-$heartRateResult = array();
-
-foreach ($hourlyHeartResults as $result) {
-    $id = intval($result["patient"]);
-    date_default_timezone_set('America/Chicago');
-    $dateInfo = date('m-d-Y', strtotime($result["dateInfo"]));
-    $hourInfo = intval($result["hourInfo"]);
-    $avg = floatval($result["avg"]);
-
-    //Contruct the array in the order of ID->DAYS->HOURS
-    if(!isset($heartRateResult[$id]['dates'])) {
-        $heartRateResult[$id]['dates'] = array();
-    }
-    if($dateInfo && !isset($heartRateResult[$id]['dates'][$dateInfo])){
+    $hourlyLoadArray = array();
+    foreach ($hourlyResults as $result) {
+        $id = intval($result["patient"]);
         date_default_timezone_set('America/Chicago');
-        $date = array(
-            'dateValue' => date('m-d-Y', strtotime($result["dateInfo"])),
-            'hours' => array()
-            );
-        
-        $heartRateResult[$id]['dates'][$dateInfo] = $date;
+        $dateInfo = date('m-d-Y', strtotime($result["dateInfo"]));
+        $hourInfo = intval($result["hourInfo"]);
+        $avg = floatval($result["avg"]);
+
+        //Contruct the array in the order of ID->DAYS->HOURS
+        if(!isset($hourlyLoadArray[$id]['dates'])) {
+            $hourlyLoadArray[$id]['dates'] = array();
+        }
+        if($dateInfo && !isset($hourlyLoadArray[$id]['dates'][$dateInfo])){
+            date_default_timezone_set('America/Chicago');
+            $date = array(
+                'dateValue' => date('m-d-Y', strtotime($result["dateInfo"])),
+                'hours' => array()
+                );
+            
+            $hourlyLoadArray[$id]['dates'][$dateInfo] = $date;
+        }
+        if($hourInfo && isset($hourlyLoadArray[$id]['dates'][$dateInfo]) && !isset($hourlyLoadArray[$id]['dates'][$dateInfo]['hours'][$hourInfo])){
+            $hour = array(
+                'hourValue' => intval($result["hourInfo"]),
+                'avg' => floatval($result["avg"])
+                );
+            
+            $hourlyLoadArray[$id]['dates'][$dateInfo]['hours'][$hourInfo] = $hour;
+        }
     }
-    if($hourInfo && isset($heartRateResult[$id]['dates'][$dateInfo]) && !isset($heartRateResult[$id]['dates'][$dateInfo]['hours'][$hourInfo])){
-        $hour = array(
-            'hourValue' => intval($result["hourInfo"]),
-            'avg' => floatval($result["avg"])
-            );
-        
-        $heartRateResult[$id]['dates'][$dateInfo]['hours'][$hourInfo] = $hour;
-    }
+    return $hourlyLoadArray;
 }
 
-//Query to get avg heart rate for each patient by date
-
-$heart_rate_daily_sql ='select patient, DATE(datetime) as dateInfo,avg(heartrate) as avg from sluWatch where patient IN (select DISTINCT patient from sluWatch) and heartrate >0 Group by DATE(datetime),patient order by patient,DATE(datetime)';
-$heart_rate_daily_result = $db -> executeQuery($heart_rate_daily_sql);
-
-$dailyHeartRateResults = getQueryResults($heart_rate_daily_result);
 
 
-$heartRateDailyResult = array();
-foreach ($dailyHeartRateResults as $result) {
+/*** Function to load Daily results for each metric provided Patient->dates[]->date->avg ***/
 
-    $dateInfo = date('m-d-Y', strtotime($result["dateInfo"]));
-    $id = intval($result["patient"]);
-    $avg = floatval($result["avg"]);
+function loadDailyMetrics($dailyResults){
 
-    if(!isset($heartRateDailyResult[$id]['dates'])){
-        $heartRateDailyResult[$id]['dates'] = array();
+    $dailyLoadArray = array();
+    foreach ($dailyResults as $result) {
+
+        $dateInfo = date('m-d-Y', strtotime($result["dateInfo"]));
+        $id = intval($result["patient"]);
+        $avg = floatval($result["avg"]);
+
+        if(!isset($dailyLoadArray[$id]['dates'])){
+            $dailyLoadArray[$id]['dates'] = array();
+        }
+        if($dateInfo && !isset($dailyLoadArray[$id]["dates"][$dateInfo])){
+            $date = array(
+                'date' => $dateInfo,
+                'avg' => $avg);
+            $dailyLoadArray[$id]["dates"][$dateInfo] = $date;
+        }
     }
-    if($dateInfo && !isset($heartRateDailyResult[$id]["dates"][$dateInfo])){
-        $date = array(
-            'date' => $dateInfo,
-            'avg' => $avg);
-        $heartRateDailyResult[$id]["dates"][$dateInfo] = $date;
-    }
+    return $dailyLoadArray;
 }
+
+
 /*** Function to return the query results in the form of an array ***/
 function getQueryResults($queryResult)
 {
@@ -174,10 +149,6 @@ $db->closeConnection();
 
 /***** Add the arrays at right indices *****/
 
-$returnArray["skinTempHourly"] = $skinTempResult;
-$returnArray["skinTempDaily"] = $skinTempDailyResult;
-$returnArray["heartRateHourly"] = $heartRateResult;
-$returnArray["heartRateDaily"] = $heartRateDailyResult;
 $returnArray["studyStats"] = $study_stats;
 echo json_encode($returnArray);
 ?>
