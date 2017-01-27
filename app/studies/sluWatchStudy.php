@@ -47,24 +47,49 @@ $dailyHeartRateResults = getQueryResults($heart_rate_daily_result);
 $heartRateDailyResult = loadDailyMetrics($dailyHeartRateResults);
 
 //Query to get start date and end date for all the patients
-$get_date_sql = "select patient, MAX(DATE(datetime)) as endDate, MIN(DATE(datetime)) as startDate, DATEDIFF(MAX(DATE(datetime)), MIN(DATE(datetime))) as totalDays from sluWatch where patient in (select Distinct Patient from sluWatch) group by patient";
+$get_date_sql = 'select patient, MAX(DATE(datetime)) as endDate, MIN(DATE(datetime)) as startDate, DATEDIFF(MAX(DATE(datetime)), MIN(DATE(datetime))) as totalDays from sluWatch where patient in (select Distinct Patient from sluWatch) group by patient';
 $get_date_result = $db -> executeQuery($get_date_sql);
 
 $dateResults = getQueryResults($get_date_result);
 
+//Query to get the neg,pos,impulsivity,ciggaretes,drinks for each patient across the study
+$get_slu_stats_sql = 'select cast(patient as unsigned) as userInfo, avg(neg_avg) as negAvg, avg(pos_avg) as posAvg, avg(impulsivity_avg) as impulsivityAvg, MAX(number_of_cigarettes) as numberCigs, MAX(number_of_drinks) as numberDrinks from sluWatchStats where patient IN ( select distinct patient from sluWatchStats) group by patient';
+$get_slu_stats_results = $db -> executeQuery($get_slu_stats_sql);
+
+$sluStatsResults = getQueryResults($get_slu_stats_results);
+
+
+$i=0;
+/*** This loops through each patient and adds a property ***/
 foreach ($dateResults as $result) {
+
+    $userInfo = intval($result["patient"]);
+
     date_default_timezone_set('America/Chicago');
     $startDate = date('F d Y', strtotime($result["startDate"]));
     $endDate = date('F d Y', strtotime($result["endDate"]));
-    $userInfo = intval($result["patient"]);
+
+    
     $study_stats[$userInfo]["user"] = intval($result["patient"]);
     $study_stats[$userInfo]["startDate"] = $startDate;
     $study_stats[$userInfo]["endDate"] = $endDate;
     $study_stats[$userInfo]["totalDays"] = intval($result["totalDays"]);
+
+
     $study_stats[$userInfo]["heartRateDaily"] = $heartRateDailyResult[$userInfo];
     $study_stats[$userInfo]["heartRateHourly"] = $heartRateHourlyResult[$userInfo];
+
     $study_stats[$userInfo]["skinTempDaily"] = $skinTempDailyResult[$userInfo];
     $study_stats[$userInfo]["skinTempHourly"] = $skinTempHourlyResult[$userInfo];
+
+
+    $study_stats[$userInfo]["negAvg"] = floatval($sluStatsResults[$i]["negAvg"]);
+    $study_stats[$userInfo]["posAvg"] = floatval($sluStatsResults[$i]["posAvg"]);
+    $study_stats[$userInfo]["impulsivityAvg"] = floatval($sluStatsResults[$i]["impulsivityAvg"]);
+    $study_stats[$userInfo]["cigarettes"] = intval($sluStatsResults[$i]["numberCigs"]);
+    $study_stats[$userInfo]["drinksConsumed"] = intval($sluStatsResults[$i]["numberDrinks"]);
+
+    $i++;
 }
 
 /*** Function to load hourly results for each day for each patient for a given metric Patient -> dates[]->date->hours[]-> hour->avg ***/
@@ -140,6 +165,9 @@ function getQueryResults($queryResult)
             $results[$i] = $row;
             $i++;
         }
+    }
+    else {
+        echo "error getting query results";
     }
     return $results;
 }

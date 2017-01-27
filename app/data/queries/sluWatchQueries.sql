@@ -14,3 +14,6 @@ select patient, DATE(datetime) as dateInfo,avg(heartrate) as avg from sluWatch w
 
 /* Query 5: Get each Patient, Start date, end date, total days in study */
 select patient, MAX(DATE(datetime)) as endDate, MIN(DATE(datetime)) as startDate, DATEDIFF(MAX(DATE(datetime)), MIN(DATE(datetime))) as totalDays from sluWatch where patient in (select Distinct Patient from sluWatch) group by patient;
+
+/* Query 6: Get SluWatchStats ( neg_avg, pos-avg, impulsivity_avg, cigs, drinks) for all patients across the study time */
+select patient, avg(neg_avg) as negAvg, avg(pos_avg) as posAvg, avg(impulsivity_avg) as impulsivityAvg, MAX(number_of_cigarettes) as numberCigs, MAX(number_of_drinks) as numberDrinks from sluWatchStats where patient IN ( select distinct patient from sluWatchStats) group by patient;

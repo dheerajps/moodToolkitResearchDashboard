@@ -2,9 +2,9 @@
 
 ########## To Create userInfo Table instructions
 --Start mysql server: `mysql.server start`
-	replace dbconfig cradentials with your information
+	replace dbconfig credentials with your information
 --Run this query in your DB console first:
-	create table userInfo ( ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, USERNAME varchar(30) NOT NULL , PASSWORD CHAR(128) NOT NULL, SALT varchar(64) NOT NULL)
+	`create table userInfo ( ID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, USERNAME varchar(30) NOT NULL , PASSWORD CHAR(128) NOT NULL, SALT varchar(64) NOT NULL)`
 --Now register with username and password and then Login
 
 
@@ -26,15 +26,15 @@ NIMH Summary stats:
 SLU WATCH Data:
 `python csv2mysql.py --table sluWatch --database test --user root --password "" --host localhost ../data/SLU_data/allpatients.csv`
 
+SLU WATCH DATA Stats:
+`python csv2mysql.py --table sluWatchStats --database test --user root --password "" --host localhost ../data/SLU_data/SLU_WATCH_stats.csv`
+
 ########## Server start instructions
 - To run php server: `sudo php -S 127.0.0.1:8080 filename.php`
--
--
 
-- 8080: nimhStudy.php
-- 8088: loginHelper.php
-- 8089: registerHelper.php
-- 8090: sluWatchStudy.php
-
+`sudo php -S 127.0.0.1:8088 /app/helpers/loginHelper.php`
+`sudo php -S 127.0.0.1:8086 /app/helpers/registerHelper.php`
+`sudo php -S 127.0.0.1:8090 /app/studies/sluWatchStudy.php`
+`sudo php -S 127.0.0.1:8080 app/studies/nimhStudy.php`
 
 
