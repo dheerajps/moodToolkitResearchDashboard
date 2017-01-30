@@ -21,11 +21,11 @@
         Materialize.toast(vm.message, 7000, 'rounded');
         location.path('/login');
       }
-      /** Take back -1 history **/
+      /** Take back to previous window **/
       function takeBack(){
         if(!vm.showUserPageFlag){
            window.history.back();
-          }
+        }
         else{
           vm.showUserPageFlag=false;
           vm.showOverviewPageFlag=true;
@@ -43,17 +43,17 @@
           console.log(vm.currentUser);
       }
 
-
+      /*** Initialize SLU controller where the get call and main functionality happens ***/
       function initSluController(){
 
         console.log("in slu");
         sluWatchAPI.getsluWatchData().then(function (response){
           console.log(response.data);
-
+          vm.sluUsers = [];
           vm.sluData = response.data;
 
-          vm.sluUsers = vm.sluData["studyStats"];
-
+          vm.sluUsers = vm.sluData["userStudyStats"];
+          console.log(vm.sluUsers.length);
         });
       }
 

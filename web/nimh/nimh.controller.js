@@ -82,6 +82,7 @@
               console.log(vm.currentUser);
 
              }
+             /** Any graphs to be drawn on the USER view of NIMH page **/
              vm.drawUserPageGraphs = function(currentUser){
 
                 vm.totalUserMoodBreakdownGraph = {
@@ -138,7 +139,8 @@
 
                 } //end of user-mood-changes breakdown graph
              }
-             //All the graphs on this page
+             
+             /** All the graphs on the OVERVIEW page **/
              vm.daysSurveysGraph = {
                options: {
 

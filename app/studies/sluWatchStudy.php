@@ -46,6 +46,22 @@ $dailyHeartRateResults = getQueryResults($heart_rate_daily_result);
 
 $heartRateDailyResult = loadDailyMetrics($dailyHeartRateResults);
 
+//Query to get average gsr for each patient in the order of date, hour
+$gsr_hourly_sql = 'select patient, DATE(datetime) as dateInfo,HOUR(datetime) as hourInfo, avg(gsr) as avg from sluWatch where patient IN (select DISTINCT patient from sluWatch) and gsr >0 Group by HOUR(datetime),DATE(datetime),patient order by patient,DATE(datetime),HOUR(datetime)';
+$gsr_hourly_result = $db -> executeQuery($gsr_hourly_sql);
+
+$gsrHourlyResult = getQueryResults($gsr_hourly_result);
+
+$gsrHourlyResult = loadHourlyMetrics($gsrHourlyResult);
+
+//Query to get average gsr for each patient by date
+$gsr_daily_sql = 'select patient, DATE(datetime) as dateInfo,avg(gsr) as avg from sluWatch where patient IN (select DISTINCT patient from sluWatch) and gsr>0 Group by DATE(datetime),patient order by patient,DATE(datetime)';
+$gsr_daily_result = $db -> executeQuery($gsr_daily_sql);
+
+$gsrDailyResult = getQueryResults($gsr_daily_result);
+
+$gsrDailyResult = loadDailyMetrics($gsrDailyResult);
+
 //Query to get start date and end date for all the patients
 $get_date_sql = 'select patient, MAX(DATE(datetime)) as endDate, MIN(DATE(datetime)) as startDate, DATEDIFF(MAX(DATE(datetime)), MIN(DATE(datetime))) as totalDays from sluWatch where patient in (select Distinct Patient from sluWatch) group by patient';
 $get_date_result = $db -> executeQuery($get_date_sql);
@@ -58,39 +74,6 @@ $get_slu_stats_results = $db -> executeQuery($get_slu_stats_sql);
 
 $sluStatsResults = getQueryResults($get_slu_stats_results);
 
-
-$i=0;
-/*** This loops through each patient and adds a property ***/
-foreach ($dateResults as $result) {
-
-    $userInfo = intval($result["patient"]);
-
-    date_default_timezone_set('America/Chicago');
-    $startDate = date('F d Y', strtotime($result["startDate"]));
-    $endDate = date('F d Y', strtotime($result["endDate"]));
-
-    
-    $study_stats[$userInfo]["user"] = intval($result["patient"]);
-    $study_stats[$userInfo]["startDate"] = $startDate;
-    $study_stats[$userInfo]["endDate"] = $endDate;
-    $study_stats[$userInfo]["totalDays"] = intval($result["totalDays"]);
-
-
-    $study_stats[$userInfo]["heartRateDaily"] = $heartRateDailyResult[$userInfo];
-    $study_stats[$userInfo]["heartRateHourly"] = $heartRateHourlyResult[$userInfo];
-
-    $study_stats[$userInfo]["skinTempDaily"] = $skinTempDailyResult[$userInfo];
-    $study_stats[$userInfo]["skinTempHourly"] = $skinTempHourlyResult[$userInfo];
-
-
-    $study_stats[$userInfo]["negAvg"] = floatval($sluStatsResults[$i]["negAvg"]);
-    $study_stats[$userInfo]["posAvg"] = floatval($sluStatsResults[$i]["posAvg"]);
-    $study_stats[$userInfo]["impulsivityAvg"] = floatval($sluStatsResults[$i]["impulsivityAvg"]);
-    $study_stats[$userInfo]["cigarettes"] = intval($sluStatsResults[$i]["numberCigs"]);
-    $study_stats[$userInfo]["drinksConsumed"] = intval($sluStatsResults[$i]["numberDrinks"]);
-
-    $i++;
-}
 
 /*** Function to load hourly results for each day for each patient for a given metric Patient -> dates[]->date->hours[]-> hour->avg ***/
 function loadHourlyMetrics($hourlyResults){
@@ -171,12 +154,51 @@ function getQueryResults($queryResult)
     }
     return $results;
 }
+
+/*** This loops through each patient object and adds all the properties at USER LEVEL ***/
+$i=0;
+$j=0;
+
+foreach ($dateResults as $result) {
+
+    $userInfo = intval($result["patient"]);
+
+    date_default_timezone_set('America/Chicago');
+    $startDate = date('F d Y', strtotime($result["startDate"]));
+    $endDate = date('F d Y', strtotime($result["endDate"]));
+
+    
+    $study_stats[$j]["user"] = intval($result["patient"]);
+    $study_stats[$j]["startDate"] = $startDate;
+    $study_stats[$j]["endDate"] = $endDate;
+    $study_stats[$j]["totalDays"] = intval($result["totalDays"]);
+
+
+    $study_stats[$j]["heartRateDaily"] = $heartRateDailyResult[$userInfo];
+    $study_stats[$j]["heartRateHourly"] = $heartRateHourlyResult[$userInfo];
+
+    $study_stats[$j]["skinTempDaily"] = $skinTempDailyResult[$userInfo];
+    $study_stats[$j]["skinTempHourly"] = $skinTempHourlyResult[$userInfo];
+
+    $study_stats[$j]["gsrHourlyResult"] = $gsrHourlyResult[$userInfo];
+    $study_stats[$j]["gsrDailyResult"] = $gsrDailyResult[$userInfo];
+
+    $study_stats[$j]["negAvg"] = floatval($sluStatsResults[$i]["negAvg"]);
+    $study_stats[$j]["posAvg"] = floatval($sluStatsResults[$i]["posAvg"]);
+    $study_stats[$j]["impulsivityAvg"] = floatval($sluStatsResults[$i]["impulsivityAvg"]);
+    $study_stats[$j]["cigarettes"] = intval($sluStatsResults[$i]["numberCigs"]);
+    $study_stats[$j]["drinksConsumed"] = intval($sluStatsResults[$i]["numberDrinks"]);
+    $j++;
+    $i++;
+}
+
+
 /***** Close current db connection *****/
 
 $db->closeConnection();
 
-/***** Add the arrays at right indices *****/
+/***** Properties for the whole study at right indices *****/
 
-$returnArray["studyStats"] = $study_stats;
+$returnArray["userStudyStats"] = $study_stats;
 echo json_encode($returnArray);
 ?>
