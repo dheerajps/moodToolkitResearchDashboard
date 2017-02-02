@@ -49,15 +49,15 @@
    <div class="row">
       <div class="col s3" >
          <div class="row">
-         <h1 class = 'section-header center'>SLU Watch Overview</h1>
+         <h1 class = 'section-header center'>Participation</h1>
             <div class="card col s12 z-depth-1" id="card1">
                 <div class="card-title">
                     <h3>Study Progress</h3>
                     <hr>
                 </div>
                 <div class="card-content">
-                  <div><p class="days"><strong>Total Participants: {{vm.sluUsers.length}}</strong></p><br></div>
-                  <div><p class="days"><strong>Total days complete: </strong></p><br></div>
+                  <div><p class="days"><strong>Total Participants: {{vm.sluData.users.length}}</strong></p><br></div>
+                  <div><p class="days"><strong>Total days complete: {{vm.findTotal('totalDays')}}</strong></p><br></div>
                   <div><p class="surveys"><strong>Total surveys complete: </strong></p></div>
                 </div>
                 <div class="card-action">
@@ -82,9 +82,9 @@
       </div>
       </div>
       <div class= "col s9">
-         <h1 class = 'section-header center' id="mood-changes-header">Survey & Participation</h1>
+         <h1 class = 'section-header center' id="mood-changes-header">SLU Watch Overview</h1>
          <div class='col s12 study-module study-stats z-depth-2'>
-            <highchart config=""></highchart>
+            <highchart config="vm.cigsDrinksGraph"></highchart>
          </div>
       </div>
    </div>
@@ -93,7 +93,7 @@
    <div class='row'>
       <h1 class = 'section-header center'>Mood Changes</h1>
       <div class='col s12 highcharts-background study-module study-stats z-depth-2' id=''>
-        <highchart config=""></highchart>
+        <highchart config="vm.averageValuesGraph"></highchart>
       </div>
    </div>
     <div class='row'>
@@ -127,7 +127,7 @@
                  </tr>
                </thead>
                <tbody>
-                 <tr ng-repeat="user in vm.sluUsers">
+                 <tr ng-repeat="user in vm.sluData.users">
                    <td data-title="ID">{{$index+1}}</td>
                    <td data-title="Name">{{user.user}}</td>
                    <td data-title="Start Date">{{user.startDate}}</td>
@@ -222,7 +222,7 @@
       <div class ="col s5" class = "study-module">
         <highchart config=""></highchart>
       </div>
-      </div>
+    </div>
    </div>
 
     <div class="row">

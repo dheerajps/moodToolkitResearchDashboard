@@ -14,8 +14,8 @@
       };
       function getsluWatchData(){
        
-          var localURL ="http://127.0.0.1:8090/";
-          var requestURL = localURL+'app/studies/sluWatchStudy.php';
+          var localURL ="http://127.0.0.1:8000/"; //Insert your PORT number for time being
+          var requestURL = localURL+'app/studies/sluWatch.json';
           return $http.get(requestURL);         
       }
 
