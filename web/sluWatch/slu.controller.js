@@ -20,9 +20,11 @@
         LoginService.clearCredentials();
         Materialize.toast(vm.message, 7000, 'rounded');
         location.path('/login');
+
       }
       /** Take back to previous window **/
       function takeBack(){
+
         if(!vm.showUserPageFlag){
            window.history.back();
         }
@@ -30,18 +32,10 @@
           vm.showUserPageFlag=false;
           vm.showOverviewPageFlag=true;
         }
+
       }
 
-      /** Sets flags and initiates route to SLU user view **/
 
-      vm.navigateToUserPage = function(userId){
-          vm.showOverviewPageFlag = false;
-          vm.showUserPageFlag=true;
-          window.scrollTo(0,0);
-          vm.currentUser=userId;
-          //vm.drawUserPageGraphs(vm.currentUser);
-          console.log(vm.currentUser);
-      }
 
       /*** Initialize SLU controller where the get call and main functionality happens ***/
       function initSluController(){
@@ -85,9 +79,20 @@
                  }
                  return (total);
             }
+            /** Sets flags and initiates route to SLU user view **/
+
+            vm.navigateToUserPage = function(userId){
+
+                vm.showOverviewPageFlag = false;
+                vm.showUserPageFlag=true;
+                window.scrollTo(0,0);
+                vm.currentUser=userId;
+                vm.drawUserPageGraphs(vm.currentUser);
+                console.log(vm.currentUser);
+                
+            }
 
             /** All the graphs on the overview page goes under here **/
-
 
             vm.cigsDrinksGraph = {
 
@@ -100,43 +105,47 @@
                         text: 'Substance Stats'
                     },
                     xAxis: {
+                        min: 8,
                         categories: vm.users,
-                        crosshair: true,
                         title: {
                           text: 'Users'
                         }
                     },
                     yAxis: {
-                        min: 0,
+
+                        allowDecimals: false,
                         title: {
                             text: 'Quantity (number)'
                         },
-                        tickInterval: 50
+                        tickInterval: 25
                     },
                     tooltip: {
-                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                            '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
-                        footerFormat: '</table>',
-                        shared: true,
-                        useHTML: true
+                        formatter: function () {
+                         return '<b>' + this.x + '</b><br/>' +
+                             this.series.name + ': ' + this.y + '<br/>'
+                     }
                     },
                     plotOptions: {
                         column: {
-                            pointPadding: 0.2,
+                            pointPadding: 0,
                             borderWidth: 0
                         }
+                    },
+                    scrollbar: {
+                        enabled: true
                     }
                 },
                 series: [{
                     name: 'Cigarettes',
                     color: vm.colors[1],
-                    data: vm.cigs
+                    data: vm.cigs,
+                    stack: 'male'
 
                 }, {
                     name: 'Drinks',
                     color: vm.colors[0],
-                    data: vm.drinks
+                    data: vm.drinks,
+                    stack: 'male'
 
                 }],
                 credits: {
@@ -149,59 +158,74 @@
 
               options: {
 
-
+                chart: {
+                    type: 'column'
+                },
                 title: {
-                    text: 'Pos, Neg and Impulsivity Averages',
-                    x: -20 //center
+                    text: 'Pos, Neg and Impulsivity Response Averages'
                 },
                 subtitle: {
-                    text: 'Across all Patients',
-                    x: -20
+                    text: 'Across all patients'
                 },
                 xAxis: {
+                    min: 14,
                     categories: vm.users,
-                    crosshair: true,
                     title: {
-                      text: 'Users'
-                    } 
+                        text: 'USERS'
+                    },
+                    crosshair: true
                 },
                 yAxis: {
+                    
                     title: {
-                        text: 'Average Values'
+                        text: 'Avg value'
                     },
-                    plotLines: [{
-                        value: 0,
-                        width: 2,
-                        color: vm.colors[4]
-                    }],
-                    tickInterval: 0.5
+                    tickInterval: 0.50
                 },
                 tooltip: {
                     headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
                     pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                            '<td style="padding:0"><b>{point.y:.3f}</b></td></tr>',
+                        '<td style="padding:0"><b>{point.y:.3f} </b></td></tr>',
                     footerFormat: '</table>',
                     shared: true,
                     useHTML: true
                 },
-                legend: {
-                    layout: 'vertical',
-                    align: 'right',
-                    verticalAlign: 'middle',
-                    borderWidth: 0
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.1,
+
+                        borderWidth: 0,
+                    },
                 },
+                scrollbar: {
+                        enabled: true
+                }
               },
               series: [{
                     name: 'Positive Avg',
-                    data: vm.posAvg
+                    data: vm.posAvg,
+                    color: vm.colors[7],
+                    stack: 'male'
                 }, {
                     name: 'Negative Avg',
-                    data: vm.negAvg
+                    data: vm.negAvg,
+                    color: vm.colors[2],
+                    stack: 'female'
                 }, {
                     name: 'Impulsivity',
-                    data: vm.impulsivityAvg
+                    data: vm.impulsivityAvg,
+                    color: vm.colors[3],
+                    stack: 'female'
                 }]
             } //END of averageValuesGraph
+
+            /** All the graphs in the user view goes in here **/
+
+            vm.drawUserPageGraphs = function (currentUser) {
+
+              
+
+            } //END of drawUserPageGraphs function
 
         }); //END OF .then of API CALL
 
