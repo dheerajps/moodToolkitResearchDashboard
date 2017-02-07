@@ -2,21 +2,20 @@
 (function(){
    angular.module('researchApp').service('nimhAPI',['$http', function nimhAPI($http){
 
-      
+
       var data ={ ID : ''};
-      
+
       return{
-         
+
          getNIMHData: getNIMHData,
          getUser: getUser,
          setUser: setUser
-          
+
       };
       function getNIMHData(){
-       
-          var localURL ="http://127.0.0.1:8080/";
-          var requestURL = localURL+'app/studies/nimhStudy.php';
-          return $http.get(requestURL);         
+
+          var requestURL = '../../app/studies/nimhStudy.php';
+          return $http.get(requestURL);
       }
 
       function setUser(user){

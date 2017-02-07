@@ -1,5 +1,5 @@
 (function(){
-   /***** Landing Page Controller 
+   /***** Landing Page Controller
    - Handles both login and register modal *****/
    "use strict";
    angular
@@ -9,18 +9,18 @@
 
    function LandingController(ngScope,ngRootScope,http,location,LoginService){
 
-      
+
       var vm = this;
       vm.directToLogin=directToLogin;
       vm.initModal = initModal;
       vm.directToRegister=directToRegister;
-      vm.showLoginModal=false; 
+      vm.showLoginModal=false;
       vm.showRegisterModal =false;
       vm.postLoginInfo =postLoginInfo;
       vm.postRegisterInfo = postRegisterInfo;
       vm.cancelClicked =cancelClicked;
       LoginService.clearCredentials();
-      
+
       initModal();
 
       //Initialize the modal
@@ -40,13 +40,12 @@
             vm.showLoginModal=false;
             vm.showRegisterModal =false;
       }
-      
+
       function directToLogin(){
-         console.log("hi");
          vm.message ="";
          vm.showLoginModal=true;
          $('#modal1').modal('open');
-         
+
       }
 
       function directToRegister(){
@@ -54,20 +53,22 @@
          $('#modal2').modal('open');
       }
 
-      //Check login by posting to DB
+      //Check login by posting    to DB
       function postLoginInfo(){
-         var localURL ="http://127.0.0.1:8088/";
-         var requestURL = localURL+'app/helpers/loginHelper.php';
-         
+
+
+         var requestURL = '../app/helpers/loginHelper.php';
+
+
          var data = { username: ngScope.temp.username , password: ngScope.temp.password};
-         
+
          http({
              method: 'POST',
              url: requestURL,
              data: $.param(data),
              headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-             
-             
+
+
          }).then(function (response) {
             console.log(response.data);
             vm.message = response.data.msg;
@@ -78,7 +79,7 @@
                console.log("login yes");
             }
             else{
-               
+
                Materialize.toast(vm.message, 3000, 'rounded');
                cancelClicked();
             }
@@ -87,8 +88,9 @@
 
       //Save userInfo to DB
       function postRegisterInfo(){
-         var localURL ="http://127.0.0.1:8089/";
-         var requestURL = localURL+'app/helpers/registerHelper.php';
+
+         var requestURL = '../app/helpers/registerHelper.php';
+
 
          var data = { username: ngScope.temp.registerUsername , password: ngScope.temp.registerPassword};
          console.log(data);
@@ -97,8 +99,8 @@
              url: requestURL,
              data: $.param(data),
              headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-             
-             
+
+
          }).then(function (response) {
             console.log(response);
             vm.message = response.data.msg;
@@ -118,7 +120,7 @@
       function cancelClicked(){
          var master = { username: '' , password:''};
          ngScope.temp = angular.copy(master);
-         
+
          ngScope.loginForm.$setPristine();
       }
       function registerCancelClicked(){

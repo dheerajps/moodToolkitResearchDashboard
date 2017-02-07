@@ -1,6 +1,11 @@
 <?php
 header('Access-Control-Allow-Origin: *');
-include_once('../config/database.php');
+// include_once('../config/database.php');
+
+$json_file = file_get_contents('sluwatch-response.json');
+$jfo = json_decode($json_file);
+echo json_encode($jfo);
+exit();
 
 
 echo file_get_contents("sluWatch.json");
@@ -16,7 +21,7 @@ $study_stats = array();
 
 
 
-//Query to get average skin temperature of each patient in the order of date,hour 
+//Query to get average skin temperature of each patient in the order of date,hour
 $skin_temp_hourly_sql = 'select patient, DATE(datetime) as dateInfo,HOUR(datetime) as hourInfo, avg(skin_temp) as avg from sluWatch where patient IN (select DISTINCT patient from sluWatch) and skin_temp >0 Group by HOUR(datetime),DATE(datetime),patient order by patient,DATE(datetime),HOUR(datetime)';
 
 $skin_temp_hourly_result = $db -> executeQuery($skin_temp_hourly_sql);
@@ -99,7 +104,7 @@ function loadHourlyMetrics($hourlyResults){
                 'dateValue' => date('m-d-Y', strtotime($result["dateInfo"])),
                 'hours' => array()
                 );
-            
+
             $hourlyLoadArray[$id]['dates'][$dateInfo] = $date;
         }
         if($hourInfo && isset($hourlyLoadArray[$id]['dates'][$dateInfo]) && !isset($hourlyLoadArray[$id]['dates'][$dateInfo]['hours'][$hourInfo])){
@@ -107,7 +112,7 @@ function loadHourlyMetrics($hourlyResults){
                 'hourValue' => intval($result["hourInfo"]),
                 'avg' => floatval($result["avg"])
                 );
-            
+
             $hourlyLoadArray[$id]['dates'][$dateInfo]['hours'][$hourInfo] = $hour;
         }
     }
@@ -170,7 +175,7 @@ foreach ($dateResults as $result) {
     $startDate = date('F d Y', strtotime($result["startDate"]));
     $endDate = date('F d Y', strtotime($result["endDate"]));
 
-    
+
     $study_stats[$j]["user"] = intval($result["patient"]);
     $study_stats[$j]["startDate"] = $startDate;
     $study_stats[$j]["endDate"] = $endDate;

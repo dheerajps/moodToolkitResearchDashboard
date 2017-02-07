@@ -5,6 +5,11 @@ include_once('../config/database.php');
 //Get a new DB object and use it for this study
 $db = new Database();
 
+$json_file = file_get_contents('nimh-response.json');
+$jfo = json_decode($json_file);
+echo json_encode($jfo);
+exit();
+
 //query for surveys complete
 $study_surveys_sql = 'select patient, COUNT(*) from nimhTest where patient IN (select Distinct patient from nimhTest ) and surveylabel !="Suspension" group by patient;';
 $study_surveys_result = $db->executeQuery($study_surveys_sql);
@@ -57,7 +62,7 @@ if ($user_mood_changes_result->num_rows > 0) {
     }
 }
 
-//query to get meta-data for all user 
+//query to get meta-data for all user
 
 $all_user_meta_data_sql = "select * from nimhTestStats where participant=1111;";
 $all_user_meta_data_result = $db->executeQuery($all_user_meta_data_sql);
@@ -65,7 +70,7 @@ $all_user_meta_data_result = $db->executeQuery($all_user_meta_data_sql);
 if ($all_user_meta_data_result->num_rows > 0) {
    $all_user_study_stats = $all_user_meta_data_result->fetch_assoc() ;
    $all_user_study_stats=array_slice($all_user_study_stats,2);
-   //$all_user_study_stats["participants"] = $study_stats;    
+   //$all_user_study_stats["participants"] = $study_stats;
 }
 
 //query to get missed surveys and compliance
@@ -83,7 +88,7 @@ json_encode($all_surveys);
 json_encode($all_completed_surveys);
 $all_user_study_stats["missed_surveys"]=$all_surveys['COUNT(*)']-$all_completed_surveys['COUNT(*)'];
 
-//query for compliance for each user 
+//query for compliance for each user
 $all_surveys_view_sql ='CREATE OR REPLACE VIEW allcompletedsurveys AS select patient, COUNT(*) as surveys from nimhTest where patient IN (select Distinct patient from nimhTest ) and surveylabel !="Suspension" group by patient;';
 $view_result = $db->executeQuery($all_surveys_view_sql);
 $all_completed_surveys_view_sql = "CREATE OR REPLACE VIEW allsurveys AS select patient, COUNT(*) as surveys from nimhTest where patient IN (select Distinct patient from nimhTest ) group by patient;";
@@ -95,8 +100,8 @@ $user_compliance_result=$db->executeQuery($user_compliance_sql);
 if ($user_compliance_result->num_rows > 0) {
    $i = 0;
     while($row = $user_compliance_result->fetch_assoc()) {
-    
-      $study_stats[$i]["compliance"] = floatval($row["compliance"]); 
+
+      $study_stats[$i]["compliance"] = floatval($row["compliance"]);
       $i++;
     }
 }
@@ -107,7 +112,7 @@ FROM nimhTest
 WHERE
   patient IN ( SELECT patient FROM (
      SELECT DISTINCT patient
-          FROM nimhTest 
+          FROM nimhTest
     ) l
   ) and surveystart!="" GROUP BY patient;';
 
@@ -120,7 +125,7 @@ if ($user_get_dates_result->num_rows > 0) {
       $startDate = date('F d Y', strtotime($row["startDate"]));
       $endDate = date('F d Y', strtotime($row["endDate"]));
       $study_stats[$i]["startDate"] = $startDate;
-      $study_stats[$i]["endDate"] = $endDate;  
+      $study_stats[$i]["endDate"] = $endDate;
       $i++;
     }
 }

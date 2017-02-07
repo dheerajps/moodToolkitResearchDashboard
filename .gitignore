@@ -1,7 +1,6 @@
 # Folder view configuration files
-.DS_Store
 Desktop.ini
-web/.DS_Store
+*.DS_Store
 # Thumbnail cache files
 ._*
 Thumbs.db
@@ -24,3 +23,6 @@ venv
 node_modules
 .sass-cache
 sftp-config.json
+
+#pem file
+*.pem

@@ -15,13 +15,15 @@ Be sure to add your password and user cradentials
 
 Import each study into mySQL using the following commands:
 
+# add note about readme
+
 NIMH Data:
 
 `python csv2mysql.py  --table nimhTest --database test --user root --password  --host localhost ../data/NIMH_data/formatted2/NIMH_formatted_dbschema.csv`
 
 NIMH Summary stats:
 
-`python csv2mysql.py  --table nimhTest --database test --user root --password  --host localhost ../data/NIMH_data/stats.csv`
+`python csv2mysql.py  --table nimhTestStats --database test --user root --password  --host localhost ../data/NIMH_data/stats.csv`
 
 SLU WATCH Data:
 `python csv2mysql.py --table sluWatch --database test --user root --password "" --host localhost ../data/SLU_data/allpatients.csv`
@@ -33,8 +35,9 @@ SLU WATCH DATA Stats:
 - To run php server: `sudo php -S 127.0.0.1:8080 filename.php`
 
 `sudo php -S 127.0.0.1:8088 /app/helpers/loginHelper.php`
-`sudo php -S 127.0.0.1:8086 /app/helpers/registerHelper.php`
+`sudo php -S 127.0.0.1:8089 /app/helpers/registerHelper.php`
 `sudo php -S 127.0.0.1:8090 /app/studies/sluWatchStudy.php`
 `sudo php -S 127.0.0.1:8080 app/studies/nimhStudy.php`
 
-
+######## Luke Dev Server:
+- Located : `http://ec2-54-160-87-230.compute-1.amazonaws.com/researchDash/`
