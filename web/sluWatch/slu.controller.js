@@ -53,6 +53,8 @@
             vm.impulsivityAvg = [];
             vm.cigsAvg = [];
             vm.drinksAvg =[];
+            vm.users.surveysComplete = [];
+            vm.users.daysComplete = [];
 
             /** GET THE RESPONSE DATA AND STORE IT **/
             vm.sluData = response.data;
@@ -73,6 +75,9 @@
               vm.cigsAvg.push(val);
               var val1 = value['drinksConsumed']/value['totalDays'];
               vm.drinksAvg.push(val1);
+              vm.users.daysComplete.push(value['totalDays']);
+              vm.users.surveysComplete.push(value['surveysComplete']);
+
             }); //END OF FOR-LOOP
 
             /** Find total of any property **/
@@ -158,6 +163,89 @@
             }
 
             /** All the graphs on the overview page goes under here **/
+            vm.daysSurveysGraph = {
+               options: {
+
+                  chart: {
+                         zoomType: 'xy'
+                  },
+                  title: {
+                          text: 'Days in Study and Surveys Complete'
+                  },
+                  xAxis: {
+                           categories: vm.users,
+                           crosshair: true
+                  },
+                  yAxis: [{ // Primary yAxis
+                     labels: {
+                         format: '{value} Days',
+                         style: {
+                             color: vm.colors[3]
+                         }
+                     },
+                     title: {
+                         text: 'Days in Study',
+                         style: {
+                             color: vm.colors[3]
+                         }
+                     }
+                  }, { // Secondary yAxis
+                     title: {
+                         text: 'Surveys Complete',
+                         style: {
+                             color: vm.colors[9]
+                         }
+                     },
+                     labels: {
+                         format: '{value} Surveys',
+                         style: {
+                             color: vm.colors[9]
+                         }
+                     },
+                     opposite: true
+                  }],
+
+                  tooltip: {
+                  shared: true
+                  },
+
+                  legend: {
+                  layout: 'vertical',
+                  align: 'left',
+                  x: 120,
+                  verticalAlign: 'top',
+                  y: 40,
+                  floating: true,
+                  backgroundColor: '#FFFFFF'
+                  }
+               },
+               credits: {
+                  enabled: false
+               },
+               series: [{
+                  name: 'Surveys',
+                  type: 'column',
+                  yAxis: 1,
+                  data: vm.users.surveysComplete,
+                  tooltip: {
+                      valueSuffix: ' surveys'
+                  },
+                  color: vm.colors[3]
+
+               }, {
+                  name: 'Days in Study',
+                  type: 'spline',
+                  data: vm.users.daysComplete,
+                  tooltip: {
+                      valueSuffix: ' days'
+                  },
+                  color: vm.colors[9]
+               }]
+            } //end of days-surveys graphs
+
+
+
+
 
             vm.cigsDrinksGraph = {
 
@@ -289,6 +377,8 @@
             /** All the graphs in the user view goes in here **/
 
             vm.drawUserPageGraphs = function (currentUser) {
+
+
                vm.hourlyPhisPersonalGraph = {
                   options:{
                      chart: {
@@ -352,8 +442,13 @@
                           opposite: true
                       }],
                       tooltip: {
+                        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                            '<td style="padding:0"><b>{point.y:.4f} </b></td></tr>',
+                        footerFormat: '</table>',
                         shared: true,
-                        backgroundColor: '#FFFFFF'
+                        useHTML: true,
+                        valueDecimals: 4
                       },
                       legend: {
                         layout: 'vertical',

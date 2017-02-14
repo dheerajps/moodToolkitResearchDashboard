@@ -84,7 +84,7 @@
       <div class= "col s9">
          <h1 class = 'section-header center' id="mood-changes-header">SLU Watch Overview</h1>
          <div class='col s12 study-module study-stats z-depth-2'>
-            <highchart config="vm.samplePersonalGraph"></highchart>
+            <highchart config="vm.daysSurveysGraph"></highchart>
          </div>
       </div>
    </div>
@@ -126,7 +126,7 @@
                    <td data-title="Start Date">{{user.startDate}}</td>
                    <td data-title="End Date">{{user.endDate}}</td>
                    <td data-title="Days Elapsed">{{user.totalDays}}</td>
-                   <td data-title="Status">{{}}</td>
+                   <td data-title="Status">{{user.compliance | number :3}}</td>
                    <td data-title="Actions">
                      <i class="material-icons t-icon">alarm_on</i>
                      <a href="" download><i class="material-icons t-icon">archive</i></a>
@@ -204,9 +204,9 @@
 
               <tbody>
                 <tr>
+                  <td>{{vm.currentUser.surveysComplete}}</td>
                   <td>{{}}</td>
-                  <td>{{}}</td>
-                  <td>{{}}</td>
+                  <td>{{vm.currentUser.compliance * 100 | number :2}}</td>
                 </tr>
               </tbody>
             </table>

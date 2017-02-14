@@ -5,10 +5,10 @@ include_once('../config/database.php');
 //Get a new DB object and use it for this study
 $db = new Database();
 
-$json_file = file_get_contents('nimh-response.json');
-$jfo = json_decode($json_file);
-echo json_encode($jfo);
-exit();
+// $json_file = file_get_contents('nimh-response.json');
+// $jfo = json_decode($json_file);
+// echo json_encode($jfo);
+// exit();
 
 //query for surveys complete
 $study_surveys_sql = 'select patient, COUNT(*) from nimhTest where patient IN (select Distinct patient from nimhTest ) and surveylabel !="Suspension" group by patient;';

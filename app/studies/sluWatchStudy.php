@@ -1,14 +1,15 @@
 <?php
+
 header('Access-Control-Allow-Origin: *');
-// include_once('../config/database.php');
+include_once('../config/database.php');
 
-$json_file = file_get_contents('sluwatch-response.json');
-$jfo = json_decode($json_file);
-echo json_encode($jfo);
-exit();
+// $json_file = file_get_contents('sluWatch.json');
+// $jfo = json_decode($json_file);
+// echo json_encode($jfo);
+//exit();
 
 
-echo file_get_contents("sluWatch.json");
+//echo file_get_contents("sluWatch.json");
 
 //Get a new DB object and use it for this study
 $db = new Database();
@@ -76,12 +77,11 @@ $get_date_result = $db -> executeQuery($get_date_sql);
 
 $dateResults = getQueryResults($get_date_result);
 
-//Query to get the neg,pos,impulsivity,ciggaretes,drinks for each patient across the study
-$get_slu_stats_sql = 'select cast(patient as unsigned) as userInfo, avg(neg_avg) as negAvg, avg(pos_avg) as posAvg, avg(impulsivity_avg) as impulsivityAvg, MAX(number_of_cigarettes) as numberCigs, MAX(number_of_drinks) as numberDrinks from sluWatchStats where patient IN ( select distinct patient from sluWatchStats) group by patient';
+//Query to get the neg,pos,impulsivity,ciggaretes,drinks, compliance for each patient across the study
+$get_slu_stats_sql = 'select cast(patient as unsigned) as userInfo, avg(neg_avg) as negAvg, avg(pos_avg) as posAvg, avg(impulsivity_avg) as impulsivityAvg, MAX(number_of_cigarettes) as numberCigs, MAX(number_of_drinks) as numberDrinks, MAX(compliance) as compliance, MAX(surveys_complete) as surveysComplete from sluWatchStats where patient IN ( select distinct patient from sluWatchStats) group by patient';
 $get_slu_stats_results = $db -> executeQuery($get_slu_stats_sql);
 
 $sluStatsResults = getQueryResults($get_slu_stats_results);
-
 
 /*** Function to load hourly results for each day for each patient for a given metric Patient -> dates[]->date->hours[]-> hour->avg ***/
 function loadHourlyMetrics($hourlyResults){
@@ -196,6 +196,10 @@ foreach ($dateResults as $result) {
     $study_stats[$j]["impulsivityAvg"] = floatval($sluStatsResults[$i]["impulsivityAvg"]);
     $study_stats[$j]["cigarettes"] = intval($sluStatsResults[$i]["numberCigs"]);
     $study_stats[$j]["drinksConsumed"] = intval($sluStatsResults[$i]["numberDrinks"]);
+    $study_stats[$j]["compliance"] = floatval($sluStatsResults[$i]["compliance"]);
+    $study_stats[$j]["surveysComplete"] = intval($sluStatsResults[$i]["surveysComplete"]);
+
+
     $j++;
     $i++;
 }
