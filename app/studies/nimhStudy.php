@@ -135,6 +135,6 @@ $db->closeConnection();
 //Add study stats array as an object at "participants"
 
 $all_user_study_stats["participants"] = $study_stats;
-echo json_encode($all_user_study_stats);
-
+//echo json_encode($all_user_study_stats);
+file_put_contents("nimhStudyResponse.json",json_encode($all_user_study_stats));
 ?>

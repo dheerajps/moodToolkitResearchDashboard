@@ -15,7 +15,7 @@
       function getsluWatchData(){
 
 
-          var requestURL = '../../app/studies/sluWatch.json';
+          var requestURL = '../../app/studies/sluWatchResponse.json';
           return $http.get(requestURL);
 
 

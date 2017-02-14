@@ -14,7 +14,7 @@
       };
       function getNIMHData(){
 
-          var requestURL = '../../app/studies/nimh-response.json';
+          var requestURL = '../../app/studies/nimhStudyResponse.json';
           return $http.get(requestURL);
       }
 
