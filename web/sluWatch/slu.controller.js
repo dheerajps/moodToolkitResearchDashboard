@@ -69,7 +69,7 @@
               vm.posAvg.push(value['posAvg']);
               vm.negAvg.push(value['negAvg']);
               vm.impulsivityAvg.push(value['impulsivityAvg']);
-              var val = value['cigarettes']/value['totalDays'];              
+              var val = value['cigarettes']/value['totalDays'];
               vm.cigsAvg.push(val);
               var val1 = value['drinksConsumed']/value['totalDays'];
               vm.drinksAvg.push(val1);
@@ -91,24 +91,73 @@
                 vm.showUserPageFlag=true;
                 window.scrollTo(0,0);
                 vm.currentUser=userId;
-                vm.drawUserPageGraphs(vm.currentUser);
                 console.log(vm.currentUser);
 
                angular.forEach(vm.sluData.users, function(value, key){
                   vm.users.push('USER ' + value.user);
-              vm.cigs.push(value['cigarettes']);
-              vm.drinks.push(value['drinksConsumed']);
-              vm.posAvg.push(value['posAvg']);
-              vm.negAvg.push(value['negAvg']);
-              vm.impulsivityAvg.push(value['impulsivityAvg']);
+                  vm.cigs.push(value['cigarettes']);
+                  vm.drinks.push(value['drinksConsumed']);
+                  vm.posAvg.push(value['posAvg']);
+                  vm.negAvg.push(value['negAvg']);
+                  vm.impulsivityAvg.push(value['impulsivityAvg']);
+               }); //END OF FOR-LOOP
 
-            }); //END OF FOR-LOOP
-               
 
+               // User-specific daily phis measures
+               vm.currentUser.daysSeries = []
+               vm.currentUser.gsrDailySeries = []
+               vm.currentUser.heartRateDailySeries = []
+               vm.currentUser.skinTempDailySeries = []
+
+               angular.forEach(vm.currentUser.gsrDailyResult.dates, function(value, key){
+                  vm.currentUser.daysSeries.push(value['date']);
+                  vm.currentUser.gsrDailySeries.push(value['avg']);
+               });
+               angular.forEach(vm.currentUser.heartRateDaily.dates, function(value, key){
+                  vm.currentUser.heartRateDailySeries.push(value['avg']);
+               });
+               angular.forEach(vm.currentUser.skinTempDaily.dates, function(value, key){
+                  vm.currentUser.skinTempDailySeries.push(value['avg']);
+               });
+
+               // User-specific hourly phis measures
+               vm.currentUser.hoursSeries = []
+               vm.currentUser.gsrHourlySeries = []
+               vm.currentUser.heartRateHourlySeries = []
+               vm.currentUser.skinTempHourlySeries = []
+
+               angular.forEach(vm.currentUser.heartRateHourly.dates, function(value, key){
+                  var study_day = value['dateValue'].split("-");
+                  var day_formatted = study_day[0] + "-" + study_day[1];
+
+
+                  for (var hour in value['hours']) {
+                    vm.currentUser.hoursSeries.push( day_formatted + "  " + value['hours'][hour]['hourValue'] + ':00 ');
+                    vm.currentUser.heartRateHourlySeries.push(value['hours'][hour]['avg']);
+                  }
+               });
+               angular.forEach(vm.currentUser.gsrHourlyResult.dates, function(value, key){
+                  var study_day = value['dateValue']
+                  for (var hour in value['hours']) {
+                    vm.currentUser.gsrHourlySeries.push(value['hours'][hour]['avg']);
+                  }
+               });
+               angular.forEach(vm.currentUser.skinTempHourly.dates, function(value, key){
+                  var study_day = value['dateValue']
+                  for (var hour in value['hours']) {
+                    vm.currentUser.skinTempHourlySeries.push(value['hours'][hour]['avg']);
+                  }
+               });
+
+               // console.log(vm.currentUser.hoursSeries);
+               // console.log(vm.currentUser.heartRateHourlySeries);
+               // console.log(vm.currentUser.gsrHourlySeries);
+               // console.log(vm.currentUser.skinTempHourlySeries);
+
+               vm.drawUserPageGraphs(vm.currentUser);
             }
 
             /** All the graphs on the overview page goes under here **/
-
 
             vm.cigsDrinksGraph = {
 
@@ -193,7 +242,7 @@
                     crosshair: true
                 },
                 yAxis: {
-                    
+
                     title: {
                         text: 'Avg value'
                     },
@@ -240,7 +289,225 @@
             /** All the graphs in the user view goes in here **/
 
             vm.drawUserPageGraphs = function (currentUser) {
-               
+               vm.hourlyPhisPersonalGraph = {
+                  options:{
+                     chart: {
+                        zoomType: 'xy',
+                        height: 600
+                     },
+                     title: {
+                        text: 'Hourly Averages of Physiological Data'
+                     },
+                     subtitle: {
+                        text: 'Specifics During Study Period'
+                     },
+                     xAxis: [{
+                           categories: currentUser.hoursSeries,
+                        crosshair: true
+                      }],
+                     yAxis: [{ // Primary yAxis
+                        labels: {
+                           format: '{value}°F',
+                           style: {
+                                 color: Highcharts.getOptions().colors[7]
+                           }
+                        },
+                        title: {
+                           text: 'Skin Temperature',
+                           style: {
+                              color: Highcharts.getOptions().colors[7]
+                           }
+                          },
+                          opposite: true
+
+                      }, { // Secondary yAxis
+                        gridLineWidth: 0,
+                        title: {
+                           text: 'GSR',
+                           style: {
+                                 color: Highcharts.getOptions().colors[2]
+                              }
+                          },
+                          labels: {
+                              format: '{value} uS',
+                              style: {
+                                  color: Highcharts.getOptions().colors[2]
+                              }
+                          }
+
+                      }, { // Tertiary yAxis
+                          gridLineWidth: 0,
+                          title: {
+                              text: 'Heart Rate',
+                              style: {
+                                 color: Highcharts.getOptions().colors[1]
+                              }
+                          },
+                          labels: {
+                              format: '{value} bpm',
+                              style: {
+                                 color: Highcharts.getOptions().colors[1]
+                              }
+                          },
+                          opposite: true
+                      }],
+                      tooltip: {
+                        shared: true,
+                        backgroundColor: '#FFFFFF'
+                      },
+                      legend: {
+                        layout: 'vertical',
+                        align: 'left',
+                        x: 80,
+                        verticalAlign: 'top',
+                        y: 55,
+                        floating: true,
+                        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+                      },
+                  },
+                  //  close options
+                  series: [{
+                        name: 'GSR',
+                        type: 'spline',
+                        yAxis: 1,
+                        data: currentUser.gsrHourlySeries,
+                        color: Highcharts.getOptions().colors[2],
+                        tooltip: {
+                           valueSuffix: ' uS'
+                        }
+                     }, {
+                        name: 'Heart Rate',
+                        type: 'spline',
+                        yAxis: 2,
+                        data: currentUser.heartRateHourlySeries,
+                        color: Highcharts.getOptions().colors[1],
+                        marker: {
+                           enabled: false
+                        },
+                        dashStyle: 'shortdot',
+                        tooltip: {
+                           valueSuffix: ' bpm'
+                        }
+                      }, {
+                        name: 'Skin Temp',
+                        type: 'spline',
+                        data: currentUser.skinTempHourlySeries,
+                        color: Highcharts.getOptions().colors[7],
+                        tooltip: {
+                           valueSuffix: ' °F'
+                        }
+                      }]
+               },
+               vm.dailyPhisPersonalGraph = {
+
+                  options:{
+                     chart: {
+                        zoomType: 'xy'
+                     },
+                     title: {
+                        text: 'Daily Averages of Physiological Data'
+                     },
+                     subtitle: {
+                        text: 'Overview of Study Period'
+                     },
+                     xAxis: [{
+                           categories: currentUser.daysSeries,
+                        crosshair: true
+                      }],
+                     yAxis: [{ // Primary yAxis
+                        labels: {
+                           format: '{value}°F',
+                           style: {
+                                 color: Highcharts.getOptions().colors[7]
+                           }
+                        },
+                        title: {
+                           text: 'Skin Temperature',
+                           style: {
+                              color: Highcharts.getOptions().colors[7]
+                           }
+                          },
+                          opposite: true
+
+                      }, { // Secondary yAxis
+                        gridLineWidth: 0,
+                        title: {
+                           text: 'GSR',
+                           style: {
+                                 color: Highcharts.getOptions().colors[2]
+                              }
+                          },
+                          labels: {
+                              format: '{value} uS',
+                              style: {
+                                  color: Highcharts.getOptions().colors[2]
+                              }
+                          }
+
+                      }, { // Tertiary yAxis
+                          gridLineWidth: 0,
+                          title: {
+                              text: 'Heart Rate',
+                              style: {
+                                 color: Highcharts.getOptions().colors[1]
+                              }
+                          },
+                          labels: {
+                              format: '{value} bpm',
+                              style: {
+                                 color: Highcharts.getOptions().colors[1]
+                              }
+                          },
+                          opposite: true
+                      }],
+                      tooltip: {
+                        shared: true,
+                        backgroundColor: '#FFFFFF'
+                      },
+                      legend: {
+                        layout: 'vertical',
+                        align: 'left',
+                        x: 80,
+                        verticalAlign: 'top',
+                        y: 55,
+                        floating: true,
+                        backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
+                      },
+                  },
+                  //  close options
+                  series: [{
+                        name: 'GSR',
+                        type: 'spline',
+                        yAxis: 1,
+                        data: currentUser.gsrDailySeries,
+                        color: Highcharts.getOptions().colors[2],
+                        tooltip: {
+                           valueSuffix: ' uS'
+                        }
+                     }, {
+                        name: 'Heart Rate',
+                        type: 'spline',
+                        yAxis: 2,
+                        data: currentUser.heartRateDailySeries,
+                        color: Highcharts.getOptions().colors[1],
+                        marker: {
+                           enabled: false
+                        },
+                        dashStyle: 'shortdot',
+                        tooltip: {
+                           valueSuffix: ' bpm'
+                        }
+                      }, {
+                        name: 'Skin Temp',
+                        type: 'spline',
+                        data: currentUser.skinTempDailySeries,
+                        color: Highcharts.getOptions().colors[7],
+                        tooltip: {
+                           valueSuffix: ' °F'
+                        }
+                      }]
+               }
+
               vm.userSubstanceStats = {
 
 
@@ -250,7 +517,7 @@
                          type: 'column'
                      },
                      title: {
-                         text: 'User Substance consumption Data'
+                         text: 'User Substance Consumption Data'
                      },
 
                      xAxis: {
@@ -258,7 +525,7 @@
                          crosshair: true
                      },
                      yAxis: {
-                         
+
                          title: {
                              text: 'Changes'
                          }
@@ -302,14 +569,14 @@
                 title: {
                     text: 'Pos, Neg and Impulsivity Response Averages'
                 },
-              
+
                 xAxis: {
-                    
+
                     categories: ["USER "+ currentUser.user ],
                     crosshair: true
                 },
                 yAxis: {
-                    
+
                     title: {
                         text: 'Avg value'
                     },
@@ -352,9 +619,6 @@
                 }]
 
               }
-
-            
-
             } //END of drawUserPageGraphs function
 
         }); //END OF .then of API CALL

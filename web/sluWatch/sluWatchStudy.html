@@ -89,7 +89,6 @@
       </div>
    </div>
 
-
    <div class='row'>
       <h1 class = 'section-header center'>Mood Changes</h1>
       <div class='col s12 highcharts-background study-module study-stats z-depth-2' id=''>
@@ -174,13 +173,13 @@
    <div class="row ">
       <div class="col s12">
       <div class="col s4">
-         <div class = "study-module">
+         <div class = "highcharts-background study-module study-stats z-depth-1 ">
             <table class="highlight bordered">
               <thead >
                 <tr>
-                    <th data-field="id">Start Date</th>
-                    <th data-field="name">Finish Date</th>
-                    <th data-field="price">Days Complete</th>
+                    <th data-field="id">   Start Date</th>
+                    <th data-field="name"> Finish Date</th>
+                    <th data-field="price"> Days Complete</th>
                 </tr>
               </thead>
 
@@ -193,13 +192,13 @@
               </tbody>
             </table>
          </div>
-         <div class = "study-module">
+         <div class = "highcharts-background study-module study-stats z-depth-2">
             <table class="highlight bordered">
               <thead >
                 <tr>
                     <th data-field="id">Surveys Completed</th>
                     <th data-field="name">Total Surveys Taken</th>
-                    <th data-field="price">Compliance(%)</th>
+                    <th data-field="price">Compliance (%)</th>
                 </tr>
               </thead>
 
@@ -214,35 +213,35 @@
          </div>
       </div>
       <div class ="col s4" class = "study-module">
-        <highchart config="vm.userSubstanceStats"></highchart>
+         <div class = "highcharts-background study-module study-stats z-depth-1">
+            <highchart config="vm.userSubstanceStats"></highchart>
+         </div>
       </div>
       <div class ="col s4" class = "study-module">
-        <highchart config="vm.userAverageResponse"></highchart>
+         <div class = "highcharts-background study-module study-stats z-depth-1" >
+            <highchart config="vm.userAverageResponse"></highchart>
+         </div>
       </div>
     </div>
    </div>
+   <div class = "row">
 
-   <div class ="col s12" class = "study-module">
-        <highchart config="vm.phisPersonalGraph"></highchart>
-   </div>
-
-
-    <div class="row">
-        <div class="col s5 " >
-           <div id="activity-pie-chart" class = "study-module">
-               <highchart config=""></highchart>
-           </div>
-           <div id="compliance-pie-chart" class = "pie-charts study-module">
-           </div>
-
+      <h1 class = 'section-header center'>Basis Watch Data</h1>
+      <div class ="col s12" class = "study-module">
+         <div class = "highcharts-background study-module study-stats z-depth-2">
+            <highchart config="vm.dailyPhisPersonalGraph"></highchart>
          </div>
-        <div class="col s7 study-module" id="phisdata">
-            <!-- Body sensor displays go here  -->
-        </div>
+      </div>
+   </div>
+    <div class="row">
+      <div class ="col s12" class = "study-module">
+         <div id = "hourly-phis" class = "highcharts-background study-module study-stats z-depth-2">
+            <highchart config="vm.hourlyPhisPersonalGraph"></highchart>
+         </div>
+      </div>
     </div>
   </div>
 </div>
-
 </div>
 
 <!-- Footer start -->
