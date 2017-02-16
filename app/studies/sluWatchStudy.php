@@ -3,14 +3,6 @@
 header('Access-Control-Allow-Origin: *');
 include_once('../config/database.php');
 
-// $json_file = file_get_contents('sluWatch.json');
-// $jfo = json_decode($json_file);
-// echo json_encode($jfo);
-//exit();
-
-
-//echo file_get_contents("sluWatch.json");
-
 //Get a new DB object and use it for this study
 $db = new Database();
 
@@ -212,5 +204,5 @@ $db->closeConnection();
 /***** Properties for the whole study at right indices *****/
 
 $returnArray["userStudyStats"] = $study_stats;
-file_put_contents("sluWatch.json",json_encode($returnArray));
+file_put_contents("sluWatchResponse.json",json_encode($returnArray));
 ?>

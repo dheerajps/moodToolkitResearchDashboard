@@ -5,11 +5,6 @@ include_once('../config/database.php');
 //Get a new DB object and use it for this study
 $db = new Database();
 
-// $json_file = file_get_contents('nimh-response.json');
-// $jfo = json_decode($json_file);
-// echo json_encode($jfo);
-// exit();
-
 //query for surveys complete
 $study_surveys_sql = 'select patient, COUNT(*) from nimhTest where patient IN (select Distinct patient from nimhTest ) and surveylabel !="Suspension" group by patient;';
 $study_surveys_result = $db->executeQuery($study_surveys_sql);
@@ -24,7 +19,7 @@ if ($study_surveys_result->num_rows > 0) {
       $participant_survey["survey-count"] = intval($row["COUNT(*)"]);
       array_push($study_stats, $participant_survey);
     }
-    //echo json_encode($study_stats);
+    
 }
 //query for all surveys taken by a patient
 $num_of_surveys_sql = "select patient, COUNT(*) as totalSurvey from nimhTest where patient IN (select Distinct patient from nimhTest ) group by patient;";
@@ -135,6 +130,6 @@ $db->closeConnection();
 //Add study stats array as an object at "participants"
 
 $all_user_study_stats["participants"] = $study_stats;
-//echo json_encode($all_user_study_stats);
+
 file_put_contents("nimhStudyResponse.json",json_encode($all_user_study_stats));
 ?>
