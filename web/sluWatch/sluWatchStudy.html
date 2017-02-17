@@ -129,7 +129,7 @@
                    <td data-title="Status">{{user.compliance | number :3}}</td>
                    <td data-title="Actions">
                      <i class="material-icons t-icon">alarm_on</i>
-                     <a href="" download><i class="material-icons t-icon">archive</i></a>
+                     <a href="../app/data/SLU_data/{{user.user}}.zip" download><i class="material-icons t-icon">archive</i></a>
                      <a ng-click="vm.navigateToUserPage(user)"><i class="material-icons t-icon">open_in_new</i></a>
                    </td>
                  </tr>
@@ -145,7 +145,7 @@
         <div class="col s8">
             <div id = "profile-actions">
                <a class="btn-floating  btn-large waves-effect waves-light teal"><i class="material-icons">alarm_on</i></a>
-               <a class="btn-floating  btn-large waves-effect waves-light red" href="" download><i class="material-icons">get_app</i></a>
+               <a class="btn-floating  btn-large waves-effect waves-light red" href="../app/data/SLU_data/{{vm.currentUser.user}}.zip" download><i class="material-icons">get_app</i></a>
                <a class="btn-floating  btn-large waves-effect waves-light orange"><i class="material-icons">settings</i></a>
             </div>
         </div>
