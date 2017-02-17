@@ -42,12 +42,9 @@
              vm.findAvgCompliance = AggregateService.getAverageCompliance(vm.nimhData.users);
 
              vm.findTotal = function(property){
-               var total = 0;
-               for (var i = 0; i < vm.nimhData.users.length ; i++) {
-                     total+=vm.nimhData.users[i][property];
-               }
-               return (total);
+               return AggregateService.getTotalValue(vm.nimhData.users,property);
              }
+             
              //Colors for the graph
              vm.colors = ['#FF9655', '#adfc71', '#dd616e', '#454545', '#b3aee5', '#64E572', '#FFF263', '#66FFCC', '#51b93e'];
 

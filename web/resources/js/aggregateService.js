@@ -4,7 +4,8 @@
 
       return{
 
-         getAverageCompliance: getAverageCompliance
+         getAverageCompliance: getAverageCompliance,
+         getTotalValue: getTotalValue
          
 
       };
@@ -17,6 +18,15 @@
                total+=studyUsers[i]['compliance'];
         }
         return (total/i).toFixed(2);
+      }
+
+      function getTotalValue(studyUsers,property) {
+
+          var total = 0;
+          for (var i = 0; i < studyUsers.length ; i++) {
+            total+=studyUsers[i][property];
+          }
+          return (total);
       }
 
    }]);
