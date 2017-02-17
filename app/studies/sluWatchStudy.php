@@ -63,6 +63,15 @@ $gsrDailyResult = getQueryResults($gsr_daily_result);
 
 $gsrDailyResult = loadDailyMetrics($gsrDailyResult);
 
+//Query to get average compliance for each patient by date
+$compliance_daily_sql = 'select cast(patient as unsigned) as patient, DATE_FORMAT(STR_TO_DATE(date, "%e/%c/%Y"), "%Y-%m-%d") as dateInfo,`daily_survey_count` as avg from sluWatchStats where patient IN ( select distinct patient from sluWatchStats) order by patient, DATE(dateInfo) asc;';
+
+$compliance_daily_result = $db -> executeQuery($compliance_daily_sql);
+
+$complianceDailyResult = getQueryResults($compliance_daily_result);
+
+$complianceDailyResult = loadDailyMetrics($complianceDailyResult);
+
 //Query to get start date and end date for all the patients
 $get_date_sql = 'select patient, MAX(DATE(datetime)) as endDate, MIN(DATE(datetime)) as startDate, DATEDIFF(MAX(DATE(datetime)), MIN(DATE(datetime))) as totalDays from sluWatch where patient in (select Distinct Patient from sluWatch) group by patient';
 $get_date_result = $db -> executeQuery($get_date_sql);
@@ -182,6 +191,8 @@ foreach ($dateResults as $result) {
 
     $study_stats[$j]["gsrHourlyResult"] = $gsrHourlyResult[$userInfo];
     $study_stats[$j]["gsrDailyResult"] = $gsrDailyResult[$userInfo];
+
+    $study_stats[$j]["complianceDailyResult"] = $complianceDailyResult[$userInfo];
 
     $study_stats[$j]["negAvg"] = floatval($sluStatsResults[$i]["negAvg"]);
     $study_stats[$j]["posAvg"] = floatval($sluStatsResults[$i]["posAvg"]);

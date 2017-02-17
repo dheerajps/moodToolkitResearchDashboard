@@ -30,6 +30,7 @@
         }
         else{
           vm.showUserPageFlag=false;
+          initSluController();
           vm.showOverviewPageFlag=true;
         }
 
@@ -43,7 +44,7 @@
 
         sluWatchAPI.getsluWatchData().then(function (response){
 
-            //console.log(response.data);
+            console.log(response.data);
 
             vm.users = [];
             vm.cigs = [];
@@ -116,9 +117,11 @@
 
                // User-specific daily phis measures
                vm.currentUser.daysSeries = []
+               vm.currentUser.complianceDaysSeries = []
                vm.currentUser.gsrDailySeries = []
                vm.currentUser.heartRateDailySeries = []
                vm.currentUser.skinTempDailySeries = []
+               vm.currentUser.complianceDailySeries = []
 
                angular.forEach(vm.currentUser.gsrDailyResult.dates, function(value, key){
                   vm.currentUser.daysSeries.push(value['date']);
@@ -130,6 +133,12 @@
                angular.forEach(vm.currentUser.skinTempDaily.dates, function(value, key){
                   vm.currentUser.skinTempDailySeries.push(value['avg']);
                });
+
+               angular.forEach(vm.currentUser.complianceDailyResult.dates, function(value, key){
+                  vm.currentUser.complianceDaysSeries.push(value['date']);
+                  vm.currentUser.complianceDailySeries.push(value['avg']);
+               });
+               
 
                // User-specific hourly phis measures
                vm.currentUser.hoursSeries = []
@@ -243,7 +252,7 @@
                     text: 'Across all patients'
                 },
                 xAxis: {
-                    min: 14,
+                    min: 12,
                     categories: vm.users,
                     title: {
                         text: 'USERS'
@@ -268,8 +277,7 @@
                 },
                 plotOptions: {
                     column: {
-                        pointPadding: 0.1,
-
+                        pointPadding: 0,
                         borderWidth: 0,
                     },
                 },
@@ -313,7 +321,8 @@
                         text: 'Specifics During Study Period'
                      },
                      xAxis: [{
-                           categories: currentUser.hoursSeries,
+                        min: 20,
+                        categories: currentUser.hoursSeries,
                         crosshair: true
                       }],
                      yAxis: [{ // Primary yAxis
@@ -380,6 +389,9 @@
                         floating: true,
                         backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
                       },
+                      scrollbar: {
+                        enabled: true
+                      }
                   },
                   //  close options
                   series: [{
@@ -427,6 +439,7 @@
                         text: 'Overview of Study Period'
                      },
                      xAxis: [{
+                          min: 12,
                            categories: currentUser.daysSeries,
                         crosshair: true
                       }],
@@ -489,6 +502,9 @@
                         floating: true,
                         backgroundColor: (Highcharts.theme && Highcharts.theme.legendBackgroundColor) || '#FFFFFF'
                       },
+                      scrollbar: {
+                        enabled: true
+                      }
                   },
                   //  close options
                   series: [{
@@ -634,7 +650,56 @@
                     stack: 'female'
                 }]
 
-              }
+              } //END of userAverageResponse graph
+
+
+              vm.userDailyComplianceGraph = {
+
+                options : {
+                      chart: {
+                          type: 'column'
+                      },
+                      title: {
+                          text: 'Daily Survey Compliance'
+                      },
+                      
+                      xAxis: {
+                          min: 8,
+                          categories: vm.currentUser.complianceDaysSeries,  
+                          crosshair: true
+                      },
+                      yAxis: {
+                          min: 0,
+                          title: {
+                              text: 'Survey Count'
+                          }
+                      },
+                      tooltip: {
+                          headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                          pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                              '<td style="padding:0"><b>{point.y:.1f}</b></td></tr>',
+                          footerFormat: '</table>',
+                          shared: true,
+                          useHTML: true
+                      },
+                      plotOptions: {
+                          column: {
+                              pointPadding: 0.2,
+                              borderWidth: 0
+                          }
+                      },
+                      scrollbar: {
+                        enabled: true
+                      }
+                  },
+                  series: [{
+                      name: 'USER ' + vm.currentUser.user,
+                      data: vm.currentUser.complianceDailySeries
+
+                  }]
+
+              }//END of userDailyAverageCompliance graph
+
             } //END of drawUserPageGraphs function
 
         }); //END OF .then of API CALL
