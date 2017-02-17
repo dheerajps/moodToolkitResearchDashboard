@@ -70,7 +70,7 @@ $get_date_result = $db -> executeQuery($get_date_sql);
 $dateResults = getQueryResults($get_date_result);
 
 //Query to get the neg,pos,impulsivity,ciggaretes,drinks, compliance for each patient across the study
-$get_slu_stats_sql = 'select cast(patient as unsigned) as userInfo, avg(neg_avg) as negAvg, avg(pos_avg) as posAvg, avg(impulsivity_avg) as impulsivityAvg, MAX(number_of_cigarettes) as numberCigs, MAX(number_of_drinks) as numberDrinks, MAX(compliance) as compliance, MAX(surveys_complete) as surveysComplete from sluWatchStats where patient IN ( select distinct patient from sluWatchStats) group by patient';
+$get_slu_stats_sql = 'select cast(patient as unsigned) as userInfo, avg(neg_avg) as negAvg, avg(pos_avg) as posAvg, avg(impulsivity_avg) as impulsivityAvg, MAX(number_of_cigarettes) as numberCigs, MAX(number_of_drinks) as numberDrinks, MAX(compliance) as compliance, MAX(surveys_complete) as surveysComplete, MAX(total_surveys) as totalSurveys from sluWatchStats where patient IN ( select distinct patient from sluWatchStats) group by patient';
 $get_slu_stats_results = $db -> executeQuery($get_slu_stats_sql);
 
 $sluStatsResults = getQueryResults($get_slu_stats_results);
@@ -190,7 +190,7 @@ foreach ($dateResults as $result) {
     $study_stats[$j]["drinksConsumed"] = intval($sluStatsResults[$i]["numberDrinks"]);
     $study_stats[$j]["compliance"] = floatval($sluStatsResults[$i]["compliance"]);
     $study_stats[$j]["surveysComplete"] = intval($sluStatsResults[$i]["surveysComplete"]);
-
+    $study_stats[$j]["totalSurveys"] = intval($sluStatsResults[$i]["totalSurveys"]);
 
     $j++;
     $i++;

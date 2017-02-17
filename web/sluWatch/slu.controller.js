@@ -2,9 +2,9 @@
    'use strict';
    /** Controller for the whole SLU WATCH page **/
    angular.module('researchApp').controller('SluController',SluController);
-   SluController.$inject = ['$scope','$rootScope','$http','$window','$location','LoginService','sluWatchAPI'];
+   SluController.$inject = ['$scope','$rootScope','$http','$window','$location','LoginService','sluWatchAPI','graphService','ColorConstants','AggregateService'];
 
-   function SluController(ngScope,ngRootScope,$http,window,location,LoginService,sluWatchAPI){
+   function SluController(ngScope,ngRootScope,$http,window,location,LoginService,sluWatchAPI,graphService,ColorConstants,AggregateService){
 
       var vm = this;
 
@@ -12,7 +12,7 @@
       vm.initSluController = initSluController;
       vm.showOverviewPageFlag = true;
       vm.showUserPageFlag = false;
-
+      vm.findAvgCompliance = null;
       /** Initiate LogOut **/
       vm.initiateLogOut =function(){
 
@@ -43,7 +43,7 @@
 
         sluWatchAPI.getsluWatchData().then(function (response){
 
-            console.log(response.data);
+            //console.log(response.data);
 
             vm.users = [];
             vm.cigs = [];
@@ -55,6 +55,7 @@
             vm.drinksAvg =[];
             vm.users.surveysComplete = [];
             vm.users.daysComplete = [];
+            vm.users.totalSurveys = [];
 
             /** GET THE RESPONSE DATA AND STORE IT **/
             vm.sluData = response.data;
@@ -77,9 +78,14 @@
               vm.drinksAvg.push(val1);
               vm.users.daysComplete.push(value['totalDays']);
               vm.users.surveysComplete.push(value['surveysComplete']);
+              vm.users.totalSurveys.push(value['totalSurveys']);
 
             }); //END OF FOR-LOOP
 
+
+            vm.findAvgCompliance = AggregateService.getAverageCompliance(vm.sluData.users);
+            
+            console.log(vm.findAvgCompliance);
             /** Find total of any property **/
             vm.findTotal = function(property){
                  var total = 0;
@@ -154,96 +160,11 @@
                   }
                });
 
-               // console.log(vm.currentUser.hoursSeries);
-               // console.log(vm.currentUser.heartRateHourlySeries);
-               // console.log(vm.currentUser.gsrHourlySeries);
-               // console.log(vm.currentUser.skinTempHourlySeries);
-
                vm.drawUserPageGraphs(vm.currentUser);
             }
 
             /** All the graphs on the overview page goes under here **/
-            vm.daysSurveysGraph = {
-               options: {
-
-                  chart: {
-                         zoomType: 'xy'
-                  },
-                  title: {
-                          text: 'Days in Study and Surveys Complete'
-                  },
-                  xAxis: {
-                           categories: vm.users,
-                           crosshair: true
-                  },
-                  yAxis: [{ // Primary yAxis
-                     labels: {
-                         format: '{value} Days',
-                         style: {
-                             color: vm.colors[3]
-                         }
-                     },
-                     title: {
-                         text: 'Days in Study',
-                         style: {
-                             color: vm.colors[3]
-                         }
-                     }
-                  }, { // Secondary yAxis
-                     title: {
-                         text: 'Surveys Complete',
-                         style: {
-                             color: vm.colors[9]
-                         }
-                     },
-                     labels: {
-                         format: '{value} Surveys',
-                         style: {
-                             color: vm.colors[9]
-                         }
-                     },
-                     opposite: true
-                  }],
-
-                  tooltip: {
-                  shared: true
-                  },
-
-                  legend: {
-                  layout: 'vertical',
-                  align: 'left',
-                  x: 120,
-                  verticalAlign: 'top',
-                  y: 40,
-                  floating: true,
-                  backgroundColor: '#FFFFFF'
-                  }
-               },
-               credits: {
-                  enabled: false
-               },
-               series: [{
-                  name: 'Surveys',
-                  type: 'column',
-                  yAxis: 1,
-                  data: vm.users.surveysComplete,
-                  tooltip: {
-                      valueSuffix: ' surveys'
-                  },
-                  color: vm.colors[3]
-
-               }, {
-                  name: 'Days in Study',
-                  type: 'spline',
-                  data: vm.users.daysComplete,
-                  tooltip: {
-                      valueSuffix: ' days'
-                  },
-                  color: vm.colors[9]
-               }]
-            } //end of days-surveys graphs
-
-
+            vm.daysSurveysGraph =  graphService.getDaysInStudyGraph(vm.users, vm.users.daysComplete, vm.users.surveysComplete); //end of days-surveys graphs
 
 
 
@@ -359,17 +280,17 @@
               series: [{
                     name: 'Positive Avg',
                     data: vm.posAvg,
-                    color: vm.colors[7],
+                    color: ColorConstants.Colors['AquaMarine'],
                     stack: 'male'
                 }, {
                     name: 'Negative Avg',
                     data: vm.negAvg,
-                    color: vm.colors[2],
+                    color: ColorConstants.Colors['Roman'],
                     stack: 'female'
                 }, {
                     name: 'Impulsivity',
                     data: vm.impulsivityAvg,
-                    color: vm.colors[3],
+                    color: ColorConstants.Colors['Tundora'],
                     stack: 'female'
                 }]
             } //END of averageValuesGraph

@@ -2,9 +2,9 @@
    
    /** Controller for the whole NIMH page **/
    angular.module('researchApp').controller('NimhController',NimhController);
-   NimhController.$inject = ['$scope','$rootScope','$http','nimhAPI','$window','$location','LoginService'];
+   NimhController.$inject = ['$scope','$rootScope','$http','nimhAPI','$window','$location','LoginService','ColorConstants','graphService','AggregateService'];
 
-   function NimhController(ngScope,ngRootScope,$http,nimhAPI,window,location,LoginService){
+   function NimhController(ngScope,ngRootScope,$http,nimhAPI,window,location,LoginService,ColorConstants,graphService,AggregateService){
 
       var vm = this;
       initNIMHController();
@@ -39,13 +39,7 @@
              vm.userSelected = null;
              console.log(vm.nimhData.users);
 
-             vm.findAvgCompliance = function(){
-               var total = 0;
-               for (var i = 0; i < vm.nimhData.users.length ; i++) {
-                     total+=vm.nimhData.users[i]['compliance'];
-               }
-               return (total/i).toFixed(2);
-             }
+             vm.findAvgCompliance = AggregateService.getAverageCompliance(vm.nimhData.users);
 
              vm.findTotal = function(property){
                var total = 0;
@@ -141,85 +135,7 @@
              }
              
              /** All the graphs on the OVERVIEW page **/
-             vm.daysSurveysGraph = {
-               options: {
-
-                  chart: {
-                         zoomType: 'xy'
-                  },
-                  title: {
-                          text: 'Days in Study and Surveys Complete'
-                  },
-                  xAxis: {
-                           categories: vm.users,
-                           crosshair: true
-                  },
-                  yAxis: [{ // Primary yAxis
-                     labels: {
-                         format: '{value} Days',
-                         style: {
-                             color: vm.colors[3]
-                         }
-                     },
-                     title: {
-                         text: 'Days in Study',
-                         style: {
-                             color: vm.colors[3]
-                         }
-                     }
-                  }, { // Secondary yAxis
-                     title: {
-                         text: 'Surveys Complete',
-                         style: {
-                             color: vm.colors[9]
-                         }
-                     },
-                     labels: {
-                         format: '{value} Surveys',
-                         style: {
-                             color: vm.colors[9]
-                         }
-                     },
-                     opposite: true
-                  }],
-
-                  tooltip: {
-                  shared: true
-                  },
-
-                  legend: {
-                  layout: 'vertical',
-                  align: 'left',
-                  x: 120,
-                  verticalAlign: 'top',
-                  y: 40,
-                  floating: true,
-                  backgroundColor: '#FFFFFF'
-                  }
-               },
-               credits: {
-                  enabled: false
-               },
-               series: [{
-                  name: 'Surveys',
-                  type: 'column',
-                  yAxis: 1,
-                  data: vm.users.surveysComplete,
-                  tooltip: {
-                      valueSuffix: ' surveys'
-                  },
-                  color: vm.colors[3]
-
-               }, {
-                  name: 'Days in Study',
-                  type: 'spline',
-                  data: vm.users.daysComplete,
-                  tooltip: {
-                      valueSuffix: ' days'
-                  },
-                  color: vm.colors[9]
-               }]
-            } //end of days-surveys graphs
+            vm.daysSurveysGraph = graphService.getDaysInStudyGraph(vm.users, vm.users.daysComplete, vm.users.surveysComplete); //end of days-surveys graphs
 
             vm.moodChangesGraph ={
                options :{ 
