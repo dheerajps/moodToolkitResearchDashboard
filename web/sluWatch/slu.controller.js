@@ -85,19 +85,13 @@
 
 
             vm.findAvgCompliance = AggregateService.getAverageCompliance(vm.sluData.users);
-            
+            /** Find total of any property **/
             vm.findTotal = function(property){
                return AggregateService.getTotalValue(vm.sluData.users,property);
              }
             console.log(vm.findAvgCompliance);
-            /** Find total of any property **/
-            vm.findTotal = function(property){
-                 var total = 0;
-                 for (var i = 0; i < vm.sluData.users.length ; i++) {
-                       total += vm.sluData.users[i][property];
-                 }
-                 return (total);
-            }
+            
+            
             /** Sets flags and initiates route to SLU user view **/
 
             vm.navigateToUserPage = function(userId){
@@ -428,7 +422,69 @@
                            valueSuffix: ' °F'
                         }
                       }]
-               },
+               }
+               /****** For highstocks will clean it later **********
+               vm.hourlyPhisPersonalGraph = {
+                options:{
+                  rangeSelector: {
+                     selected: 4
+                  },
+                  title: {
+                        text: 'Hourly Averages of Physiological Data'
+                     },
+                     subtitle: {
+                        text: 'Specifics During Study Period'
+                     },
+                  yAxis: {
+                     labels: {
+                        formatter: function () {
+                           return (this.value > 0 ? ' + ' : '') + this.value + '%';
+                        }
+                     },
+                     plotLines: [{
+                         value: 0,
+                         width: 2,
+                         color: 'silver'
+                     }]
+                  },
+                  xAxis : [{
+                           categories: currentUser.hoursSeries,
+                        crosshair: true
+                      }],
+                 plotOptions: {
+                     series: {
+                         compare: 'percent',
+                         showInNavigator: true
+                     }
+                 },
+
+                 tooltip: {
+                     pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.change}%)<br/>',
+                     valueDecimals: 2,
+                     split: true
+                 } },
+                  series: [],
+                  useHighStocks: true
+               }
+               /////////////////////////
+                   vm.hourlyPhisPersonalGraph.series.push({
+                        id: 1,
+                        name: 'GSR',
+                        data: currentUser.gsrHourlySeries
+                      },   {
+                        id: 2,
+                        name: 'Heart Rate',
+                        data: currentUser.heartRateHourlySeries
+
+                      }, {
+                        id: 3,
+                        name: 'Skin Temp',
+                        data: currentUser.skinTempHourlySeries
+                      }
+
+
+                    );
+               ////////////////////// ****/
                vm.dailyPhisPersonalGraph = {
 
                   options:{

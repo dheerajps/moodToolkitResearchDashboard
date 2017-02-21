@@ -44,7 +44,14 @@
                 css: 'resources/css/style.css',
                 controllerAs: 'vm'
             })
-
+            
+            .when('/alcohol', {
+                title: 'Modd Toolkit',
+                controller: 'AlcoholController',
+                templateUrl: 'alcohol/alcoholStudy.html',
+                css: 'resources/css/style.css',
+                controllerAs: 'vm'
+            })
             
 
             .otherwise({ redirectTo: '/login' });
