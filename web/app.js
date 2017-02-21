@@ -44,11 +44,11 @@
                 css: 'resources/css/style.css',
                 controllerAs: 'vm'
             })
-            
-            .when('/alcohol', {
+
+            .when('/alcoholStudy', {
                 title: 'Modd Toolkit',
                 controller: 'AlcoholController',
-                templateUrl: 'alcohol/alcoholStudy.html',
+                templateUrl: 'alcoholStudy/alcoholStudy.html',
                 css: 'resources/css/style.css',
                 controllerAs: 'vm'
             })
