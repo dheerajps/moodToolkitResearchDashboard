@@ -1,4 +1,10 @@
-<?php
+<? php
+
+/* 
+---- Helps in zipping all the files inside each patient and creates a .zip files for to download on the button at Overview and User view for SLU
+---- One of the files which needs to go into cron job later 
+*/
+
 function Zip($source, $destination)
 {
     //echo $source;
@@ -40,7 +46,20 @@ function Zip($source, $destination)
     return $zip->close();
 }
 
+$path = '../data/SLU_data/'; // '.' for current
 
-//Zip('../data/SLU_data/', '../dummy/compressed.zip');
+foreach (new DirectoryIterator($path) as $file) {
+    if ($file->isDot()) continue;
+
+    if ($file->isDir()) {
+        
+        $sourcePath = "../data/SLU_data/" . $file;
+        $destinationPath = "../data/SLU_data/download/" . $file . ".zip";
+        Zip($sourcePath, $destinationPath); // call the function for each source folder
+
+    }
+}
+
+
 
 ?>
