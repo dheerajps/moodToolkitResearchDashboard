@@ -7,12 +7,12 @@
 
       return{
 
-         getalcoholStudyData: getalcoholStudyData,
+         getAlcoholStudyData: getAlcoholStudyData,
          getUser: getUser,
          setUser: setUser
 
       };
-      function getalcoholStudyData(){
+      function getAlcoholStudyData(){
 
 
           var requestURL = '../../app/studies/alcoholStudyResponse.json';

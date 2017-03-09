@@ -2,9 +2,9 @@
    'use strict';
    /** Controller for the whole SLU WATCH page **/
    angular.module('researchApp').controller('AlcoholController',AlcoholController);
-   AlcoholController.$inject = ['$scope','$rootScope','$http','$window','$location','LoginService','graphService'];
+   AlcoholController.$inject = ['$scope','$rootScope','$http','$window','$location','LoginService','graphService','alcoholStudyAPI'];
 
-   function AlcoholController(ngScope,ngRootScope,$http,window,location,LoginService,graphService){
+   function AlcoholController(ngScope,ngRootScope,$http,window,location,LoginService,graphService,alcoholStudyAPI){
 
    	var vm = this;
 
@@ -38,10 +38,16 @@
 
       function initAlcoholController(){
 
-      }
+      	alcoholStudyAPI.getAlcoholStudyData().then(function (response){
+
+      		console.log(response.data);
+
+      	}); //END OF .then of API CALL
+
+      } //END OF initAlcoholController function
 
 
-   
+   	  initAlcoholController();
 
    }
 
