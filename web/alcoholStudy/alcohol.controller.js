@@ -2,9 +2,9 @@
    'use strict';
    /** Controller for the whole SLU WATCH page **/
    angular.module('researchApp').controller('AlcoholController',AlcoholController);
-   AlcoholController.$inject = ['$scope','$rootScope','$http','$window','$location','LoginService','graphService','alcoholStudyAPI'];
+   AlcoholController.$inject = ['$scope','$rootScope','$http','$window','$location','LoginService','graphService','alcoholStudyAPI','ColorConstants','AggregateService'];
 
-   function AlcoholController(ngScope,ngRootScope,$http,window,location,LoginService,graphService,alcoholStudyAPI){
+   function AlcoholController(ngScope,ngRootScope,$http,window,location,LoginService,graphService,alcoholStudyAPI,ColorConstants,'AggregateService'){
 
    	var vm = this;
 
@@ -41,6 +41,31 @@
       	alcoholStudyAPI.getAlcoholStudyData().then(function (response){
 
       		console.log(response.data);
+
+      		/** GET THE RESPONSE DATA AND STORE IT **/
+            vm.alcoholData = response.data;
+            
+
+            vm.alcoholData.users = vm.alcoholData["userStudyStats"];
+
+            vm.users = [];
+            vm.totalDaysInStudy = [];
+            vm.completedSurveys = [];
+            vm.missedSurveys = [];
+            vm.totalSurveys = [];
+
+            angular.forEach(vm.alcoholData.users, function(value, key){
+
+            	vm.users.push('USER ' + value.user);
+            	vm.totalDaysInStudy.push(value.totalDays);
+            	vm.completedSurveys.push(value.completedSurveys);
+            	vm.missedSurveys.push(value.missedSurveys);
+            	vm.totalSurveys.push(value.totalSurveys);
+            	
+
+            }); //END OF FOR-LOOP
+
+            vm.findAvgCompliance = AggregateService.getAverageCompliance(vm.alcoholData.users);
 
       	}); //END OF .then of API CALL
 

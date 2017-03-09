@@ -87,7 +87,7 @@
             vm.findAvgCompliance = AggregateService.getAverageCompliance(vm.sluData.users);
             /** Find total of any property **/
             vm.findTotal = function(property){
-               return AggregateService.getTotalValue(vm.sluData.users,property);
+               return AggregateService.getTotalValue(vm.sluData.users , property);
              }
             console.log(vm.findAvgCompliance);
             

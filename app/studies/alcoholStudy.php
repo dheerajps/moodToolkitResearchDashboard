@@ -20,11 +20,14 @@ $get_date_result = $db -> executeQuery($get_date_sql);
 
 $dateResults = getQueryResults($get_date_result);
 
+//Get number of days in study 
 $get_total_days_sql = "select patient, COUNT(DISTINCT(DATE_FORMAT(STR_TO_DATE(startts, '%c/%e/%Y'), '%Y-%m-%d '))) As daysInStudy from alcoholStudy where afraid !=0 and patient in (select Distinct patient from alcoholStudy) group by patient;";
 
 $get_total_days_result = $db -> executeQuery($get_total_days_sql);
 
 $totalDaysResults = getQueryResults($get_total_days_result);
+
+//Get number of missed surveys for each patient
 $search = "missed";
 $get_missed_surveys_sql = "select patient, COUNT(*) as missedSurveys from alcoholStudy where patient in (select Distinct patient from alcoholStudy) and type1 LIKE '$search%' group by patient ;";
 
@@ -32,13 +35,15 @@ $get_missed_surveys_result = $db -> executeQuery($get_missed_surveys_sql);
 
 $missedSurveysResults = getQueryResults($get_missed_surveys_result);
 
+//Get completed surveys for each patient
 $get_completed_surveys_sql = "select patient, COUNT(*) as completedSurveys from alcoholStudy where patient in (select Distinct patient from alcoholStudy) and afraid!=0 group by patient ;";
 
 $get_completed_surveys_result = $db -> executeQuery($get_completed_surveys_sql);
 
 $completedSurveysResults = getQueryResults($get_completed_surveys_result);
 
-$get_total_surveys_sql = "select patient, COUNT(*) as totalSurveys from alcoholStudy where patient in (select Distinct patient from alcoholStudy) group by patient;";
+//Get total surveys prompted for each patient
+$get_total_surveys_sql = 'select patient, COUNT(*) as totalSurveys from alcoholStudy where patient in (select Distinct patient from alcoholStudy) and (type1 != "Sensor connection" AND type1 != "")  group by patient;';
 
 $get_total_surveys_result = $db -> executeQuery($get_total_surveys_sql);
 //print_r($get_total_surveys_result);
@@ -72,15 +77,19 @@ foreach ($dateResults as $result) {
     date_default_timezone_set('America/Chicago');
     $startDate = date('F d Y', strtotime($result["startDate"]));
     $endDate = date('F d Y', strtotime($result["endDate"]));
+    $missedSurveys = intval($missedSurveysResults[$i]["missedSurveys"]);
+    $completedSurveys = intval($completedSurveysResults[$i]["completedSurveys"]);
+    $totalSurveys = intval($totalSurveysResults[$i]["totalSurveys"]);
 
     //make sure to check correct user gets correct value
-    $study_stats[$j][$userInfo]['user'] = $userInfo;
-    $study_stats[$j][$userInfo]['startDate'] = $startDate;
-    $study_stats[$j][$userInfo]['endDate'] = $endDate;
-    $study_stats[$j][$userInfo]['totalDays'] = intval($totalDaysResults[$i]["daysInStudy"]); 
-    $study_stats[$j][$userInfo]['missedSurveys'] = intval($missedSurveysResults[$i]["missedSurveys"]);
-    $study_stats[$j][$userInfo]['completedSurveys'] = intval($completedSurveysResults[$i]["completedSurveys"]);
-    $study_stats[$j][$userInfo]['totalSurveys'] = intval($totalSurveysResults[$i]["totalSurveys"]);
+    $study_stats[$j]['user'] = $userInfo;
+    $study_stats[$j]['startDate'] = $startDate;
+    $study_stats[$j]['endDate'] = $endDate;
+    $study_stats[$j]['totalDays'] = intval($totalDaysResults[$i]["daysInStudy"]); 
+    $study_stats[$j]['missedSurveys'] = intval($missedSurveysResults[$i]["missedSurveys"]);
+    $study_stats[$j]['completedSurveys'] = intval($completedSurveysResults[$i]["completedSurveys"]);
+    $study_stats[$j]['totalSurveys'] = intval($totalSurveysResults[$i]["totalSurveys"]);
+    $study_stats[$j]['compliance'] = ($totalSurveys - $missedSurveys)/$totalSurveys;
 
     $i++;
     $j++;
