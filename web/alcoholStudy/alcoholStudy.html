@@ -45,7 +45,7 @@
     <a href="#" data-activates="slide-out" class="button-collapse"></a>
     <!-- end sidebar -->
     <!-- page content for Alcohol Study overview status determined by this flag-->
-  <!-- <div ng-if="vm.showOverviewPageFlag"> -->
+  <div ng-if="vm.showOverviewPageFlag">
    <div class="row">
       <div class="col s3" >
          <div class="row">
@@ -56,9 +56,9 @@
                     <hr>
                 </div>
                 <div class="card-content">
-                  <div><p class="days"><strong>Total Participants: {{}}</strong></p><br></div>
-                  <div><p class="days"><strong>Total days complete: {{}}</strong></p><br></div>
-                  <div><p class="surveys"><strong>Total surveys complete: </strong></p></div>
+                  <div><p class="days"><strong>Total Participants: {{vm.users.length}}</strong></p><br></div>
+                  <div><p class="days"><strong>Total days complete: {{vm.findTotal('totalDays')}}</strong></p><br></div>
+                  <div><p class="surveys"><strong>Total surveys complete: {{vm.findTotal('completedSurveys')}}</strong></p></div>
                 </div>
                 <div class="card-action">
                 </div>
@@ -72,9 +72,9 @@
 
                 </div>
                 <div class="card-content">
-                <div ><p class="missed"><strong>Total missed surveys: </strong></p></div>
+                <div ><p class="missed"><strong>Total missed surveys: {{vm.findTotal('missedSurveys')}}</strong></p></div>
                  <br>
-                 <div><p class="compliance"><strong>Avg participant compliance: </strong></p></div>
+                 <div><p class="compliance"><strong>Avg participant compliance: {{vm.findAvgCompliance}} </strong></p></div>
                 </div>
                 <div class="card-action">
                 </div>
@@ -84,7 +84,7 @@
       <div class= "col s9">
          <h1 class = 'section-header center' id="mood-changes-header">Alcohol Study Overview</h1>
          <div class='col s12 study-module study-stats z-depth-2'>
-            <highchart config=""></highchart>
+            <highchart config="vm.daysSurveysGraph"></highchart>
          </div>
       </div>
    </div>
@@ -92,15 +92,15 @@
    <div class='row'>
       <h1 class = 'section-header center'>Mood Changes</h1>
       <div class='col s12 highcharts-background study-module study-stats z-depth-2' id=''>
-        <highchart config=""></highchart>
+        <highchart config="vm.moodChangesGraph"></highchart>
       </div>
    </div>
-    <div class='row'>
+    <!-- <div class='row'>
       <h1 class = 'section-header center'>Response Summary</h1>
       <div class="col s12 highcharts-background study-module study-stats z-depth-2">
         <highchart config=""></highchart>
       </div>
-    </div>
+    </div> -->
    <div class = 'row'>
       <h1 class = 'section-header left'>Participants</h1>
 
@@ -120,7 +120,7 @@
                  </tr>
                </thead>
                <tbody>
-                 <tr ng-repeat="user in vm.sluData.users">
+                 <tr ng-repeat="user in vm.alcoholData.users">
                    <td data-title="ID">{{$index+1}}</td>
                    <td data-title="Name">{{user.user}}</td>
                    <td data-title="Start Date">{{user.startDate}}</td>
@@ -140,7 +140,7 @@
     </div>
    </div>
   <!-- The view to handle user data the flag will determine whether to show user data or not-->
-   <!-- <div ng-if="vm.showUserPageFlag"> -->
+   <div ng-if="vm.showUserPageFlag">
      <div class="row profile">
         <div class="col s8">
             <div id = "profile-actions">
@@ -204,8 +204,8 @@
 
               <tbody>
                 <tr>
-                  <td>{{vm.currentUser.surveysComplete}}</td>
-                  <td>{{}}</td>
+                  <td>{{vm.currentUser.completedSurveys}}</td>
+                  <td>{{vm.currentUser.totalSurveys}}</td>
                   <td>{{vm.currentUser.compliance * 100 | number :2}}</td>
                 </tr>
               </tbody>

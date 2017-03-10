@@ -46,25 +46,15 @@ $completedSurveysResults = getQueryResults($get_completed_surveys_result);
 $get_total_surveys_sql = 'select patient, COUNT(*) as totalSurveys from alcoholStudy where patient in (select Distinct patient from alcoholStudy) and (type1 != "Sensor connection" AND type1 != "")  group by patient;';
 
 $get_total_surveys_result = $db -> executeQuery($get_total_surveys_sql);
-//print_r($get_total_surveys_result);
+
 $totalSurveysResults = getQueryResults($get_total_surveys_result);
 
-/*** Function to return the query results in the form of an array ***/
-function getQueryResults($queryResult)
-{
-    if($queryResult -> num_rows > 0){
-        $i=0;
-        $results = array();
-        while($row = $queryResult -> fetch_assoc()){
-            $results[$i] = $row;
-            $i++;
-        }
-    }
-    else {
-        echo "error getting query results";
-    }
-    return $results;
-}
+//Get mood stats for each patient
+$get_mood_stats_sql = "select participant,total_mood_changes,positive_changes,negative_changes from alcoholStudyStats order by participant;";
+
+$get_mood_stats_result = $db -> executeQuery($get_mood_stats_sql);
+
+$moodStatsResults = getQueryResults($get_mood_stats_result);
 
 /*** This loops through each patient object and adds all the properties at USER LEVEL ***/
 $i=0;
@@ -90,10 +80,32 @@ foreach ($dateResults as $result) {
     $study_stats[$j]['completedSurveys'] = intval($completedSurveysResults[$i]["completedSurveys"]);
     $study_stats[$j]['totalSurveys'] = intval($totalSurveysResults[$i]["totalSurveys"]);
     $study_stats[$j]['compliance'] = ($totalSurveys - $missedSurveys)/$totalSurveys;
+    $study_stats[$j]['totalMoodChanges'] = intval($moodStatsResults[$i]["total_mood_changes"]);
+    $study_stats[$j]['posMoodChanges'] = intval($moodStatsResults[$i]["positive_changes"]);
+    $study_stats[$j]['negMoodChanges'] = intval($moodStatsResults[$i]["negative_changes"]);
+
 
     $i++;
     $j++;
 }
+
+/*** Function to return the query results in the form of an array ***/
+function getQueryResults($queryResult)
+{
+    if($queryResult -> num_rows > 0){
+        $i=0;
+        $results = array();
+        while($row = $queryResult -> fetch_assoc()){
+            $results[$i] = $row;
+            $i++;
+        }
+    }
+    else {
+        echo "error getting query results";
+    }
+    return $results;
+}
+
 $returnArray["userStudyStats"] = $study_stats;
 echo json_encode($returnArray);
 file_put_contents("alcoholStudyResponse.json",json_encode($returnArray));
