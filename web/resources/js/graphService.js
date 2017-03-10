@@ -6,7 +6,7 @@
       return{
 
          getDaysInStudyGraph: getDaysInStudyGraph,
-         getMoodBreakdownGraph: getMoodBreakdownGraph
+         getMoodChangesGraph: getMoodChangesGraph
       };
 
 
@@ -96,8 +96,65 @@
 
       }
 
-      function getMoodBreakdownGraph(){
+      function getMoodChangesGraph(users, totalMoodChanges, positiveMoodChanges, negativeMoodChanges){
 
+          moodChangesGraph = {
+               options :{ 
+
+                 chart: {
+                     type: 'column'
+                 },
+                 title: {
+                     text: 'Positive and Negative Mood Changes Across Participants'
+                 },
+                 xAxis: {
+                     categories: users
+                 },
+                 yAxis: {
+                     allowDecimals: false,
+                     min: 0,
+                     title: {
+                         text: 'Number of changes'
+                     }
+                 },
+                 tooltip: {
+                     formatter: function () {
+                         return '<b>' + this.x + '</b><br/>' +
+                             this.series.name + ': ' + this.y + '<br/>' +
+                             'Total: ' + this.point.stackTotal;
+                     }
+                 },
+                  plotOptions: {
+                     column: {
+                         stacking: 'normal'
+                     }
+                  }
+               },
+
+              credits: {
+                  enabled: false
+               },
+
+              series: [{
+                  name: 'Total Changes',
+                  color: ColorConstants.Colors['Tundora'],
+                  data:  totalMoodChanges,
+                  stack: 'male'
+              }, {
+                  name: 'Positive Changes',
+                  color: ColorConstants.Colors['AquaMarine'],
+                  data: positiveMoodChanges,
+                  stack: 'female'
+              }, {
+                  name: 'Negative Changes',
+                  color: ColorConstants.Colors['Roman'],
+                  data:  negativeMoodChanges,
+                  stack: 'female'
+              }]
+
+          }//end of mood-changes graph
+
+          return moodChangesGraph;
       }
 
    }]);

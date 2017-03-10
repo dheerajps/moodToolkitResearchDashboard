@@ -134,61 +134,7 @@
              /** All the graphs on the OVERVIEW page **/
             vm.daysSurveysGraph = graphService.getDaysInStudyGraph(vm.users, vm.users.daysComplete, vm.users.surveysComplete); //end of days-surveys graphs
 
-            vm.moodChangesGraph ={
-               options :{ 
-
-                 chart: {
-                     type: 'column'
-                 },
-                 title: {
-                     text: 'Positive and Negative Mood Changes Across Participants'
-                 },
-                 xAxis: {
-                     categories: vm.users
-                 },
-                 yAxis: {
-                     allowDecimals: false,
-                     min: 0,
-                     title: {
-                         text: 'Number of changes'
-                     }
-                 },
-                 tooltip: {
-                     formatter: function () {
-                         return '<b>' + this.x + '</b><br/>' +
-                             this.series.name + ': ' + this.y + '<br/>' +
-                             'Total: ' + this.point.stackTotal;
-                     }
-                 },
-                  plotOptions: {
-                     column: {
-                         stacking: 'normal'
-                     }
-                  }
-               },
-
-              credits: {
-                  enabled: false
-               },
-
-              series: [{
-                  name: 'Total Changes',
-                  color: vm.colors[3],
-                  data: vm.users.totalMoodChanges,
-                  stack: 'male'
-              }, {
-                  name: 'Positive Changes',
-                  color: vm.colors[7],
-                  data: vm.users.positiveMoodChanges,
-                  stack: 'female'
-              }, {
-                  name: 'Negative Changes',
-                  color: vm.colors[2],
-                  data: vm.users.negativeMoodChanges,
-                  stack: 'female'
-              }]
-
-            }//end of mood-changes graph
+            vm.moodChangesGraph = graphService.getMoodChangesGraph(vm.users, vm.users.totalMoodChanges, vm.users.positiveMoodChanges, vm.users.negativeMoodChanges);//end of mood-changes graph
 
             vm.totalMoodBreakdownGraph = {
                options:{
