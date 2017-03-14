@@ -55,6 +55,7 @@
              vm.users.totalMoodChanges = [];
              vm.users.positiveMoodChanges = [];
              vm.users.negativeMoodChanges = [];
+
              angular.forEach(vm.nimhData.users, function(value, key) {
                   vm.users.push('USER ' + value.user);
                   vm.users.daysComplete.push(value['day-count']);
@@ -63,6 +64,12 @@
                   vm.users.positiveMoodChanges.push(value['positive_changes']);
                   vm.users.negativeMoodChanges.push(value['negative_changes']);
              });
+
+             vm.totalOverallMoodChanges = parseInt(vm.findTotal('total_mood_changes'));
+             vm.totalPositiveChanges = parseInt(vm.findTotal('positive_changes'));
+             vm.totalNegativeChanges = parseInt(vm.findTotal('negative_changes'));
+
+
              vm.navigateToUserPage = function(userId){
             
               vm.showOverviewPageFlag = false;
@@ -136,59 +143,7 @@
 
             vm.moodChangesGraph = graphService.getMoodChangesGraph(vm.users, vm.users.totalMoodChanges, vm.users.positiveMoodChanges, vm.users.negativeMoodChanges);//end of mood-changes graph
 
-            vm.totalMoodBreakdownGraph = {
-               options:{
-
-                  chart: {
-                     type: 'column'
-                 },
-                 title: {
-                     text: 'Overall Moodchange Data'
-                 },
-
-                 xAxis: {
-                     categories: ['Participants'],
-                     crosshair: true
-                 },
-                 yAxis: {
-                     min: 0,
-                     title: {
-                         text: 'Changes'
-                     }
-                 },
-                 tooltip: {
-                     headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                     pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                         '<td style="padding:0"><b>{point.y: .1f} </b></td></tr>',
-                     footerFormat: '</table>',
-                     shared: true,
-                     useHTML: true
-                 },
-                 plotOptions: {
-                     column: {
-                         pointPadding: 0.2,
-                         borderWidth: 0
-                     }
-                 }
-               },
-               series: [{
-                  name: 'Total Changes',
-                  color: vm.colors[3],
-                  data: [parseInt(vm.findTotal('total_mood_changes'))]
-               }, {
-                  name: 'Positive Changes',
-                  color: vm.colors[7],
-                  data: [parseInt(vm.findTotal('positive_changes'))]
-               }, {
-                  name: 'Negative Changes',
-                  color: vm.colors[2],
-                  data: [parseInt(vm.findTotal('negative_changes'))]
-               }],
-               credits: {
-                  enabled: false
-               }
-
-            } //end of mood-changes breakdown graph
+            vm.totalMoodBreakdownGraph = graphService.getTotalMoodBreakdownGraph(vm.totalOverallMoodChanges, vm.totalPositiveChanges, vm.totalNegativeChanges);//end of mood-changes breakdown graph
 
             vm.negativeMoodBreakdownGraph = {
 

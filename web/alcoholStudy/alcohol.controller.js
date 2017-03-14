@@ -69,7 +69,8 @@
             	vm.negativeMoodChanges.push(value.negMoodChanges);
 
             }); //END OF FOR-LOOP
-            console.log(vm.totalSurveys);
+            
+
 
             vm.findAvgCompliance = AggregateService.getAverageCompliance(vm.alcoholData.users);
 
@@ -77,6 +78,12 @@
                return AggregateService.getTotalValue(vm.alcoholData.users , property);
             }
 
+
+            vm.totalOverallMoodChanges = parseInt(vm.findTotal('totalMoodChanges'));
+		    vm.totalPositiveChanges = parseInt(vm.findTotal('posMoodChanges'));
+		    vm.totalNegativeChanges = parseInt(vm.findTotal('negMoodChanges'));
+
+		    console.log(vm.totalOverallMoodChanges);
             /** Sets flags and initiates route to Alocohol user view **/
 
             vm.navigateToUserPage = function(userId){
@@ -90,7 +97,7 @@
             /* GRAPHS FOR THE OVERVIEW PAGE GOES HERE */
             vm.daysSurveysGraph = graphService.getDaysInStudyGraph(vm.users, vm.totalDaysInStudy, vm.completedSurveys); //end of days-surveys graphs
             vm.moodChangesGraph = graphService.getMoodChangesGraph(vm.users, vm.totalMoodChanges, vm.positiveMoodChanges, vm.negativeMoodChanges); //end of moodChangesGraph
-
+            vm.totalMoodBreakdownGraph = graphService.getTotalMoodBreakdownGraph(vm.totalOverallMoodChanges, vm.totalPositiveChanges, vm.totalNegativeChanges);//end of mood-changes breakdown graph
 
       	}); //END OF .then of API CALL
 

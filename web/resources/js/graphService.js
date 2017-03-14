@@ -6,7 +6,8 @@
       return{
 
          getDaysInStudyGraph: getDaysInStudyGraph,
-         getMoodChangesGraph: getMoodChangesGraph
+         getMoodChangesGraph: getMoodChangesGraph,
+         getTotalMoodBreakdownGraph: getTotalMoodBreakdownGraph
       };
 
 
@@ -155,6 +156,66 @@
           }//end of mood-changes graph
 
           return moodChangesGraph;
+      }
+
+      function getTotalMoodBreakdownGraph(totalOverallMoodChanges, totalPositiveChanges, totalNegativeChanges){
+
+          totalMoodBreakdownGraph = {
+
+            options:{
+
+                  chart: {
+                     type: 'column'
+                 },
+                 title: {
+                     text: 'Overall Moodchange Data'
+                 },
+
+                 xAxis: {
+                     categories: ['Participants'],
+                     crosshair: true
+                 },
+                 yAxis: {
+                     min: 0,
+                     title: {
+                         text: 'Changes'
+                     }
+                 },
+                 tooltip: {
+                     headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+                     pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                         '<td style="padding:0"><b>{point.y: .1f} </b></td></tr>',
+                     footerFormat: '</table>',
+                     shared: true,
+                     useHTML: true
+                 },
+                 plotOptions: {
+                     column: {
+                         pointPadding: 0.2,
+                         borderWidth: 0
+                     }
+                 }
+               },
+               series: [{
+                  name: 'Total Changes',
+                  color: ColorConstants.Colors['Tundora'],
+                  data: [totalOverallMoodChanges]
+               }, {
+                  name: 'Positive Changes',
+                  color: ColorConstants.Colors['AquaMarine'],
+                  data: [totalPositiveChanges]
+               }, {
+                  name: 'Negative Changes',
+                  color: ColorConstants.Colors['Roman'],
+                  data: [totalNegativeChanges]
+               }],
+               credits: {
+                  enabled: false
+               }
+
+          }
+
+          return totalMoodBreakdownGraph; //end of mood-changes breakdown graph
       }
 
    }]);
