@@ -83,59 +83,11 @@
              /** Any graphs to be drawn on the USER view of NIMH page **/
              vm.drawUserPageGraphs = function(currentUser){
 
-                vm.totalUserMoodBreakdownGraph = {
-                   options:{
+                const total = "total_mood_changes";
+                const positive = "positive_changes";
+                const negative = "negative_changes";
 
-                      chart: {
-                         type: 'column'
-                     },
-                     title: {
-                         text: 'Overall User Moodchange Data'
-                     },
-
-                     xAxis: {
-                         categories: ["USER "+ currentUser.user ],
-                         crosshair: true
-                     },
-                     yAxis: {
-                         min: 0,
-                         title: {
-                             text: 'Changes'
-                         }
-                     },
-                     tooltip: {
-                         headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
-                         pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
-                             '<td style="padding:0"><b>{point.y: .1f} </b></td></tr>',
-                         footerFormat: '</table>',
-                         shared: true,
-                         useHTML: true
-                     },
-                     plotOptions: {
-                         column: {
-                             pointPadding: 0.2,
-                             borderWidth: 0
-                         }
-                     }
-                   },
-                   series: [{
-                      name: 'Total Changes',
-                      color: vm.colors[3],
-                      data: [currentUser['total_mood_changes']]
-                   }, {
-                      name: 'Positive Changes',
-                      color: vm.colors[7],
-                      data: [currentUser['positive_changes']]
-                   }, {
-                      name: 'Negative Changes',
-                      color: vm.colors[2],
-                      data: [currentUser['negative_changes']]
-                   }],
-                   credits: {
-                      enabled: false
-                   }
-
-                } //end of user-mood-changes breakdown graph
+                vm.totalUserMoodBreakdownGraph = graphService.getUserTotalMoodBreakdownGraph(currentUser, total, positive, negative); //end of user-mood-changes breakdown graph
              }
              
              /** All the graphs on the OVERVIEW page **/
