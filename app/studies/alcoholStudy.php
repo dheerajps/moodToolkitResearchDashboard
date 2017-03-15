@@ -56,6 +56,12 @@ $get_mood_stats_result = $db -> executeQuery($get_mood_stats_sql);
 
 $moodStatsResults = getQueryResults($get_mood_stats_result);
 
+$get_all_participant_mood_stats_sql = "select * from alcoholStudyStats where participant = 1111;";
+
+$get_all_participant_mood_result = $db -> executeQuery($get_all_participant_mood_stats_sql);
+
+$allUsersMoodResults = getQueryResults($get_all_participant_mood_result);
+
 /*** This loops through each patient object and adds all the properties at USER LEVEL ***/
 $i=0;
 $j=0;
@@ -105,8 +111,9 @@ function getQueryResults($queryResult)
     }
     return $results;
 }
-
+$returnArray["totalMoodStats"] = $allUsersMoodResults;
 $returnArray["userStudyStats"] = $study_stats;
+
 echo json_encode($returnArray);
 file_put_contents("alcoholStudyResponse.json",json_encode($returnArray));
 ?>
