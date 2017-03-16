@@ -17,8 +17,7 @@
             //Wait for executing until dom
             timeout(initOverviewController,50);
             function initOverviewController(){
-                console.log("hello");
-
+                
                 $(".dropdown-button").dropdown();
                 $(".button-collapse").sideNav();
                 $('.parallax').parallax();

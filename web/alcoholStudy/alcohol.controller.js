@@ -42,8 +42,6 @@
       	
       	alcoholStudyAPI.getAlcoholStudyData().then(function (response){
 
-      		//console.log(response.data);
-
       		/** GET THE RESPONSE DATA AND STORE IT **/
             vm.alcoholData = response.data;
             
@@ -73,7 +71,7 @@
             }); //END OF FOR-LOOP
             
 
-            console.log(vm.alcoholData.moodStats);
+            
             vm.findAvgCompliance = AggregateService.getAverageCompliance(vm.alcoholData.users);
 
             vm.findTotal = function(property){
@@ -95,7 +93,7 @@
                 window.scrollTo(0,0);
                 vm.currentUser=userId;
                 vm.drawUserPageGraphs(vm.currentUser);
-               // console.log(vm.currentUser);
+               
             }
             /** Any graphs to be drawn on the USER view of NIMH page **/
              vm.drawUserPageGraphs = function(currentUser){

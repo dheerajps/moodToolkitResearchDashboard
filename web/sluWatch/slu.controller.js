@@ -46,7 +46,7 @@
 
         sluWatchAPI.getsluWatchData().then(function (response){
 
-            console.log(response.data);
+            
 
             vm.users = [];
             vm.cigs = [];
@@ -91,7 +91,7 @@
             vm.findTotal = function(property){
                return AggregateService.getTotalValue(vm.sluData.users,property);
              }
-            console.log(vm.findAvgCompliance);
+            
             
             
             /** Sets flags and initiates route to SLU user view **/
@@ -102,7 +102,7 @@
                 vm.showUserPageFlag=true;
                 window.scrollTo(0,0);
                 vm.currentUser=userId;
-                console.log(vm.currentUser);
+               
 
                angular.forEach(vm.sluData.users, function(value, key){
                   vm.users.push('USER ' + value.user);

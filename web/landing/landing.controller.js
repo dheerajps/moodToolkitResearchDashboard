@@ -70,13 +70,13 @@
 
 
          }).then(function (response) {
-            console.log(response.data);
+            
             vm.message = response.data.msg;
             if(response.data.status == true){
                LoginService.setCredentials(ngScope.temp.username);
                Materialize.toast(vm.message, 3000, 'rounded');
                location.path('/overview');
-               console.log("login yes");
+               
             }
             else{
 
@@ -93,7 +93,7 @@
 
 
          var data = { username: ngScope.temp.registerUsername , password: ngScope.temp.registerPassword};
-         console.log(data);
+         
          http({
              method: 'POST',
              url: requestURL,
@@ -102,7 +102,7 @@
 
 
          }).then(function (response) {
-            console.log(response);
+            
             vm.message = response.data.msg;
             if(response.data.status === 2 || response.data.status == 0){
                Materialize.toast(vm.message, 7000, 'rounded');

@@ -22,11 +22,11 @@
 
       function setUser(user){
         data.ID = user;
-        console.log("user is set to "+ data.ID);
+        
       }
 
       function getUser(){
-        console.log("sending user as "+ data.ID);
+        
         return data.ID;
       }
    }]);
