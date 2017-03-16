@@ -41,6 +41,8 @@
       /*** Initialize SLU controller where the get call and main functionality happens ***/
       function initSluController(){
 
+        setTimeout(function() {$(".dropdown-button").dropdown();
+        }, 5);
 
         sluWatchAPI.getsluWatchData().then(function (response){
 

@@ -37,7 +37,9 @@
       }
 
       function initAlcoholController(){
-
+      	setTimeout(function() {$(".dropdown-button").dropdown();
+		}, 10);
+      	
       	alcoholStudyAPI.getAlcoholStudyData().then(function (response){
 
       		//console.log(response.data);

@@ -29,6 +29,9 @@
       }
       function initNIMHController(){
          
+         setTimeout(function() {$(".dropdown-button").dropdown();
+          }, 10);
+         
           nimhAPI.getNIMHData().then(function (d){
 
              vm.nimhData = d.data;
