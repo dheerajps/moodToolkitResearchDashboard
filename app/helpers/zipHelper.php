@@ -55,31 +55,43 @@ foreach (new DirectoryIterator($path) as $file) {
     if ($file->isDot()) continue;
 
     if ($file->isDir()) {
+
         echo "The directory is ------> ". $file. "\n \n";
         $filePath = $path.$file;
 	    foreach( new DirectoryIterator($filePath) as $nestedFile) {
-    		if($nestedFile -> isFile()){
+
+            if($nestedFile -> isFile()){
+                
                 echo "The nested file is -----> ".$nestedFile."\n";
     			$sourcePath = $filePath."/".$nestedFile;
                 echo "The source file is ---->".$sourcePath."\n";
     			$destinationPath = "../data/download/" . $file . ".zip";
     			Zip($sourcePath, $destinationPath);
     			$newPath = $filePath."/".$file."/".$nestedFile;
-    			rename($sourcePath, $newPath);
                 if (!rename($sourcePath,$newPath)) {
-                    if (copy ($sourcePath,$newPath)) {
+                    if (!copy ($sourcePath,$newPath)) {
+                        if(mkdir ($filePath."/".$file)){
+                            copy ($sourcePath,$newPath);
+                            unlink($sourcePath);
+                        }
+                    }
+                    else{
                         unlink($sourcePath);
                     }
     		    }
             }
+
 	       	else if($nestedFile -> isDir()){
+
                 if ($nestedFile->isDot()) continue;
+
                 else {
-                    echo "The nested directory is -----> ".$nestedFile."\n";
+                    continue;
+                   /* echo "The nested directory is -----> ".$nestedFile."\n";
             		$sourcePath = $path. $file ."/". $nestedFile;
                     echo "The source directory is ---->".$sourcePath."\n";
             		$destinationPath = "../data/download/" . $file . ".zip";
-            		Zip($sourcePath, $destinationPath); // call the function for each source folder
+            		Zip($sourcePath, $destinationPath); // call the function for each source folder*/
                 }
     		}
     	}
