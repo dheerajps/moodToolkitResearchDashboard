@@ -5,6 +5,10 @@
 ---- One of the files which needs to go into cron job later 
 */
 
+/************* TECH DEBT ****************/
+/****** TODO ::: CONVERT INTO FUNCTIONS AND MAKE IT EASY TO USE FOR ALL STUDIES ******/
+
+
 function Zip($source, $destination)
 {
     //echo $source;
@@ -47,7 +51,7 @@ function Zip($source, $destination)
     return $zip->close();
 }
 
-$path = "../data/SLU_data/"; // '.' for current
+$path = "/var/www/html/app/data/SLU_data/"; // '.' for current
 
 
 foreach (new DirectoryIterator($path) as $file) {
@@ -61,11 +65,11 @@ foreach (new DirectoryIterator($path) as $file) {
 	    foreach( new DirectoryIterator($filePath) as $nestedFile) {
 
             if($nestedFile -> isFile()){
-                
+
                 echo "The nested file is -----> ".$nestedFile."\n";
     			$sourcePath = $filePath."/".$nestedFile;
                 echo "The source file is ---->".$sourcePath."\n";
-    			$destinationPath = "../data/download/" . $file . ".zip";
+    			$destinationPath = "/var/www/html/app/data/download/" . $file . ".zip";
     			Zip($sourcePath, $destinationPath);
     			$newPath = $filePath."/".$file."/".$nestedFile;
                 if (!rename($sourcePath,$newPath)) {
@@ -90,7 +94,7 @@ foreach (new DirectoryIterator($path) as $file) {
                    /* echo "The nested directory is -----> ".$nestedFile."\n";
             		$sourcePath = $path. $file ."/". $nestedFile;
                     echo "The source directory is ---->".$sourcePath."\n";
-            		$destinationPath = "../data/download/" . $file . ".zip";
+            		$destinationPath = "/var/www/html/app/data/download/" . $file . ".zip";
             		Zip($sourcePath, $destinationPath); // call the function for each source folder*/
                 }
     		}
