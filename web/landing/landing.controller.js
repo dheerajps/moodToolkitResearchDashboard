@@ -42,6 +42,7 @@
       }
 
       function directToLogin(){
+
          vm.message ="";
          vm.showLoginModal=true;
          $('#modal1').modal('open');
@@ -49,6 +50,7 @@
       }
 
       function directToRegister(){
+         registerCancelClicked();
          vm.showRegisterModal = true;
          $('#modal2').modal('open');
       }
@@ -92,7 +94,14 @@
          var requestURL = '../app/helpers/registerHelper.php';
 
 
-         var data = { username: ngScope.temp.registerUsername , password: ngScope.temp.registerPassword};
+         var data = { 
+                      username: ngScope.temp.registerUsername ,
+                      password: ngScope.temp.registerPassword ,
+                      fname: ngScope.temp.registerFname ,
+                      lname: ngScope.temp.registerLname ,
+                      email: ngScope.temp.registerEmail ,
+                      affiliation: ngScope.temp.registerAffiliation ,
+                    };
          
          http({
              method: 'POST',
@@ -105,11 +114,13 @@
             
             vm.message = response.data.msg;
             if(response.data.status === 2 || response.data.status == 0){
-               Materialize.toast(vm.message, 7000, 'rounded');
+               console.log(vm.message);
+               Materialize.toast(vm.message, 10000, 'rounded');
                registerCancelClicked();
             }
             else{
-               Materialize.toast(vm.message, 7000, 'rounded');
+               Materialize.toast(vm.message, 10000, 'rounded');
+               console.log(vm.message);
                registerCancelClicked();
                $('#modal2').modal('close');
             }
@@ -118,13 +129,13 @@
 
       //Clear form and set pristine
       function cancelClicked(){
-         var master = { username: '' , password:''};
+         var master = { username: '' , password:'' };
          ngScope.temp = angular.copy(master);
 
          ngScope.loginForm.$setPristine();
       }
       function registerCancelClicked(){
-         var master = { registerUsername: '' , registerPassword:'', confirmPassword: ''};
+         var master = { registerUsername: '' , registerPassword:'', confirmPassword: '',fname: '' , lname: '' , email: '' , affiliation: ''};
          ngScope.temp = angular.copy(master);
          vm.message = "";
          ngScope.registerForm.$setPristine();

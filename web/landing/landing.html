@@ -74,9 +74,42 @@
 
             <div class='row'>
               <div class='input-field col s12 left-align'>
+                <input class='validate' type='text' ng-model="temp.registerFname" name="registerFname" required/>
+                <label for='registerFname'>FIRST NAME:</label>
+                <span class="error" ng-show="registerForm.registerFname.$dirty && registerForm.registerFname.$error.required">*  Required</span>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class='input-field col s12 left-align'>
+                <input class='validate' type='text' ng-model="temp.registerLname" name="registerLname" required/>
+                <label for='registerLname'>LAST NAME:</label>
+                <span class="error" ng-show="registerForm.registerLname.$dirty && registerForm.registerLname.$error.required">*  Required</span>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class='input-field col s12 left-align'>
+                <input class='validate' type='email' ng-model="temp.registerEmail" name="registerEmail" required/>
+                <label for='registerEmail'>EMAIL ID:</label>
+                <span class="error" ng-show="registerForm.registerEmail.$dirty && registerForm.registerEmail.$error.required">*  Required</span>
+                <span class="error" ng-show="registerForm.registerEmail.email"> Not valid email!</span>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class='input-field col s12 left-align'>
+                <input class='validate' type='text' ng-model="temp.registerAffiliation" name="registerAffiliation" required/>
+                <label for='registerAffiliation'>UNIVERSITY AFFILIATION:</label>
+                <span class="error" ng-show="registerForm.registerAffiliation.$dirty && registerForm.registerAffiliation.$error.required">*  Required</span>
+              </div>
+            </div>
+
+            <div class='row'>
+              <div class='input-field col s12 left-align'>
                 <input class='validate' type='text' ng-model="temp.registerUsername" name="registerUsername" required/>
                 <label for='registerUsername'>Enter a username:</label>
-                <span ng-show="registerForm.registerUsername.$dirty && registerForm.registerUsername.$error.required">*  Required</span>
+                <span class="error" ng-show="registerForm.registerUsername.$dirty && registerForm.registerUsername.$error.required">*  Required</span>
               </div>
             </div>
 
@@ -84,7 +117,7 @@
               <div class='input-field col s12 left-align'>
                 <input class='validate' type='password' ng-model="temp.registerPassword" name="registerPassword" equals={{temp.confirmPassword}} required/>
                 <label for='registerPassword'>Enter a password:</label>
-                <span ng-show="registerForm.registerPassword.$dirty &&  registerForm.registerPassword.$error.required">*  Required</span>
+                <span class="error" ng-show="registerForm.registerPassword.$dirty &&  registerForm.registerPassword.$error.required">*  Required</span>
               </div>
             </div>
 
@@ -92,8 +125,8 @@
               <div class='input-field col s12 left-align'>
                 <input class='validate' type='password' ng-model="temp.confirmPassword" name="confirmPassword" equals={{temp.registerPassword}} required/>
                 <label for='confirmPassword'>Confirm password:</label>
-                <span ng-show="registerForm.confirmPassword.$dirty &&  registerForm.confirmPassword.$error.required">*  Required</span>
-                <span ng-show="registerForm.confirmPassword.$dirty &&  registerForm.confirmPassword.$error.equals">*  passwords should match</span>
+                <span class="error" ng-show="registerForm.confirmPassword.$dirty &&  registerForm.confirmPassword.$error.required">*  Required</span>
+                <span class="error" ng-show="registerForm.confirmPassword.$dirty &&  registerForm.confirmPassword.$error.equals">*  passwords should match</span>
               </div>
             </div>
 
