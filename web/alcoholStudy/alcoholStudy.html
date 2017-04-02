@@ -143,8 +143,8 @@
                    <td data-title="Status">{{user.compliance | number :3}}</td>
                    <td data-title="Actions">
                      <i class="material-icons t-icon">alarm_on</i>
-                     <a href="../app/data/Alcohol_data/{{user.user}}.csv" download><i class="material-icons t-icon">archive</i></a>
-                     <a ng-click="vm.navigateToUserPage(user)"><i class="material-icons t-icon">open_in_new</i></a>
+                     <a href="../app/data/Alcohol_data/{{user.user}}.csv" class="pointer" download><i class="material-icons t-icon">archive</i></a>
+                     <a ng-click="vm.navigateToUserPage(user)" class="pointer"><i class="material-icons t-icon">open_in_new</i></a>
                    </td>
                  </tr>
                </tbody>

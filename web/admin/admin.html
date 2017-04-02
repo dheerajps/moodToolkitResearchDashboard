@@ -7,8 +7,7 @@
         <!-- <li><a href="#!">Add Patient</a></li>
         <li class="divider"></li> -->
         <li><a ng-click="vm.initiateLogOut()">Logout</a></li>
-    </ul>
-    
+    </ul>   
     <div class="navbar-fixed">
         <nav>
             <div class="nav-wrapper" id="topNav">
@@ -51,8 +50,9 @@
                        <td data-title="Email">{{user.email}}</td>
                        <td data-title="Affiliation">{{user.affiliation}}</td>
                        <td data-title="Actions">
-                         <a ng-click="vm.approveCurrentUser(user)"><i class="material-icons t-icon">done</i></a>
-                         <a ng-click="vm.deleteCurrentUser(user)"><i class="material-icons t-icon">delete</i></a>
+                         <a ng-click="vm.approveUser(user)" class="pointer"><i class="material-icons t-icon">check_box</i></a>
+                         <span>                       </span>
+                         <a ng-click="vm.deleteUser(user)" class="pointer"><i class="material-icons t-icon">delete</i></a>
                        </td>
                      </tr>
                    </tbody>
@@ -88,7 +88,10 @@
                        <td data-title="Affiliation">{{user.affiliation}}</td>
                        <td data-title="Actions">
                          <!-- <a ng-click="vm.approveCurrentUser(user)"><i class="material-icons t-icon">done</i></a> -->
-                         <a ng-click="vm.deleteCurrentUser(user)"><i class="material-icons t-icon">delete</i></a>
+                         <a ng-click="vm.deleteUser(user)" class="pointer">
+                            <i class="material-icons t-icon">delete</i>
+                         </a>
+                         <div class="tooltip" ng-show="tooltip">Hi..Welcome to Angular JS World.</div>
                        </td>
                      </tr>
                    </tbody>

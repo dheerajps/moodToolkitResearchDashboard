@@ -57,6 +57,9 @@ hr{
    color: black;
 }
 
+.pointer {
+    cursor: pointer;
+}
 .p-icon{
    margin: 0 5px 0 5px;
    color: #dd616e;
