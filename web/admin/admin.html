@@ -1,0 +1,100 @@
+<div>
+    <!-- navigation -->
+    <!-- Dropdown Structure -->
+    <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#!">Contact Info</a></li>
+        <li class="divider"></li>
+        <!-- <li><a href="#!">Add Patient</a></li>
+        <li class="divider"></li> -->
+        <li><a ng-click="vm.initiateLogOut()">Logout</a></li>
+    </ul>
+    
+    <div class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper" id="topNav">
+                <a class="btn-floating btn-large grey lighten-3" id="navBack">
+                    <i class="material-icons" id="navBack">arrow_back</i></a>
+                <!-- <a href="#!" id="nav-logo" >Mood ToolKit</a> -->
+                <ul class="right hide-on-med-and-down">
+                   
+                    <li><a href="about.html">About</a></li>
+                    <!-- Dropdown Trigger -->
+                    <li><a class="dropdown-button" href="#!" data-activates="dropdown1">Profile<i class="material-icons right">person_pin</i></a></li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <div class="row" ng-if="!vm.noNewUsersFlag">
+        <h1 class = 'section-header center'>NEW USERS</h1>
+        <div class='col s12'>
+             <div class="table-responsive-vertical shadow-z-1 study-module study-stats z-depth-2">
+               <!-- ALL NEW USERS WHO NEED TO BE VERIFIED-->
+               <table id="table" class="table table-hover table-mc-light-blue">
+                   <thead>
+                     <tr>
+                       <th>ID</th>
+                       <th>First Name</th>
+                       <th>Last Name</th>
+                       <th>Username</th>
+                       <th>Email</th>
+                       <th>Affiliation</th>
+                       <th>Actions</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr ng-repeat="user in vm.allNewUsers">
+                       <td data-title="ID">{{$index+1}}</td>
+                       <td data-title="First Name">{{user.fname}}</td>
+                       <td data-title="Last Name">{{user.lname}}</td>
+                       <td data-title="Username">{{user.username}}</td>
+                       <td data-title="Email">{{user.email}}</td>
+                       <td data-title="Affiliation">{{user.affiliation}}</td>
+                       <td data-title="Actions">
+                         <a ng-click="vm.approveCurrentUser(user)"><i class="material-icons t-icon">done</i></a>
+                         <a ng-click="vm.deleteCurrentUser(user)"><i class="material-icons t-icon">delete</i></a>
+                       </td>
+                     </tr>
+                   </tbody>
+                 </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <h1 class = 'section-header center'>EXISTING USERS</h1>
+        <div class='col s12'>
+             <div class="table-responsive-vertical shadow-z-1 study-module study-stats z-depth-2">
+                 <!-- ALL APPROVED USERS -->
+                 <table id="table" class="table table-hover table-mc-light-blue" >
+                   <thead>
+                     <tr>
+                       <th>ID</th>
+                       <th>First Name</th>
+                       <th>Last Name</th>
+                       <th>Username</th>
+                       <th>Email</th>
+                       <th>Affiliation</th>
+                       <th>Actions</th>
+                     </tr>
+                   </thead>
+                   <tbody>
+                     <tr ng-repeat="user in vm.allApprovedUsers">
+                       <td data-title="ID">{{$index+1}}</td>
+                       <td data-title="First Name">{{user.fname}}</td>
+                       <td data-title="Last Name">{{user.lname}}</td>
+                       <td data-title="Username">{{user.username}}</td>
+                       <td data-title="Email">{{user.email}}</td>
+                       <td data-title="Affiliation">{{user.affiliation}}</td>
+                       <td data-title="Actions">
+                         <!-- <a ng-click="vm.approveCurrentUser(user)"><i class="material-icons t-icon">done</i></a> -->
+                         <a ng-click="vm.deleteCurrentUser(user)"><i class="material-icons t-icon">delete</i></a>
+                       </td>
+                     </tr>
+                   </tbody>
+                 </table>
+             </div>
+          </div>
+    </div>
+
+</div>
