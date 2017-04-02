@@ -20,9 +20,6 @@ function getQueryResults($queryResult)
         }
         return $results;
     }
-    else {
-        echo "No results returned" . "\n";
-    }
 }
 
 function constructUserArray($sqlResult){
@@ -31,12 +28,14 @@ function constructUserArray($sqlResult){
 	$user = array();
 	foreach ($sqlResult as $result) {
 
+		$users[$j]['ID'] = $result['ID'];
 		$users[$j]['username'] = $result['USERNAME'];
 		$users[$j]['fname'] = $result['FirstName'];
 		$users[$j]['lname'] = $result['LastName'];
 		$users[$j]['email'] = $result['EMAIL'];
 		$users[$j]['affiliation'] = $result['AFFILIATION'];
-
+		$users[$j]['isApproved'] = $result['isApproved'];
+		
 		$j++;
 	}
 	return $users;
