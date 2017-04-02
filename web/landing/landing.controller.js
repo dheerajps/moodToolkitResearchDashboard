@@ -75,14 +75,14 @@
             
             vm.message = response.data.msg;
             if(response.data.status == true){
-               LoginService.setCredentials(ngScope.temp.username);
-               Materialize.toast(vm.message, 3000, 'rounded');
+               console.log(response.data.userInfo);
+               LoginService.setCredentials(response.data.userInfo);
+               Materialize.toast(vm.message, 5000, 'rounded');
                location.path('/overview');
                
             }
             else{
-
-               Materialize.toast(vm.message, 3000, 'rounded');
+               Materialize.toast(vm.message, 5000, 'rounded');
                cancelClicked();
             }
          });

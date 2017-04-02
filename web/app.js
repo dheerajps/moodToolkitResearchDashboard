@@ -53,6 +53,14 @@
                 controllerAs: 'vm'
             })
             
+            .when('/admin', {
+                title: 'Modd Toolkit',
+                controller: 'AdminController',
+                templateUrl: 'admin/admin.html',
+                css: 'resources/css/style.css',
+                controllerAs: 'vm'
+
+            })
 
             .otherwise({ redirectTo: '/login' });
     }

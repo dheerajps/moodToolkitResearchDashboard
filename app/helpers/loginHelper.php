@@ -33,11 +33,26 @@ if($select_user_result-> num_rows > 0){
 	json_encode($row);
 	$stored_salt = $row['SALT'];
 	$stored_hash = $row['PASSWORD'];
+	$is_approved = $row['isApproved'];
 	$check_pass = $stored_salt . $pass;
 	$check_hash = hash('sha512',$check_pass);
-	if($check_hash == $stored_hash){
+	if($check_hash == $stored_hash && $is_approved === 'F'){
+		$msg = " Not approved yet! \n Please wait until you get a confirmation email before logging in";
+		$login = false;
+	}
+	else if($check_hash == $stored_hash && $is_approved === 'T'){
 	        $msg= "User authenticated";
 	        $login = true;
+	        $isAdmin = ($row['isAdmin']==='F') ? false : true ;
+	        $isApproved = ($row['isApproved']==='F') ? false : true ;
+	        $userInfo = array(
+							'username' => $row['USERNAME'],
+							'fname' => $row['FirstName'],
+							'lname' => $row['LastName'],
+							'isAdmin' => $isAdmin,
+							'isApproved' => $isApproved
+						);
+	        $loginInfo['userInfo']= $userInfo;
 	}
 	else{
 	        $msg= "Not authenticated: Please Enter the right Username and Password";
@@ -48,6 +63,7 @@ else{
 	$msg= "Not authenticated: Please Enter the right Username and Password";
 	$login = false;
 } 
+
 /* Load the login info status to send back response */
 
 $loginInfo['msg']= $msg;
