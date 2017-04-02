@@ -51,12 +51,13 @@ $check_username_result = $db -> executeQuery($check_username_sql);
 $check_email_sql = "SELECT * FROM userInfo WHERE EMAIL = '$email'";
 $check_email_result = $db -> executeQuery($check_email_sql);
 
-if($check_username_result -> num_rows > 0 ){
-	$msg = "This username already exists. Please login, else, contact admin";
+//This will allow people with same username to register, but different email-ids
+if($check_username_result -> num_rows > 0 && $check_email_result -> num_rows >0 ){
+	$msg = "This username already exists with this email. Please login, else, contact admin";
 	$registerStatus = 2;
 }
 else if($check_email_result -> num_rows > 0){
-	$msg = "This email id is already on our file. Please login, else, contact admin";
+	$msg = "This email id is already on our file. Please login with the username, else, contact admin";
 	$registerStatus = 2;
 }
 else{
@@ -101,7 +102,7 @@ else{
 		$headers .= 'Bcc: sdheeraj1992@gmail.com' . "\r\n";
 
 		// send email
-		mail("dpstm3@mail.missouri.edu",$subject,$body,$headers);
+		//mail("dpstm3@mail.missouri.edu",$subject,$body,$headers);
 		$registerStatus = 1;
 	}
 }

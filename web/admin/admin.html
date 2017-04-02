@@ -52,7 +52,7 @@
                        <td data-title="Actions">
                          <a ng-click="vm.approveUser(user)" class="pointer"><i class="material-icons t-icon">check_box</i></a>
                          <span>                       </span>
-                         <a ng-click="vm.deleteUser(user)" class="pointer"><i class="material-icons t-icon">delete</i></a>
+                         <a ng-click="vm.deleteSelectedUser(user,$index)" class="pointer"><i class="material-icons t-icon">delete</i></a>
                        </td>
                      </tr>
                    </tbody>
@@ -88,10 +88,9 @@
                        <td data-title="Affiliation">{{user.affiliation}}</td>
                        <td data-title="Actions">
                          <!-- <a ng-click="vm.approveCurrentUser(user)"><i class="material-icons t-icon">done</i></a> -->
-                         <a ng-click="vm.deleteUser(user)" class="pointer">
+                         <a ng-click="vm.deleteSelectedUser(user,$index)" class="pointer">
                             <i class="material-icons t-icon">delete</i>
                          </a>
-                         <div class="tooltip" ng-show="tooltip">Hi..Welcome to Angular JS World.</div>
                        </td>
                      </tr>
                    </tbody>

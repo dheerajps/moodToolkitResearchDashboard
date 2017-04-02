@@ -31,7 +31,7 @@
             vm.userInfo = LoginService.getCredentials();
             console.log(vm.userInfo);
 
-            vm.isAdminFlag = vm.userInfo.currentUser.isAdmin;
+            vm.isAdminFlag = (vm.userInfo.currentUser.isAdmin == true) ? true : false;
 
             vm.directToAdminView = function(){
               vm.message = "Hello! " + vm.userInfo.currentUser.fname + " you are now entering ADMIN view";
