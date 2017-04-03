@@ -14,11 +14,15 @@
 
             vm.initAdminController = initAdminController;
             vm.getAllUsers = getAllUsers;
+            vm.approveSelectedUser = approveSelectedUser;
             vm.deleteSelectedUser = deleteSelectedUser;
             vm.noNewUsersFlag = true;
+            vm.newUserDeletingFlag = false;
+            vm.oldUserDeletingFlag = false;
+            vm.newUserApprovingFlag = false;
             vm.allNewUsers = [];
             vm.allApprovedUsers = [];
-            
+
             //Wait for executing until dom
             timeout(initAdminController,50);
             function initAdminController(){
@@ -52,15 +56,16 @@
 
                 vm.allNewUsers = vm.allUsers['newUsers'];
 
-                vm.noNewUsersFlag = (vm.allNewUsers == null) ? true : false;
+                vm.noNewUsersFlag = (vm.allNewUsers == null) ? true : false; // to control if new users are present are not
 
               });
 
             }
 
+            //delete the clicked user and then post result to db
             function deleteSelectedUser(user,index){
 
-              console.log("calling the delete service");
+              
               if(user['isApproved']==='F'){
                 vm.newUserDeletingFlag = true;
               }
@@ -71,10 +76,8 @@
 
               AdminService.deleteUser(user).then(function(){
 
-                console.log("deleting the user");
-
                 if(vm.newUserDeletingFlag){
-                  vm.allNewUsers.splice(index, 1);
+                  vm.allNewUsers.splice(index, 1);  //will update the view accordingly
                   if(vm.allNewUsers.length == 0){
                     vm.noNewUsersFlag = true;
                   }
@@ -87,6 +90,23 @@
 
             }
 
+            function approveSelectedUser(user,index){
+
+              if(user['isApproved'] === 'F'){
+                vm.newUserApprovingFlag = true;
+              }
+              AdminService.approveUser(user).then(function(){
+
+                if(vm.newUserApprovingFlag){
+                  vm.allNewUsers.splice(index, 1); 
+                  if(vm.allNewUsers.length == 0){
+                    vm.noNewUsersFlag = true;
+                  }
+                  vm.allApprovedUsers.push(user);               
+                }
+
+              });
+            }
             
 
     }

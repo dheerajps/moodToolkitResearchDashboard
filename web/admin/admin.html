@@ -50,7 +50,7 @@
                        <td data-title="Email">{{user.email}}</td>
                        <td data-title="Affiliation">{{user.affiliation}}</td>
                        <td data-title="Actions">
-                         <a ng-click="vm.approveUser(user)" class="pointer"><i class="material-icons t-icon">check_box</i></a>
+                         <a ng-click="vm.approveSelectedUser(user,$index)" class="pointer"><i class="material-icons t-icon">check_box</i></a>
                          <span>                       </span>
                          <a ng-click="vm.deleteSelectedUser(user,$index)" class="pointer"><i class="material-icons t-icon">delete</i></a>
                        </td>
